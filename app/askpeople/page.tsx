@@ -388,7 +388,7 @@ const AskPeopleContent = () => {
         <aside className={`hidden md:flex flex-col gap-4 w-56 py-6 px-3 rounded-3xl shadow-xl ${darkMode ? 'bg-black/80 border border-gray-800' : 'bg-white/80 border border-gray-200'}`}>
           <Link href="/" className="flex items-center gap-2 mb-8">
             <span className="bg-gradient-to-r from-blue-400 to-purple-500 w-4 h-4 rounded-full animate-pulse"></span>
-            <span className="font-bold text-lg tracking-wide">BlockSynth AI</span>
+            <span className="font-bold text-lg tracking-wide">Sage AI</span>
           </Link>
           <button onClick={() => setActiveTab('ask')} className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab==='ask' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow' : darkMode ? 'hover:bg-gray-800' : 'hover:bg-blue-50'}`}> <FiMessageSquare /> Ask</button>
           <button onClick={() => setActiveTab('saved')} className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab==='saved' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow' : darkMode ? 'hover:bg-gray-800' : 'hover:bg-blue-50'}`}> <FiBookmark /> Saved</button>

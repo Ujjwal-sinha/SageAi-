@@ -33,7 +33,7 @@ import {
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
 
-const MODEL_NAME = 'llama3-70b-8192';
+const MODEL_NAME = 'llama-3.3-70b-versatile';
 const DEFAULT_PROMPTS = [
   "Explain smart contracts like I'm 5",
   "What are the top DeFi protocols in 2025?",
@@ -419,7 +419,7 @@ Format responses with:
         <Link href="/">
           <h1 className="text-2xl font-bold mb-8 text-white flex items-center relative z-10">
             <span className="bg-white w-3 h-3 rounded-full mr-3 animate-pulse bg-gradient-to-r from-blue-400 to-purple-500"></span>
-            BlockSynth AI
+            Sage AI
           </h1>
         </Link>
 

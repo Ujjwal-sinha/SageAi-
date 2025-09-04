@@ -1,7 +1,7 @@
-# BlockSynth AI - Credit System Setup
+# Sage AI - Credit System Setup
 
 ## Overview
-BlockSynth AI uses an ERC20 utility token (UTK) to gate features based on user token balance. Users must hold a minimum amount of tokens to access premium features.
+Sage AI uses an ERC20 utility token (UTK) to gate features based on user token balance. Users must hold a minimum amount of tokens to access premium features.
 
 ## Environment Variables
 

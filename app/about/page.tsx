@@ -13,13 +13,13 @@ const Icon: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 // Hero section
 const HeroSection: React.FC = () => (
   <section className="text-center mb-20 pt-8">
-    <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-purple-800 bg-clip-text text-transparent mb-4 drop-shadow-lg">BlockSynth AI</h1>
+    <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-purple-800 bg-clip-text text-transparent mb-4 drop-shadow-lg">Sage AI</h1>
     <p className="text-white/90 text-xl max-w-2xl mx-auto leading-relaxed mb-4">
       The next generation of decentralized AI for Web3. Empowering developers and users with blockchain-backed intelligence for smart contracts, DeFi, NFTs, and more.
     </p>
     <Link href="/dashboard">
       <button
-        aria-label="Get started with BlockSynth AI"
+        aria-label="Get started with Sage AI"
         className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-8 py-3 rounded-full shadow-glow-purple text-lg mt-4 transition-all"
       >
         Get Started
@@ -49,7 +49,7 @@ const BenefitsList: React.FC = () => (
     <FeatureCard
       icon={<FaBolt />}
       title="Faster Transactions"
-      description="Access AI services quickly with parallel processing through BlockDAG."
+      description="Access AI services quickly with parallel processing through Somnia Blockchain."
     />
     <FeatureCard
       icon={<FaExpandArrowsAlt />}
@@ -79,19 +79,19 @@ const AboutPage: React.FC = () => (
         <div>
           <h2 className="text-3xl font-bold text-purple-400 mb-3">Our Vision</h2>
           <p className="text-gray-200 leading-relaxed text-lg">
-            BlockSynth AI pioneers decentralized AI by giving users cutting-edge tools for the Web3 ecosystem. Our vision: empower developers and users with blockchain-backed AI for smart contract insights, market predictions, NFT creation, and DeFi intelligence — all with scalability, efficiency, and transparency at its core.
+            Sage AI pioneers decentralized AI by giving users cutting-edge tools for the Web3 ecosystem. Our vision: empower developers and users with blockchain-backed AI for smart contract insights, market predictions, NFT creation, and DeFi intelligence — all with scalability, efficiency, and transparency at its core.
           </p>
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-purple-400 mb-3">What is BlockDAG?</h2>
+          <h2 className="text-3xl font-bold text-purple-400 mb-3">What is Somnia Blockchain?</h2>
           <p className="text-gray-200 leading-relaxed text-lg">
-            BlockDAG (Directed Acyclic Graph) is a modern distributed ledger that allows multiple blocks to be added simultaneously. Unlike linear blockchains, it supports parallel transaction processing — meaning higher throughput and faster confirmations.
+            Somnia Blockchain is a modern distributed ledger technology that enables high-performance decentralized applications. It supports parallel transaction processing and advanced smart contract capabilities — meaning higher throughput and faster confirmations for AI-powered Web3 applications.
           </p>
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-purple-400 mb-3">Why BlockDAG for BlockSynth AI?</h2>
+          <h2 className="text-3xl font-bold text-purple-400 mb-3">Why Somnia Blockchain for Sage AI?</h2>
           <p className="text-gray-200 leading-relaxed text-lg">
-            BlockDAG is ideal for decentralized AI — it’s scalable, fast, and efficient. It allows our AI models to run under high loads without compromising speed or accuracy, enabling seamless integration of advanced features and future-proof infrastructure.
+            Somnia Blockchain is ideal for decentralized AI — it’s scalable, fast, and efficient. It allows our AI models to run under high loads without compromising speed or accuracy, enabling seamless integration of advanced features and future-proof infrastructure.
           </p>
         </div>
       </section>
@@ -108,11 +108,11 @@ const AboutPage: React.FC = () => (
       <section className="max-w-xl mx-auto text-center mt-10">
         <h2 className="text-2xl font-bold text-purple-400 mb-2">Join the Decentralized AI Revolution</h2>
         <p className="text-gray-300 mb-6 text-lg">
-          Start your journey with BlockSynth AI and harness the power of scalable, decentralized intelligence.
+          Start your journey with Sage AI and harness the power of scalable, decentralized intelligence.
         </p>
         <Link href="/dashboard">
           <button
-            aria-label="Get started with BlockSynth AI"
+            aria-label="Get started with Sage AI"
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-8 py-3 rounded-full shadow-glow-purple text-lg transition-all"
           >
             Get Started

@@ -138,7 +138,7 @@ const Web3NewsContent = () => {
   if (!isClient || darkMode === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-pulse text-xl font-medium text-gray-600">Loading BlockSynth AI...</div>
+        <div className="animate-pulse text-xl font-medium text-gray-600">Loading Sage AI...</div>
       </div>
     );
   }
@@ -157,7 +157,7 @@ const Web3NewsContent = () => {
           <h1 className="text-2xl font-extrabold tracking-tight">
             <Link href="/">
             <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text">
-              BlockSynth AI
+              Sage AI
             </span>
             </Link>
           </h1>
@@ -250,7 +250,7 @@ const Web3NewsContent = () => {
           <div className="flex items-center gap-3">
             <h1 className="text-xl font-bold md:hidden">
               <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text">
-                BlockSynth AI
+                Sage AI
               </span>
             </h1>
             <button
@@ -344,7 +344,7 @@ const Web3NewsContent = () => {
             darkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-600'
           } border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} shadow-inner`}
         >
-          <p>© {new Date().getFullYear()} BlockSynth AI. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Sage AI. All rights reserved.</p>
         </footer>
       </div>
     </div>

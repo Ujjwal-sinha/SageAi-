@@ -89,7 +89,7 @@ const ContractPageContent = () => {
           <CardContent className="flex flex-col items-center py-6">
             <Link href="/" className="flex items-center gap-2 mb-2">
               <Bot className="w-8 h-8 text-purple-400" />
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-gray-300">BlockSynth AI</span>
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-gray-300">Sage AI</span>
             </Link>
             <span className="text-xs text-gray-400 tracking-wide">Smart Contracts</span>
           </CardContent>
@@ -171,7 +171,7 @@ const ContractPageContent = () => {
                     <option>Fantom</option>
                     <option>Arbitrum</option>
                     <option>Optimism</option>
-                    <option>BlockDag</option>
+                    <option>Somnia Blockchain</option>
                   </select>
                 </div>
 
@@ -190,7 +190,7 @@ const ContractPageContent = () => {
                     <option>Governance</option>
                     <option>DeFi</option>
                     <option>NFTMarketplace</option>
-                    <option>BlockDagCustom</option>
+                    <option>SomniaBlockchainCustom</option>
                   </select>
                 </div>
                 <div className="flex items-end">

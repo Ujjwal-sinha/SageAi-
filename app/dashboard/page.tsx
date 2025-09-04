@@ -143,7 +143,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center gap-2">
                 <Bot className="w-8 h-8 text-purple-500" />
-                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">BlockSynth AI</span>
+                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">Sage AI</span>
               </Link>
               <nav className="hidden md:flex space-x-4">
                 {isWalletConnected() ? (

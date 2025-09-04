@@ -42,7 +42,7 @@ export function Navbar() {
                 onClick={() => router.push("/")}
                 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 cursor-pointer select-none"
               >
-                BlockSynth AI
+                Sage AI
               </span>
             </Link>
           </div>
@@ -56,7 +56,7 @@ export function Navbar() {
                 { label: "Web3 AI ChatBot ", href: "/dashboard" },
                 { label: "Smart Contract Generator", href: "/dashboard" },
                 {label:"AI Web3 News",href:"/dashboard"},
-                {label:"BlockSynthAi",href:"/about"}
+                {label:"SageAi",href:"/about"}
               ]}
             />
 

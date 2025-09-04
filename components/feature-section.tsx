@@ -47,7 +47,7 @@ export function FeatureSection() {
     {
       icon: <Zap className="h-12 w-12 text-yellow-400" />,
       title: "Parallelized AI Processing",
-      description: "Leverage BlockDag's architecture for distributed AI computations with minimal latency."
+      description: "Leverage Somnia Blockchain's architecture for distributed AI computations with minimal latency."
     },
     {
       icon: <Workflow className="h-12 w-12 text-purple-400" />,
@@ -74,7 +74,7 @@ export function FeatureSection() {
             Next-Generation <span className="text-blue-400">AI Capabilities</span>
           </h2>
           <p className="text-lg text-gray-400 max-w-2xl">
-            BlockSynth AI brings unprecedented intelligence to blockchain applications through its native integration with BlockDag.
+            Sage AI brings unprecedented intelligence to blockchain applications through its native integration with Somnia Blockchain.
           </p>
         </div>
 

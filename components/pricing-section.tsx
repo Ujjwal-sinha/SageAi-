@@ -17,7 +17,7 @@ export function PricingSection() {
   const tokenPackages = [
     {
       name: "Starter Pack",
-      description: "For trying out BlockSynth AI features",
+      description: "For trying out Sage AI features",
       tokens: 100,
       price: 5,
       highlight: false,
@@ -115,7 +115,7 @@ export function PricingSection() {
         <div className="text-center mt-10 text-gray-400 text-sm">
           Need a custom amount or have questions?{" "}
           <a
-            href="mailto:support@blocksynth.ai"
+            href="mailto:support@sage.ai"
             className="text-purple-400 underline"
           >
             Contact us

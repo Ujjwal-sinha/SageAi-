@@ -24,7 +24,7 @@ const auditPrompt = new PromptTemplate({
 
 1. **Initial Assessment**:
    - Verify code validity (respond with "Error: Invalid smart contract code" if unusable)
-   - Identify blockchain platform (EVM, Solana, Cosmos, Blockdag etc.)
+   - Identify blockchain platform (EVM, Solana, Cosmos, Somnia Blockchain etc.)
    - Note contract type (DeFi, NFT, DAO, etc.)
 
 2. **Audit Scope**:

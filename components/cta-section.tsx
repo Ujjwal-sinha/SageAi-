@@ -26,7 +26,7 @@ export function CTASection() {
           </h2>
           
           <p className="text-xl text-gray-400 mb-8">
-            Join thousands of developers and businesses already leveraging the power of BlockSynth AI
+            Join thousands of developers and businesses already leveraging the power of Sage AI
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

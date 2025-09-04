@@ -26,14 +26,14 @@ export function HeroSection() {
             <div className="space-y-6">
               <div className="inline-block px-4 py-1 rounded-full bg-blue-900/30 border border-blue-700/30 text-blue-400 text-sm font-medium mb-2 flex items-center gap-2 shadow shadow-purple-500/10">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                Live on BlockDag Testnet
+                Live on Somnia Blockchain Testnet
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
                 <span className="block font-mono text-white/90 drop-shadow-lg">UNLEASH THE POWER OF</span>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x font-extrabold tracking-widest" style={{letterSpacing:'0.04em'}}>Blockchain AI</span>
               </h1>
               <p className="text-lg md:text-xl text-gray-400 max-w-2xl">
-                BlockSynth AI is a native generative AI layer built directly into BlockDag's ecosystem, 
+                Sage AI is a native generative AI layer built directly into Somnia Blockchain's ecosystem, 
                 delivering adaptive, self-optimizing dApps and unprecedented decentralized intelligence.
               </p>
               <div className="flex flex-wrap gap-4 pt-4">
@@ -61,7 +61,7 @@ export function HeroSection() {
                 <div className="flex justify-between items-center mb-6">
                   <div className="flex items-center gap-2">
                     <Brain className="w-6 h-6 text-blue-400" />
-                    <span className="text-lg font-semibold">BlockSynth AI</span>
+                    <span className="text-lg font-semibold">Sage AI</span>
                   </div>
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>

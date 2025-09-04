@@ -7,8 +7,8 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'BlockSynth AI - Decentralized Intelligence Platform',
-  description: 'A native generative AI layer built directly into BlockDag\'s ecosystem to revolutionize decentralized intelligence.',
+  title: 'Sage AI - Decentralized Intelligence Platform',
+  description: 'A native generative AI layer built directly into Somnia Blockchain\'s ecosystem to revolutionize decentralized intelligence.',
 };
 
 export default function RootLayout({

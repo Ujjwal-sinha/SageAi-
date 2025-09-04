@@ -61,7 +61,7 @@ export function StatsSection() {
             Growth & <span className="text-blue-400">Performance</span>
           </h2>
           <p className="text-lg text-gray-400 max-w-2xl">
-            BlockSynth AI is gaining traction with increasing adoption metrics and platform usage.
+            Sage AI is gaining traction with increasing adoption metrics and platform usage.
           </p>
         </div>
         

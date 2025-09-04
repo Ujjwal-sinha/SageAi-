@@ -17,7 +17,7 @@ export function AIPromptShowcase() {
   
   const examples: PromptExample[] = [
     {
-      text: "CREATE A SMART CONTRACT FOR A TOKEN NAMED BSAI ON BLOCKDAG.",
+      text: "CREATE A SMART CONTRACT FOR A TOKEN NAMED BSAI ON SOMNIA BLOCKCHAIN.",
       description: "Generates a secure ERC-20 token contract with customizable tokenomics",
       category: "smart-contract"
     },
@@ -50,7 +50,7 @@ export function AIPromptShowcase() {
             Intelligent Commands, <span className="text-blue-400">Powerful Results</span>
           </h2>
           <p className="text-lg text-gray-400 max-w-2xl">
-            BlockSynth AI understands natural language prompts to deliver complex blockchain operations, analytics, and insights.
+            Sage AI understands natural language prompts to deliver complex blockchain operations, analytics, and insights.
           </p>
         </div>
 
@@ -92,7 +92,7 @@ export function AIPromptShowcase() {
                 <div className="px-6 pb-6 pt-1">
                   <div className="mt-2 p-4 bg-black/50 rounded-lg border border-gray-800">
                     <p className="text-sm font-mono text-green-400 mb-1">&gt; Processing command...</p>
-                    <p className="text-xs font-mono text-gray-400">BlockSynth AI is analyzing and executing your request.</p>
+                    <p className="text-xs font-mono text-gray-400">Sage AI is analyzing and executing your request.</p>
                   </div>
                 </div>
               )}
@@ -105,7 +105,7 @@ export function AIPromptShowcase() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-xl -z-10"></div>
               <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4 text-center">Try BlockSynth AI Yourself</h3>
+                <h3 className="text-xl font-semibold mb-4 text-center">Try Sage AI Yourself</h3>
                 <div className="flex gap-2">
                   <Input 
                     className="bg-black/50 border-gray-800 focus:border-blue-500" 

@@ -24,11 +24,11 @@ export function Footer() {
                 <Layers className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                BlockSynth AI
+                Sage AI
               </span>
             </Link>
             <p className="text-gray-400 mb-4 max-w-md">
-              A native generative AI layer built directly into BlockDag's ecosystem to 
+              A native generative AI layer built directly into Somnia Blockchain's ecosystem to 
               revolutionize decentralized intelligence with adaptive, self-learning capabilities.
             </p>
             <div className="flex space-x-4">
@@ -88,7 +88,7 @@ export function Footer() {
         
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} BlockSynth AI. All rights reserved.
+            &copy; {new Date().getFullYear()} Sage AI. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="#" className="text-gray-500 hover:text-white text-sm">Privacy Policy</Link>

@@ -27,7 +27,7 @@ const TradeAssistantContent = () => {
 
   const chains = [
     'Ethereum', 'Solana', 'Binance Smart Chain', 'Polygon',
-    'Avalanche', 'Arbitrum', 'Optimism', 'BlockDag', 'Other',
+    'Avalanche', 'Arbitrum', 'Optimism', 'Somnia Blockchain', 'Other',
   ];
   const sectors = [
     'DeFi', 'NFT', 'GameFi', 'Infrastructure', 'DAO', 'SocialFi', 'Memecoin', 'Other',
@@ -85,7 +85,7 @@ ${analysis}`;
         <div className="px-6 pt-8 pb-4">
           <Link href="/" className="flex items-center gap-3">
             <Bot className="w-8 h-8 text-purple-500 drop-shadow-lg" />
-            <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight select-none">BlockSynth AI</span>
+            <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight select-none">Sage AI</span>
           </Link>
         </div>
         {/* Navigation */}
@@ -105,7 +105,7 @@ ${analysis}`;
         </nav>
         {/* Footer */}
         <footer className="px-6 py-6 mt-auto text-xs text-gray-500 border-t border-[#23232a]">
-          © {new Date().getFullYear()} BlockSynthAI. All rights reserved.
+          © {new Date().getFullYear()} SageAI. All rights reserved.
         </footer>
       </aside>
 
@@ -115,7 +115,7 @@ ${analysis}`;
         <section className="w-full px-4 md:px-0 pt-10 pb-6 flex flex-col items-center justify-center bg-gradient-to-br from-blue-700/80 via-purple-700/80 to-black/90 rounded-b-3xl shadow-xl mb-6">
           <div className="max-w-2xl text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">Pro Crypto Trading Assistant</h1>
-            <p className="text-lg md:text-xl text-gray-200 mb-4">Get instant, AI-powered trading recommendations for any token, chain, or sector. Analyze, strategize, and trade smarter with BlockSynth AI.</p>
+            <p className="text-lg md:text-xl text-gray-200 mb-4">Get instant, AI-powered trading recommendations for any token, chain, or sector. Analyze, strategize, and trade smarter with Sage AI.</p>
             <div className="flex flex-wrap gap-3 justify-center mb-2">
               <span className="px-4 py-2 rounded-full bg-blue-600/80 text-white font-medium text-sm shadow">Live Price Ticker</span>
               <span className="px-4 py-2 rounded-full bg-purple-600/80 text-white font-medium text-sm shadow">Multi-Chain Support</span>
