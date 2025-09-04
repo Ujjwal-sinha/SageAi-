@@ -4,108 +4,214 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from '@/lib/motion-mock';
-import { ArrowRight, Brain, GitBranch, Database } from 'lucide-react';
+import { ArrowRight, Brain, GitBranch, Database, Sparkles, Zap, Shield, Code2 } from 'lucide-react';
 import Link from 'next/link';
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
+  const [activeDemo, setActiveDemo] = useState(0);
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Cycle through demo states
+    const interval = setInterval(() => {
+      setActiveDemo((prev) => (prev + 1) % 3);
+    }, 4000);
+    
+    return () => clearInterval(interval);
   }, []);
+
+  const demoStates = [
+    {
+      title: "Create a self-optimizing smart contract",
+      status: "Generating contract with adaptive gas fee mechanism...",
+      icon: <Code2 className="w-4 h-4" />,
+      gradient: "from-blue-600/10 to-purple-600/10"
+    },
+    {
+      title: "Analyze DeFi risk profile for $ETH",
+      status: "Computing real-time market volatility metrics...",
+      icon: <Shield className="w-4 h-4" />,
+      gradient: "from-emerald-600/10 to-cyan-600/10"
+    },
+    {
+      title: "Generate personalized NFT collection",
+      status: "Creating unique artwork based on wallet history...",
+      icon: <Sparkles className="w-4 h-4" />,
+      gradient: "from-purple-600/10 to-pink-600/10"
+    }
+  ];
   
   return (
-    <div className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
-      {/* Subtle animated gradient border for Web3 feel */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="w-full h-full animate-gradient-x bg-gradient-to-r from-blue-700/20 via-purple-700/20 to-pink-500/20 blur-2xl opacity-60" />
+    <section className="relative pt-20 pb-20 md:pt-32 md:pb-32 overflow-hidden">
+      {/* Enhanced background with Web3 patterns */}
+      <div className="absolute inset-0 -z-20">
+        <div className="web3-grid opacity-30" />
+        <div className="blockchain-pattern opacity-20" />
       </div>
+      
+      {/* Animated gradient overlay */}
+      <div className="absolute inset-0 pointer-events-none -z-10">
+        <div className="w-full h-full gradient-shift opacity-30 blur-3xl" />
+      </div>
+      
+      {/* Floating elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl float -z-10" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl float-delayed -z-10" />
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl float -z-10" />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}> 
-            <div className="space-y-6">
-              <div className="inline-block px-4 py-1 rounded-full bg-blue-900/30 border border-blue-700/30 text-blue-400 text-sm font-medium mb-2 flex items-center gap-2 shadow shadow-purple-500/10">
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                Live on Somnia Blockchain Testnet
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                <span className="block font-mono text-white/90 drop-shadow-lg">UNLEASH THE POWER OF</span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x font-extrabold tracking-widest" style={{letterSpacing:'0.04em'}}>Blockchain AI</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left Column - Content */}
+          <div className={`space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}> 
+            {/* Status Badge */}
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass border border-emerald-500/30 text-emerald-400 text-sm font-medium hover-lift shadow-glow-cyan">
+              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse pulse-slow" />
+              <span className="font-mono">LIVE ON SOMNIA TESTNET</span>
+              <Zap className="w-4 h-4" />
+            </div>
+            
+            {/* Main Heading */}
+            <div className="space-y-4">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none">
+                <span className="block text-foreground font-mono mb-2">UNLEASH THE</span>
+                <span className="block gradient-text text-glow font-black tracking-wide">
+                  FUTURE OF
+                </span>
+                <span className="block gradient-text text-glow font-black tracking-wide">
+                  WEB3 AI
+                </span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-400 max-w-2xl">
-                Sage AI is a native generative AI layer built directly into Somnia Blockchain's ecosystem, 
-                delivering adaptive, self-optimizing dApps and unprecedented decentralized intelligence.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-4">
-                <Link href="/dashboard">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg px-6 h-12 text-base shadow-glow-blue border-2 border-blue-500/30 hover:border-purple-500/40 transition-all duration-200">
-                    Get Started
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="/about">
-                  <Button variant="outline" className="border-gray-700 text-white hover:bg-gray-800 rounded-lg px-6 h-12 text-base">
-                    View Documentation
-                  </Button>
-                </Link>
+            </div>
+            
+            {/* Description */}
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
+              Experience the next evolution of decentralized intelligence with <span className="text-accent font-semibold">Sage AI</span> - 
+              a native AI layer seamlessly integrated into Somnia Blockchain's ecosystem.
+            </p>
+            
+            {/* Feature highlights */}
+            <div className="grid grid-cols-2 gap-4 py-4">
+              <div className="flex items-center gap-3 glass rounded-lg p-3 hover-lift">
+                <Brain className="w-5 h-5 text-blue-400" />
+                <span className="text-sm font-medium">Self-Optimizing</span>
+              </div>
+              <div className="flex items-center gap-3 glass rounded-lg p-3 hover-lift">
+                <Shield className="w-5 h-5 text-emerald-400" />
+                <span className="text-sm font-medium">Ultra Secure</span>
+              </div>
+              <div className="flex items-center gap-3 glass rounded-lg p-3 hover-lift">
+                <Zap className="w-5 h-5 text-yellow-400" />
+                <span className="text-sm font-medium">Lightning Fast</span>
+              </div>
+              <div className="flex items-center gap-3 glass rounded-lg p-3 hover-lift">
+                <Code2 className="w-5 h-5 text-purple-400" />
+                <span className="text-sm font-medium">AI-Powered</span>
               </div>
             </div>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4 pt-6">
+              <Link href="/dashboard">
+                <Button 
+                  variant="default" 
+                  size="lg"
+                  
+                  className="text-lg font-semibold"
+                >
+                  Launch dApp
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/about">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+              
+                  className="text-lg"
+                >
+                  Explore Features
+                  <Brain className="w-5 h-5" />
+                </Button>
+              </Link>
+            </div>
           </div>
-          <div className={`flex justify-center lg:justify-end transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}> 
-            <div className="relative w-full max-w-md">
-              {/* 3D Effect using CSS */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-3xl blur-3xl"></div>
-              <div className="relative bg-gray-900/70 backdrop-blur-md border border-gray-800 rounded-2xl p-6 shadow-2xl">
-                <div className="absolute -right-12 -top-12 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
-                <div className="absolute -left-12 -bottom-12 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center gap-2">
-                    <Brain className="w-6 h-6 text-blue-400" />
-                    <span className="text-lg font-semibold">Sage AI</span>
+          
+          {/* Right Column - Interactive Demo */}
+          <div className={`flex justify-center lg:justify-end transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}> 
+            <div className="relative w-full max-w-lg">
+              {/* Glow effect behind terminal */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-cyan-600/20 rounded-3xl blur-3xl scale-110 opacity-75" />
+              
+              {/* Terminal Window */}
+              <div className="relative glass-strong rounded-2xl p-8 shadow-glow-blue hover:shadow-glow-purple transition-all duration-500 hover-lift border-2 border-accent/20">
+                {/* Terminal Header */}
+                <div className="flex justify-between items-center mb-8">
+                  <div className="flex items-center gap-3">
+                    <Brain className="w-7 h-7 text-accent" />
+                    <div>
+                      <h3 className="text-xl font-bold gradient-text">Sage AI Terminal</h3>
+                      <p className="text-xs text-muted-foreground font-mono">v2.0.1-beta</p>
+                    </div>
                   </div>
                   <div className="flex space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer" />
+                    <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-pointer" />
                   </div>
                 </div>
+                
+                {/* Terminal Content */}
                 <div className="space-y-4">
-                  <div className="relative p-4 bg-black/50 rounded-xl border border-gray-800 overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <p className="font-mono text-gray-300 text-sm mb-2">{">"} Create a self-optimizing smart contract</p>
-                    <p className="font-mono text-xs text-gray-500 ml-4">Generating contract with adaptive gas fee mechanism...</p>
-                  </div>
-                  <div className="relative p-4 bg-black/50 rounded-xl border border-gray-800 overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <p className="font-mono text-gray-300 text-sm mb-2">{">"} Analyze DeFi risk profile for $ETH</p>
-                    <p className="font-mono text-xs text-gray-500 ml-4">Computing real-time market volatility metrics...</p>
-                  </div>
-                  <div className="relative p-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-700/50 overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <p className="font-mono text-blue-300 text-sm mb-2">{">"} Generate personalized NFT collection</p>
-                    <p className="font-mono text-xs text-blue-500/80 ml-4">Creating unique artwork based on wallet history...</p>
-                  </div>
+                  {demoStates.map((demo, index) => (
+                    <div 
+                      key={index}
+                      className={`relative p-4 rounded-xl border transition-all duration-500 hover-lift ${
+                        activeDemo === index 
+                          ? 'glass-strong border-accent/50 shadow-glow-blue' 
+                          : 'glass border-border/30'
+                      }`}
+                    >
+                      <div className={`absolute inset-0 bg-gradient-to-r ${demo.gradient} opacity-0 hover:opacity-100 transition-opacity rounded-xl`} />
+                      <div className="relative space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-accent font-mono text-sm">{">"}</span>
+                          {demo.icon}
+                          <p className="font-mono text-foreground text-sm font-medium">{demo.title}</p>
+                        </div>
+                        <div className="flex items-center gap-2 ml-6">
+                          <div className={`w-2 h-2 rounded-full ${activeDemo === index ? 'bg-accent animate-pulse' : 'bg-muted-foreground/50'}`} />
+                          <p className="font-mono text-xs text-muted-foreground">{demo.status}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                {/* Web3 token badge */}
-                <div className="mt-6 pt-4 border-t border-gray-800 flex items-center gap-4">
-                  <div className="flex items-center text-sm text-gray-400 gap-2">
-                    <GitBranch className="w-4 h-4 mr-1" />
-                    <span>TestNet</span>
-                    <span className="ml-2 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                
+                {/* Status Bar */}
+                <div className="mt-8 pt-6 border-t border-border/50 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <GitBranch className="w-4 h-4" />
+                      <span className="font-mono">testnet</span>
+                      <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                    </div>
                   </div>
-                  <div className="flex items-center text-sm text-yellow-400 gap-2 bg-yellow-900/10 px-3 py-1 rounded-full border border-yellow-700/20">
-                    <Database className="w-4 h-4 mr-1" />
-                    <span>UTK Token</span>
+                  <div className="flex items-center gap-2 glass rounded-full px-3 py-1.5 border border-accent/30">
+                    <Database className="w-4 h-4 text-accent" />
+                    <span className="text-sm font-mono text-accent">UTK</span>
                   </div>
                 </div>
               </div>
+              
+              {/* Floating particles */}
+              <div className="absolute -top-4 -right-4 w-8 h-8 bg-blue-500/20 rounded-full blur-sm float" />
+              <div className="absolute -bottom-6 -left-6 w-6 h-6 bg-purple-500/20 rounded-full blur-sm float-delayed" />
             </div>
           </div>
         </div>
       </div>
-      {/* Background elements */}
-      <div className="absolute top-1/3 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
-    </div>
+    </section>
   );
 }
