@@ -20,10 +20,10 @@ module.exports = {
     }
   },
   networks: {
-    primordial: {
-      url: "https://rpc.primordial.bdagscan.com",
-      accounts: [process.env.DEPLOYER_PRIVATE_KEY || ""],
-      chainId: 1043,
+    somnia: {
+      url: "https://dream-rpc.somnia.network",
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY || ""], // Use a .env file to keep your PK secret
+      chainId: 50312,
       gasPrice: 50000000000,
       timeout: 200000
     },
@@ -36,15 +36,15 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      primordial: "no-api-key-needed"
+      somnia: "empty"
     },
     customChains: [
       {
-        network: "primordial",
-        chainId: 1043,
+        network: "somnia",
+        chainId: 50312,
         urls: {
-          apiURL: "https://primordial.bdagscan.com/api",
-          browserURL: "https://primordial.bdagscan.com"
+          apiURL: "https://shannon-explorer.somnia.network/api",
+          browserURL: "https://shannon-explorer.somnia.network"
         }
       }
     ]
