@@ -62,7 +62,7 @@ export function HeroSection() {
   ];
   
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+    <section className="relative pt-24 pb-20 md:pt-32 md:pb-32 overflow-hidden">
       {/* Dynamic background with mouse interaction */}
       <div 
         className="absolute inset-0 opacity-30 transition-all duration-1000"

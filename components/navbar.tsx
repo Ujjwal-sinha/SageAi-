@@ -69,8 +69,8 @@ export function Navbar() {
         {/* Animated border */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent h-px top-0 animate-web3-flow" />
         
-        <div className="max-w-full mx-auto px-3 sm:px-4 lg:px-6">
-          <div className="flex justify-between h-16 items-center gap-2">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center gap-4">
             {/* Enhanced Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center gap-4 group">
@@ -153,15 +153,15 @@ export function Navbar() {
             </div>
 
             {/* Right Side Controls */}
-            <div className="hidden lg:flex items-center gap-2">
+            <div className="hidden lg:flex items-center gap-3">
               <WalletConnection />
               <Link href="/dashboard">
                 <Button 
                   variant="default" 
                   size="sm"
-                  className="btn-holographic font-bold text-sm px-4 py-2 hover-lift relative overflow-hidden group whitespace-nowrap"
+                  className="btn-holographic font-bold text-sm px-6 py-2 hover-lift relative overflow-hidden group whitespace-nowrap min-w-[140px]"
                 >
-                  <span className="relative z-10 flex items-center gap-1">
+                  <span className="relative z-10 flex items-center gap-2">
                     LAUNCH DAPP
                     <Zap className="w-4 h-4 group-hover:animate-pulse" />
                   </span>
