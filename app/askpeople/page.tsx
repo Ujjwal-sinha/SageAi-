@@ -152,7 +152,7 @@ const AskPeopleContent = () => {
     try {
       const chat = new ChatGroq({
         apiKey: apiKey,
-        model: "meta-llama/llama-4-maverick-17b-128e-instruct",
+        model: "llama-3.3-70b-versatile",
         maxRetries: 2,
         timeout: 15000,
       });
