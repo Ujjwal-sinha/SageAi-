@@ -4,7 +4,7 @@ import { LLMChain } from "langchain/chains";
 
 const groq = new ChatGroq({
   apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY,
-  model: "llama3-70b-8192",
+  model: "llama-3.3-70b-versatile",
 });
 
 // Prompt template for generating smart contracts
