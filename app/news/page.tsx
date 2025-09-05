@@ -9,9 +9,10 @@ import pRetry from 'p-retry';
 import Link from 'next/link';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
+import { Brain, TrendingUp, Zap, Shield } from 'lucide-react';
 
 const Web3NewsContent = () => {
-  const [darkMode, setDarkMode] = useState<boolean | null>(null); // Start as null to indicate uninitialized
+  const [darkMode, setDarkMode] = useState<boolean | null>(null);
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,21 +21,19 @@ const Web3NewsContent = () => {
   const [error, setError] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [isClient, setIsClient] = useState(false); // Track if we're on the client
+  const [isClient, setIsClient] = useState(false);
 
   const categories = ['all', 'DeFi', 'NFTs', 'Regulation', 'DAOs', 'Gaming', 'Layer 2'];
 
   useEffect(() => {
-    // Set client flag and initialize darkMode
     setIsClient(true);
+    setDarkMode(true); // Force dark mode for Web3 aesthetic
 
-    // Initialize darkMode on client only
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setDarkMode(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setDarkMode(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -70,12 +69,6 @@ const Web3NewsContent = () => {
     };
 
     fetchNews();
-
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 300);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const refreshNews = async () => {
@@ -122,7 +115,6 @@ const Web3NewsContent = () => {
         (article.category || 'Web3').toLowerCase() === activeCategory.toLowerCase();
       return matchesSearch && matchesCategory;
     });
-    console.log('Filtered News:', filtered);
     return filtered;
   }, [news, debouncedSearchQuery, activeCategory]);
 
@@ -134,59 +126,88 @@ const Web3NewsContent = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Don't render until darkMode is initialized and we're on the client
   if (!isClient || darkMode === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-pulse text-xl font-medium text-gray-600">Loading Sage AI...</div>
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="text-center space-y-4">
+          <div className="loading-dots text-cyan-400 text-2xl">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div className="text-xl font-cyber text-cyan-400 tracking-wider">Loading Sage AI...</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen flex ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'} transition-colors duration-300`}>
-      {/* Sidebar */}
+    <div className="min-h-screen flex bg-black text-gray-100 transition-colors duration-300 relative overflow-hidden">
+      {/* Enhanced background */}
+      <div className="absolute inset-0 -z-20">
+        <div className="cyber-grid opacity-10" />
+        <div className="hex-pattern opacity-5" />
+      </div>
+      
+      {/* Floating particles */}
+      <div className="absolute inset-0 -z-10">
+        {Array.from({ length: 10 }, (_, i) => (
+          <div
+            key={i}
+            className="blockchain-node"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Enhanced Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 transform ${
+        className={`fixed inset-y-0 left-0 z-30 w-80 transform ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 transition-transform duration-300 ease-in-out ${
-          darkMode ? 'bg-gray-800/95 backdrop-blur-md' : 'bg-white/95 backdrop-blur-md'
-        } border-r ${darkMode ? 'border-gray-700' : 'border-gray-200'} flex flex-col shadow-lg`}
+        } md:translate-x-0 transition-transform duration-300 ease-in-out glass-strong border-r border-cyan-500/20 flex flex-col neon-glow-purple`}
       >
-        <div className="p-5 flex items-center justify-between border-b border-gray-700">
-          <h1 className="text-2xl font-extrabold tracking-tight">
-            <Link href="/">
-            <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text">
-              Sage AI
-            </span>
+        {/* Animated border */}
+        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent animate-pulse" />
+        
+        <div className="p-8 flex items-center justify-between border-b border-cyan-500/20">
+          <h1 className="text-2xl font-display tracking-tight">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <Brain className="w-8 h-8 text-cyan-400 group-hover:animate-pulse" />
+                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all" />
+              </div>
+              <span className="text-holographic group-hover:text-glow">
+                Sage AI
+              </span>
             </Link>
           </h1>
           <button
-            className="md:hidden p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"
+            className="md:hidden p-3 rounded-full glass border border-cyan-500/30 hover:neon-glow-cyan transition-all"
             onClick={toggleSidebar}
-            aria-label="Close sidebar"
           >
-            <FiX size={20} />
+            <FiX size={20} className="text-cyan-400" />
           </button>
         </div>
-        <div className="p-5 flex-1 flex flex-col gap-4">
+        
+        <div className="p-8 flex-1 flex flex-col gap-6">
+          {/* Enhanced search */}
           <div className="relative">
-            <FiSearch
-              className={`absolute left-3 top-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}
-              aria-hidden="true"
-            />
+            <FiSearch className="absolute left-4 top-4 text-cyan-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search news..."
-              className={`w-full pl-10 pr-4 py-2.5 rounded-xl ${
-                darkMode ? 'bg-gray-700 border-gray-600 text-gray-100' : 'bg-gray-100 border-gray-300 text-gray-900'
-              } border focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200`}
-              aria-label="Search news articles"
+              placeholder="Search Web3 news..."
+              className="w-full pl-12 pr-4 py-4 rounded-xl glass border border-cyan-500/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-cyber"
             />
           </div>
-          <nav className="space-y-1">
+          
+          {/* Enhanced navigation */}
+          <nav className="space-y-2">
             {categories.map((category) => (
               <button
                 key={category}
@@ -194,122 +215,109 @@ const Web3NewsContent = () => {
                   setActiveCategory(category);
                   setIsSidebarOpen(false);
                 }}
-                className={`w-full flex items-center gap-2 text-left px-4 py-2.5 rounded-xl text-sm font-medium ${
+                className={`w-full flex items-center gap-3 text-left px-6 py-4 rounded-xl text-sm font-cyber tracking-wider transition-all duration-300 hover-lift ${
                   activeCategory === category
-                    ? darkMode
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-indigo-500 text-white'
-                    : darkMode
-                    ? 'hover:bg-gray-700 text-gray-300'
-                    : 'hover:bg-gray-200 text-gray-700'
-                } transition-all duration-200`}
-                aria-pressed={activeCategory === category}
+                    ? 'btn-holographic border-2 border-cyan-500/50 neon-glow-cyan'
+                    : 'glass border border-gray-700 hover:border-cyan-500/30 text-gray-300 hover:text-white'
+                }`}
               >
-                <FiFilter size={16} />
+                <FiFilter size={16} className={activeCategory === category ? 'text-cyan-400' : ''} />
                 {category.charAt(0).toUpperCase() + category.slice(1)}
               </button>
             ))}
           </nav>
         </div>
-        <div className="p-5 border-t border-gray-700">
+        
+        <div className="p-8 border-t border-cyan-500/20">
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium ${
-              darkMode ? 'bg-gray-700 hover:bg-gray-600 text-gray-200' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
-            } transition-all duration-200`}
-            aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-cyber glass border border-cyan-500/30 text-cyan-400 hover:text-white hover:neon-glow-cyan transition-all"
           >
-            {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
+            🌙 CYBER MODE
           </button>
         </div>
       </aside>
 
-      {/* Overlay for mobile sidebar */}
+      {/* Enhanced overlay for mobile */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+          className="fixed inset-0 bg-black/80 z-20 md:hidden backdrop-blur-sm"
           onClick={toggleSidebar}
-          aria-hidden="true"
-        ></div>
+        />
       )}
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col md:ml-64">
-        <header
-          className={`sticky top-0 z-10 p-4 ${
-            darkMode ? 'bg-gray-800/95 backdrop-blur-md' : 'bg-white/95 backdrop-blur-md'
-          } border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} flex items-center justify-between md:justify-end shadow-sm`}
-        >
+      {/* Enhanced Main Content */}
+      <div className="flex-1 flex flex-col md:ml-80">
+        <header className="sticky top-0 z-10 p-6 glass backdrop-blur-sm border-b border-cyan-500/20 flex items-center justify-between md:justify-end neon-glow-cyan">
           <button
-            className="md:hidden p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"
+            className="md:hidden p-3 rounded-full glass border border-cyan-500/30 hover:neon-glow-cyan transition-all"
             onClick={toggleSidebar}
-            aria-label="Open sidebar"
           >
-            <FiMenu size={24} />
+            <FiMenu size={24} className="text-cyan-400" />
           </button>
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold md:hidden">
-              <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text">
-                Sage AI
-              </span>
+          
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-display md:hidden text-holographic">
+              Sage AI
             </h1>
             <button
               onClick={refreshNews}
               disabled={loading}
-              className={`p-2 rounded-full ${
-                loading ? 'animate-spin' : 'hover:scale-110'
-              } ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} transition-transform duration-200`}
-              aria-label="Refresh news"
+              className={`p-3 rounded-full glass border border-cyan-500/30 hover:neon-glow-cyan transition-all ${
+                loading ? 'animate-spin' : 'hover-lift'
+              }`}
             >
-              <FiRefreshCw size={20} />
+              <FiRefreshCw size={20} className="text-cyan-400" />
             </button>
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto p-6 flex-1">
+        <main className="container-web3 p-8 flex-1">
+          {/* Enhanced error display */}
           {error && (
-            <div
-              className={`mb-6 p-4 rounded-xl ${
-                darkMode ? 'bg-red-900/20 border-red-700' : 'bg-red-50 border-red-200'
-              } border shadow-sm animate-fade-in`}
-              role="alert"
-            >
-              <p className={`${darkMode ? 'text-red-300' : 'text-red-700'} font-medium`}>{error}</p>
+            <div className="mb-8 glass-card border border-red-500/30 rounded-2xl p-6 bg-red-500/10 hover-glow animate-fade-in">
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-6 h-6 text-red-400 animate-pulse" />
+                <h3 className="font-display text-red-400 text-lg">Connection Error</h3>
+              </div>
+              <p className="text-red-300 font-cyber mb-4">{error}</p>
               <button
                 onClick={refreshNews}
-                className="mt-3 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors duration-200"
+                className="btn-holographic px-6 py-3 font-cyber tracking-wider hover-lift"
               >
-                Retry
+                RETRY CONNECTION
               </button>
             </div>
           )}
 
+          {/* Enhanced loading state */}
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="web3-grid">
               {[...Array(25)].map((_, i) => (
                 <div
                   key={i}
-                  className={`p-5 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} animate-pulse shadow-md`}
+                  className="glass-card border border-cyan-500/20 p-8 rounded-2xl loading-shimmer hover-lift"
                 >
-                  <div className={`h-6 w-1/3 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} mb-4`}></div>
-                  <div className={`h-5 w-full rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} mb-2`}></div>
-                  <div className={`h-5 w-5/6 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} mb-2`}></div>
-                  <div className={`h-5 w-2/3 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} mb-4`}></div>
-                  <div className={`h-4 w-1/4 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+                  <div className="space-y-4">
+                    <div className="h-6 w-1/3 rounded-full glass" />
+                    <div className="h-5 w-full rounded-full glass" />
+                    <div className="h-5 w-5/6 rounded-full glass" />
+                    <div className="h-5 w-2/3 rounded-full glass" />
+                    <div className="h-4 w-1/4 rounded-full glass" />
+                  </div>
                 </div>
               ))}
             </div>
           ) : filteredNews.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+            <div className="web3-grid animate-fade-in">
               {filteredNews.map((article) => (
                 <NewsCard key={article.id} article={article} darkMode={darkMode} />
               ))}
             </div>
           ) : (
-            <div
-              className={`p-8 text-center rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md animate-fade-in`}
-            >
-              <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'} text-lg font-medium`}>
+            <div className="glass-card border border-cyan-500/20 rounded-3xl p-16 text-center hover-glow animate-fade-in">
+              <TrendingUp className="w-16 h-16 text-gray-500 mx-auto mb-6 animate-pulse" />
+              <p className="text-gray-400 text-xl font-cyber tracking-wide mb-6">
                 No news found matching your criteria
               </p>
               <button
@@ -317,34 +325,31 @@ const Web3NewsContent = () => {
                   setSearchQuery('');
                   setActiveCategory('all');
                 }}
-                className="mt-4 px-5 py-2.5 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors duration-200"
+                className="btn-holographic px-8 py-4 font-cyber tracking-wider hover-lift"
               >
-                Show All News
+                SHOW ALL NEWS
               </button>
             </div>
           )}
         </main>
 
-        {/* Back to Top Button */}
+        {/* Enhanced Back to Top Button */}
         {showBackToTop && (
           <button
             onClick={scrollToTop}
-            className={`fixed bottom-6 right-6 p-4 rounded-full shadow-lg ${
-              darkMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-indigo-500 hover:bg-indigo-600'
-            } text-white transition-all duration-200 hover:scale-110`}
-            aria-label="Scroll to top"
+            className="fixed bottom-8 right-8 p-4 rounded-full glass-strong border border-cyan-500/30 neon-glow-cyan text-cyan-400 hover:text-white transition-all hover-lift z-50"
           >
             <FiArrowUp size={20} />
           </button>
         )}
 
-        {/* Footer */}
-        <footer
-          className={`p-4 text-center text-sm ${
-            darkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-600'
-          } border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} shadow-inner`}
-        >
-          <p>© {new Date().getFullYear()} Sage AI. All rights reserved.</p>
+        {/* Enhanced Footer */}
+        <footer className="p-6 text-center text-sm glass border-t border-cyan-500/20 font-cyber tracking-wider">
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+            <span className="text-gray-400">© {new Date().getFullYear()} Sage AI. All rights reserved.</span>
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
+          </div>
         </footer>
       </div>
     </div>
