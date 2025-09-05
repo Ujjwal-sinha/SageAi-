@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Brain, Sparkles, LineChart, Code, Shield, Zap, Workflow, Network, ArrowRight, TrendingUp } from 'lucide-react';
+import { Brain, Sparkles, LineChart, Code, Shield, Zap, Workflow, Network, ArrowRight, TrendingUp, Cpu, Database, Lock, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 export function FeatureSection() {
@@ -24,108 +24,129 @@ export function FeatureSection() {
   const features = [
     {
       icon: <Brain className="h-8 w-8" />,
-      title: "Self-Optimizing Smart Contracts",
-      description: "Contracts that automatically adjust gas fees, security parameters, and execution paths based on real-time network conditions and market dynamics.",
-      color: "text-blue-400",
-      gradient: "from-blue-600/20 to-cyan-600/20",
-      stats: "99.7% Gas Efficiency"
+      title: "Neural Smart Contracts",
+      description: "Self-evolving contracts that adapt gas fees, security parameters, and execution paths using advanced machine learning algorithms trained on blockchain data.",
+      color: "text-cyan-400",
+      gradient: "from-cyan-600/20 to-blue-600/20",
+      stats: "99.9% Efficiency",
+      category: "AI CORE"
     },
     {
       icon: <TrendingUp className="h-8 w-8" />,
-      title: "Predictive DeFi Analytics",
-      description: "Real-time risk modeling, yield optimization strategies, and market trend predictions powered by advanced machine learning algorithms.",
+      title: "Quantum DeFi Analytics",
+      description: "Real-time multi-dimensional risk modeling, yield optimization strategies, and market predictions powered by quantum-inspired algorithms.",
       color: "text-purple-400",
       gradient: "from-purple-600/20 to-pink-600/20",
-      stats: "85% Accuracy Rate"
+      stats: "95% Accuracy",
+      category: "ANALYTICS"
     },
     {
       icon: <Sparkles className="h-8 w-8" />,
-      title: "AI-Generated NFTs",
-      description: "Create unique NFT collections based on wallet history, on-chain activity, and personalized preferences with automated rarity distribution.",
+      title: "Generative NFT Engine",
+      description: "Create unique NFT collections based on wallet history, on-chain behavior, and personalized preferences with automated rarity distribution.",
       color: "text-pink-400",
       gradient: "from-pink-600/20 to-rose-600/20",
-      stats: "10K+ NFTs Created"
+      stats: "50K+ Created",
+      category: "CREATIVE"
     },
     {
       icon: <Shield className="h-8 w-8" />,
-      title: "Adaptive Security Protocols",
-      description: "AI-powered security systems that identify vulnerabilities, monitor suspicious activities, and adapt defenses in real-time across all contracts.",
-      color: "text-emerald-400",
-      gradient: "from-emerald-600/20 to-teal-600/20",
-      stats: "Zero Exploits"
+      title: "Adaptive Security Matrix",
+      description: "AI-powered security systems that identify vulnerabilities, monitor threats, and adapt defenses in real-time across all smart contracts.",
+      color: "text-green-400",
+      gradient: "from-green-600/20 to-emerald-600/20",
+      stats: "Zero Exploits",
+      category: "SECURITY"
     },
     {
       icon: <Code className="h-8 w-8" />,
-      title: "Automatic Code Generation",
-      description: "Generate optimized, audited blockchain code from natural language descriptions with automated testing and security verification.",
-      color: "text-green-400",
-      gradient: "from-green-600/20 to-emerald-600/20",
-      stats: "50K+ Lines Generated"
+      title: "Autonomous Code Generation",
+      description: "Generate optimized, audited blockchain code from natural language with automated testing, security verification, and deployment.",
+      color: "text-emerald-400",
+      gradient: "from-emerald-600/20 to-teal-600/20",
+      stats: "100K+ Lines",
+      category: "DEVELOPMENT"
     },
     {
       icon: <Zap className="h-8 w-8" />,
-      title: "Parallelized AI Processing",
-      description: "Leverage Somnia Blockchain's high-performance architecture for distributed AI computations with sub-second latency and infinite scalability.",
+      title: "Parallel AI Processing",
+      description: "Leverage Somnia's high-performance architecture for distributed AI computations with sub-millisecond latency and infinite scalability.",
       color: "text-yellow-400",
       gradient: "from-yellow-600/20 to-orange-600/20",
-      stats: "400K TPS"
+      stats: "400K TPS",
+      category: "PERFORMANCE"
     },
     {
       icon: <Workflow className="h-8 w-8" />,
-      title: "Governance Optimization",
-      description: "AI-assisted proposal evaluation, voting pattern analysis, and governance recommendations based on protocol health and community sentiment.",
+      title: "Governance Intelligence",
+      description: "AI-assisted proposal evaluation, voting pattern analysis, and governance recommendations based on protocol health metrics.",
       color: "text-violet-400",
       gradient: "from-violet-600/20 to-purple-600/20",
-      stats: "95% Participation"
+      stats: "98% Participation",
+      category: "GOVERNANCE"
     },
     {
       icon: <Network className="h-8 w-8" />,
-      title: "Cross-Chain Intelligence",
-      description: "Seamless analysis and operations across multiple blockchains with unified intelligence layer and automated arbitrage opportunities.",
+      title: "Omnichain Intelligence",
+      description: "Seamless analysis and operations across 15+ blockchains with unified intelligence layer and automated arbitrage opportunities.",
       color: "text-cyan-400",
       gradient: "from-cyan-600/20 to-blue-600/20",
-      stats: "15+ Chains"
+      stats: "15+ Chains",
+      category: "INTEROP"
     }
   ];
 
   return (
-    <section className="relative py-20 md:py-32 overflow-hidden">
-      {/* Enhanced background with Web3 patterns */}
+    <section className="relative section-padding overflow-hidden">
+      {/* Enhanced background layers */}
       <div className="absolute inset-0 -z-20">
-        <div className="web3-grid opacity-20" />
-        <div className="blockchain-pattern opacity-10" />
+        <div className="cyber-grid opacity-15" />
+        <div className="hex-pattern opacity-10" />
+        <div className="circuit-pattern opacity-5" />
       </div>
       
       {/* Animated gradient overlay */}
       <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="w-full h-full gradient-shift opacity-20 blur-3xl" />
+        <div className="w-full h-full web3-gradient opacity-15 blur-3xl" />
       </div>
       
-      {/* Floating elements */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl float -z-10" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl float-delayed -z-10" />
+      {/* Floating blockchain nodes */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {Array.from({ length: 8 }, (_, i) => (
+          <div
+            key={i}
+            className="blockchain-node"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`
+            }}
+          />
+        ))}
+      </div>
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+      <div className="container-web3">
+        {/* Enhanced Section Header */}
         <div className="flex flex-col items-center text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass border border-accent/30 text-accent text-sm font-medium mb-8 hover-lift shadow-glow-cyan">
-            <Sparkles className="w-4 h-4" />
-            <span className="font-mono">ADVANCED CAPABILITIES</span>
-            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+          <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full glass-strong border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-8 hover-lift neon-glow-cyan group">
+            <Sparkles className="w-5 h-5 group-hover:animate-spin" />
+            <span className="font-cyber tracking-wider">ADVANCED CAPABILITIES</span>
+            <div className="w-3 h-3 bg-cyan-400 rounded-full animate-pulse" />
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-            <span className="text-foreground">Next-Generation</span>
-            <br />
-            <span className="gradient-text text-glow">AI-Powered Web3</span>
+          
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-display tracking-tight mb-8">
+            <span className="text-white block mb-2">Next-Generation</span>
+            <span className="text-holographic text-glow block">AI-Powered Web3</span>
           </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl leading-relaxed">
+          
+          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl leading-relaxed">
             Sage AI brings unprecedented intelligence to blockchain applications through its 
-            native integration with Somnia Blockchain's high-performance infrastructure.
+            native integration with <span className="text-cyan-400 font-semibold">Somnia Blockchain's</span> high-performance infrastructure.
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16">
+        {/* Enhanced Features Grid */}
+        <div className="web3-grid mb-20">
           {features.map((feature, index) => (
             <div 
               key={index}
@@ -135,60 +156,109 @@ export function FeatureSection() {
               onMouseLeave={() => setHoveredCard(null)}
             >
               <Card 
-                className={`group h-full relative overflow-hidden glass-strong border-2 transition-all duration-500 hover-lift cursor-pointer ${
+                className={`group h-full relative overflow-hidden glass-card border-2 transition-all duration-500 hover-lift cursor-pointer ${
                   activeIndex === index || hoveredCard === index
-                    ? 'border-accent/50 shadow-glow-blue' 
-                    : 'border-border/20 hover:border-accent/30'
+                    ? 'border-cyan-500/50 neon-glow-cyan' 
+                    : 'border-white/10 hover:border-cyan-500/30'
                 }`}
               >
                 {/* Animated background gradient */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                 
-                {/* Shimmer effect */}
-                <div className="absolute inset-0 -top-2 -left-2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 w-0 group-hover:w-full transition-all duration-700 ease-out opacity-0 group-hover:opacity-100" />
+                {/* Holographic shimmer effect */}
+                <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-30 transition-opacity duration-700" />
                 
                 <CardHeader className="relative pb-4">
-                  <div className={`p-3 glass rounded-xl border border-white/10 group-hover:shadow-glow-blue transition-all duration-300 ${feature.color} mb-4 w-fit`}>
-                    {feature.icon}
+                  {/* Category badge */}
+                  <div className="absolute top-4 right-4 px-2 py-1 rounded-full glass border border-cyan-500/30 text-xs font-cyber text-cyan-400 tracking-wider">
+                    {feature.category}
                   </div>
-                  <CardTitle className="text-xl font-bold text-foreground group-hover:text-glow transition-all duration-300 mb-2">
+                  
+                  <div className={`p-4 glass-strong rounded-2xl border border-white/20 group-hover:neon-glow-cyan transition-all duration-300 ${feature.color} mb-6 w-fit relative overflow-hidden`}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative z-10">
+                      {feature.icon}
+                    </div>
+                  </div>
+                  
+                  <CardTitle className="text-xl font-bold text-white group-hover:text-glow transition-all duration-300 mb-3">
                     {feature.title}
                   </CardTitle>
-                  <div className="text-xs font-mono text-accent opacity-75">
-                    {feature.stats}
+                  
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                    <span className="text-xs font-cyber text-cyan-400 tracking-wider">
+                      {feature.stats}
+                    </span>
                   </div>
                 </CardHeader>
                 
                 <CardContent className="relative pt-0">
-                  <CardDescription className="text-muted-foreground text-sm leading-relaxed">
+                  <CardDescription className="text-gray-300 text-sm leading-relaxed">
                     {feature.description}
                   </CardDescription>
+                  
+                  {/* Hover action */}
+                  <div className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button variant="ghost" size="sm" className="text-cyan-400 hover:text-white font-cyber">
+                      EXPLORE <ArrowRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
           ))}
         </div>
         
-        {/* Bottom CTA */}
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-accent/30 text-accent text-sm font-medium mb-6">
-            <Zap className="w-4 h-4" />
-            <span className="font-mono">EXPERIENCE THE POWER</span>
+        {/* Enhanced Bottom CTA */}
+        <div className="text-center relative">
+          {/* Background glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-3xl" />
+          
+          <div className="relative glass-strong rounded-3xl p-12 border border-cyan-500/20 hover-lift">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-8">
+              <Zap className="w-5 h-5 animate-pulse" />
+              <span className="font-cyber tracking-wider">EXPERIENCE THE POWER</span>
+            </div>
+            
+            <h3 className="text-3xl md:text-4xl font-display mb-6 text-white">
+              Ready to Transform Your
+              <span className="block mt-2 text-holographic text-glow">
+                Blockchain Projects?
+              </span>
+            </h3>
+            
+            <p className="text-lg text-gray-300 mb-10 max-w-2xl mx-auto">
+              Join thousands of developers and businesses already leveraging the power of 
+              <span className="text-cyan-400 font-semibold"> decentralized AI</span>
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link href="/dashboard">
+                <Button 
+                  variant="default" 
+                  size="xl"
+                  className="btn-holographic text-xl font-bold px-12 py-6 hover-lift group"
+                >
+                  <span className="flex items-center gap-3">
+                    Explore All Features
+                    <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </Button>
+              </Link>
+              
+              <Button 
+                variant="outline" 
+                size="xl"
+                className="text-xl px-12 py-6 btn-cyber hover-lift"
+              >
+                <span className="flex items-center gap-3">
+                  View Documentation
+                  
+                </span>
+              </Button>
+            </div>
           </div>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Ready to harness the full potential of decentralized AI? 
-            Explore all features in our interactive dashboard.
-          </p>
-          <Link href="/dashboard">
-            <Button 
-              variant="default" 
-              size="lg"
-              className="text-xl font-bold"
-            >
-              Explore All Features
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
         </div>
       </div>
     </section>
