@@ -135,15 +135,15 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
-      <header className="border-b border-purple-900/50 bg-black/80 backdrop-blur sticky top-0 z-50 shadow-md">
+      <header className="border-b border-gray-700 bg-gray-900 sticky top-0 z-50 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center gap-2">
-                <Bot className="w-8 h-8 text-purple-500" />
-                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">Sage AI</span>
+                <Bot className="w-8 h-8 text-cyan-400" />
+                <span className="text-xl font-bold text-white">Sage AI</span>
               </Link>
               <nav className="hidden md:flex space-x-4">
                 {isWalletConnected() ? (
@@ -173,13 +173,13 @@ export default function Dashboard() {
             <div className="flex items-center gap-4">
               {walletAddress ? (
                 <div className="flex items-center gap-3">
-                  <div className="text-sm text-purple-400 bg-purple-900/30 px-3 py-1 rounded-full font-mono">
+                  <div className="text-sm text-cyan-400 bg-gray-800 px-3 py-1 rounded-full font-mono">
                     {`${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`}
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-purple-400 hover:text-purple-200 hover:bg-purple-900/30"
+                    className="text-cyan-400 hover:text-cyan-200 hover:bg-gray-800"
                     onClick={disconnectWallet}
                     aria-label="Disconnect Wallet"
                   >
@@ -188,7 +188,7 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <Button
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg border border-blue-500/30 hover:from-blue-700 hover:to-purple-700 shadow-glow-purple px-6 py-2 font-bold"
+                  className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg px-6 py-2 font-bold"
                   onClick={connectWallet}
                   disabled={connecting}
                   aria-label="Connect Wallet"
@@ -208,12 +208,12 @@ export default function Dashboard() {
             {/* Crypto Prices */}
             <div className="flex gap-4 overflow-x-auto pb-2">
               {cryptoPrices.map((crypto, index) => (
-                <Card key={index} className="bg-gradient-to-br from-[#1A1A2A] to-[#181825] border-0 shadow-lg p-4 min-w-[240px] flex items-center gap-3">
+                <Card key={index} className="bg-gray-800 border border-gray-700 shadow-lg p-4 min-w-[240px] flex items-center gap-3">
                   {crypto.icon}
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-white text-lg">{crypto.name}</span>
-                      <span className="text-xs text-purple-200">{crypto.fullName}</span>
+                      <span className="text-xs text-gray-400">{crypto.fullName}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
                       <span className="text-xl font-bold text-white">{crypto.price}</span>
@@ -225,11 +225,11 @@ export default function Dashboard() {
             </div>
 
             {/* Balance Card */}
-            <Card className="bg-gradient-to-r from-purple-900/80 to-blue-900/70 border-0 shadow-2xl rounded-2xl p-10 flex flex-col items-center justify-center">
+            <Card className="bg-gray-800 border border-gray-700 shadow-lg rounded-2xl p-10 flex flex-col items-center justify-center">
               <h2 className="text-3xl font-bold text-white mb-3 tracking-tight text-center drop-shadow-lg">Your Balance</h2>
               <div className="flex flex-col items-center gap-5 w-full">
                 <div className="flex items-center gap-4 mb-2">
-                  <Gift className="w-8 h-8 text-purple-400 drop-shadow" />
+                  <Gift className="w-8 h-8 text-cyan-400" />
                   <span className="text-xl text-white font-semibold tracking-wide">CREDITS</span>
                 </div>
                 <div className="flex items-center gap-4 mb-2">
@@ -237,7 +237,7 @@ export default function Dashboard() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-purple-300 hover:text-purple-100 hover:bg-purple-900/30 ml-1"
+                    className="text-cyan-300 hover:text-cyan-100 hover:bg-gray-700 ml-1"
                     onClick={refreshCredits}
                     aria-label="Refresh Balance"
                     disabled={creditsLoading}
@@ -246,7 +246,7 @@ export default function Dashboard() {
                   </Button>
                 </div>
                 <Link href="/pricing" className="w-full flex justify-center">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg border border-blue-500/30 hover:from-blue-700 hover:to-purple-700 shadow-glow-purple px-8 py-3 text-lg font-bold tracking-wide mt-2 w-full max-w-xs">
+                  <Button className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg px-8 py-3 text-lg font-bold tracking-wide mt-2 w-full max-w-xs">
                     Buy More Credits
                   </Button>
                 </Link>
@@ -341,16 +341,16 @@ export default function Dashboard() {
           {/* Right Column */}
           <div className="space-y-8">
             {/* Chat Interface */}
-            <Card className="bg-gradient-to-br from-[#1A1A2A] to-[#181825] border-0 shadow-lg p-8 flex flex-col items-center">
+            <Card className="bg-gray-800 border border-gray-700 shadow-lg p-8 flex flex-col items-center">
               <div className="flex items-center justify-between w-full mb-6">
                 <h2 className="text-xl font-semibold text-white">Chat with AI Web3</h2>
-                <Button variant="ghost" size="icon" className="text-white hover:text-purple-200">
+                <Button variant="ghost" size="icon" className="text-white hover:text-cyan-400">
                   <MessageSquare className="w-5 h-5" />
                 </Button>
               </div>
               <div className="space-y-4 w-full">
                 <div className="flex justify-center">
-                  <Bot className="w-24 h-24 text-purple-500" />
+                  <Bot className="w-24 h-24 text-cyan-400" />
                 </div>
                 <div className="text-center space-y-2">
                   <h3 className="font-semibold text-white">Choose the mode</h3>
@@ -358,13 +358,13 @@ export default function Dashboard() {
                 </div>
                 {isWalletConnected() ? (
                   <Link href="/chatbot">
-                    <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-lg font-semibold py-3 rounded-xl mt-2">
+                    <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white text-lg font-semibold py-3 rounded-xl mt-2">
                       Go to Chatbot
                     </Button>
                   </Link>
                 ) : (
                   <Button 
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white opacity-50 cursor-not-allowed text-lg font-semibold py-3 rounded-xl mt-2"
+                    className="w-full bg-gray-600 text-white opacity-50 cursor-not-allowed text-lg font-semibold py-3 rounded-xl mt-2"
                     disabled
                     onClick={handleRestrictedClick}
                   >
@@ -375,14 +375,14 @@ export default function Dashboard() {
             </Card>
 
             {/* Trending Coins */}
-            <Card className="bg-gradient-to-br from-[#1A1A2A] to-[#181825] border-0 shadow-lg p-8">
+            <Card className="bg-gray-800 border border-gray-700 shadow-lg p-8">
               <h2 className="text-xl font-semibold text-white mb-4">Top Trending Coins</h2>
               <div className="space-y-4">
                 {trendingCoins.map((coin, index) => (
                   <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-white">{coin.name}</span>
-                      <span className="text-xs text-purple-200">{coin.symbol}</span>
+                      <span className="text-xs text-gray-400">{coin.symbol}</span>
                     </div>
                     <span className="text-green-400 font-semibold">{coin.change}</span>
                   </div>
@@ -391,14 +391,14 @@ export default function Dashboard() {
             </Card>
 
             {/* Top AI Coins */}
-            <Card className="bg-gradient-to-br from-[#1A1A2A] to-[#181825] border-0 shadow-lg p-8">
+            <Card className="bg-gray-800 border border-gray-700 shadow-lg p-8">
               <h2 className="text-xl font-semibold text-white mb-4">Top AI Coins</h2>
               <div className="space-y-4">
                 {topAICoins.map((coin, index) => (
                   <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-white">{coin.name}</span>
-                      <span className="text-xs text-purple-200">{coin.symbol}</span>
+                      <span className="text-xs text-gray-400">{coin.symbol}</span>
                     </div>
                     <span className="text-green-400 font-semibold">{coin.change}</span>
                   </div>
@@ -427,20 +427,20 @@ function QuickAccessCard({
 }) {
   return (
     <Card 
-      className={`bg-[#1A1A1A] border-purple-900/50 p-6 transition-colors group ${
-        disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-900/30 cursor-pointer'
+      className={`bg-gray-800 border-gray-600 p-6 transition-colors group ${
+        disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700 cursor-pointer'
       }`}
       onClick={!disabled ? onClick : undefined}
     >
       <div className="flex items-center justify-between mb-4">
         <div className={`flex items-center gap-2 ${
-          disabled ? 'text-gray-500' : 'text-white group-hover:text-purple-200'
+          disabled ? 'text-gray-500' : 'text-white group-hover:text-cyan-400'
         }`}>
           {icon}
           <span className="font-medium">{title}</span>
         </div>
         {!buttons && <ChevronRight className={`w-5 h-5 ${
-          disabled ? 'text-gray-500' : 'text-purple-400 group-hover:text-purple-200'
+          disabled ? 'text-gray-500' : 'text-cyan-400 group-hover:text-cyan-200'
         }`} />}
       </div>
       {buttons && (
@@ -450,8 +450,8 @@ function QuickAccessCard({
               key={index}
               variant="outline"
               size="sm"
-              className={`text-xs border-purple-900/50 ${
-                disabled ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-purple-900/50'
+              className={`text-xs border-gray-600 ${
+                disabled ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700'
               }`}
               disabled={disabled}
             >

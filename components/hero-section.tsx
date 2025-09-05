@@ -187,7 +187,7 @@ export function HeroSection() {
                   className="btn-holographic text-xl font-bold px-10 py-6 hover-lift group relative overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center gap-3">
-                    Launch dApp
+                    Launch DAPP
                     <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Button>
