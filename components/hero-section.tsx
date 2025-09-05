@@ -113,8 +113,8 @@ export function HeroSection() {
         ))}
       </div>
       
-      <div className="container-web3">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 items-center">
           {/* Left Column - Enhanced Content */}
           <div className={`space-y-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}> 
             {/* Status Badge */}
@@ -125,9 +125,9 @@ export function HeroSection() {
             </div>
             
             {/* Main Heading */}
-            <div className="space-y-6">
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-display leading-none">
-                <span className="block text-white font-black mb-4 hover-neon">UNLEASH THE</span>
+            <div className="space-y-4">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-display leading-tight">
+                <span className="block text-white font-black mb-2 hover-neon">UNLEASH THE</span>
                 <span className="block text-holographic font-black tracking-wide text-glow">
                   FUTURE OF
                 </span>

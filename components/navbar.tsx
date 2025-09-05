@@ -69,8 +69,8 @@ export function Navbar() {
         {/* Animated border */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent h-px top-0 animate-web3-flow" />
         
-        <div className="container-web3">
-          <div className="flex justify-between h-20 items-center">
+        <div className="max-w-full mx-auto px-3 sm:px-4 lg:px-6">
+          <div className="flex justify-between h-16 items-center gap-2">
             {/* Enhanced Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center gap-4 group">
@@ -90,7 +90,7 @@ export function Navbar() {
                 </div>
                 
                 <div className="flex flex-col">
-                  <span className="text-3xl font-display text-holographic group-hover:text-glow transition-all duration-300">
+                  <span className="text-2xl font-display text-holographic group-hover:text-glow transition-all duration-300">
                     Sage AI
                   </span>
                   <span className="text-xs font-cyber text-cyan-400/80 tracking-wider">
@@ -101,7 +101,7 @@ export function Navbar() {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex lg:space-x-2">
+            <div className="hidden lg:flex lg:space-x-0 items-center">
               <NavDropdown
                 title="Ecosystem"
                 icon={<Brain className="w-4 h-4 mr-2 text-cyan-400" />}
@@ -153,17 +153,17 @@ export function Navbar() {
             </div>
 
             {/* Right Side Controls */}
-            <div className="hidden lg:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-2">
               <WalletConnection />
               <Link href="/dashboard">
                 <Button 
                   variant="default" 
-                  size="lg"
-                  className="btn-holographic font-bold text-lg px-8 py-3 hover-lift relative overflow-hidden group"
+                  size="sm"
+                  className="btn-holographic font-bold text-sm px-4 py-2 hover-lift relative overflow-hidden group whitespace-nowrap"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative z-10 flex items-center gap-1">
                     LAUNCH DAPP
-                    <Zap className="w-5 h-5 group-hover:animate-pulse" />
+                    <Zap className="w-4 h-4 group-hover:animate-pulse" />
                   </span>
                 </Button>
               </Link>
@@ -248,7 +248,7 @@ function NavLink({ href, children, icon }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-gray-300 hover:text-white rounded-xl transition-all duration-300 hover:glass hover:neon-glow-blue group relative overflow-hidden"
+      className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white rounded-lg transition-all duration-300 hover:glass hover:neon-glow-blue group relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       {icon && <span className="group-hover:text-cyan-400 transition-colors relative z-10">{icon}</span>}
@@ -267,7 +267,7 @@ function NavDropdown({ title, items, icon }: NavDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-gray-300 hover:text-white rounded-xl transition-all duration-300 hover:glass hover:neon-glow-purple group relative overflow-hidden">
+        <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white rounded-lg transition-all duration-300 hover:glass hover:neon-glow-purple group relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           {icon && <span className="group-hover:text-purple-400 transition-colors relative z-10">{icon}</span>}
           <span className="relative z-10">{title}</span>
