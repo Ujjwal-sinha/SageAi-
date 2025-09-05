@@ -20,7 +20,7 @@ const TradeAssistantContent = () => {
   const [token, setToken] = useState('');
   const [chain, setChain] = useState('');
   const [sector, setSector] = useState('');
-  const [model, setModel] = useState('llama3-70b-8192');
+  const [model, setModel] = useState('gemma2-9b-it');
   const [analysis, setAnalysis] = useState('');
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,9 +33,9 @@ const TradeAssistantContent = () => {
     'DeFi', 'NFT', 'GameFi', 'Infrastructure', 'DAO', 'SocialFi', 'Memecoin', 'Other',
   ];
   const models = [
-    { label: 'LLaMA3-70B', value: 'llama3-70b-8192' },
-    { label: 'LLaMA3.3-70B', value: 'llama-3.3-70b-versatile' },
     { label: 'Gemma-7B', value: 'gemma2-9b-it' },
+    { label: 'LLaMA3.3-70B', value: 'llama-3.3-70b-versatile' },
+    { label: 'kimi-k2-instruct', value: 'moonshotai/kimi-k2-instruct' },
   ];
 
   // Simulate real-time price ticker update
