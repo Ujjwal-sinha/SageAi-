@@ -5,13 +5,13 @@ import { useState, KeyboardEvent, useEffect } from "react";
 import { ChatGroq } from '@langchain/groq';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import {
-  FiMessageSquare, FiBookmark, FiTrendingUp, FiHelpCircle, FiSend, FiStar, FiChevronRight, FiChevronLeft, FiUsers, FiSearch, FiX
+  FiMessageSquare, FiBookmark, FiTrendingUp, FiHelpCircle, FiSend, FiStar, FiChevronRight, FiChevronLeft, FiUsers, FiSearch, FiX, FiClock, FiThumbsUp, FiShare2, FiFilter, FiRefreshCw
 } from 'react-icons/fi';
-import { RiRobot2Line } from 'react-icons/ri';
+import { RiRobot2Line, RiSparklingFill } from 'react-icons/ri';
 import Link from "next/link";
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
-import { Brain, Zap, Shield, Users, MessageSquare, TrendingUp } from 'lucide-react';
+import { Brain, Zap, Shield, Users, MessageSquare, TrendingUp, Sparkles, Network, Database, Code2, Bot } from 'lucide-react';
 
 interface Comment {
   id: string;
@@ -330,237 +330,385 @@ const AskPeopleContent = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-950 to-black text-gray-100 relative">
-
-      {/* Enhanced Hero Section */}
-      <section className="w-full px-8 py-16 flex flex-col items-center justify-center bg-gray-900/50 backdrop-blur-sm border-b border-gray-700 relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white relative overflow-hidden">
+      {/* Animated background effects */}
+      <div className="absolute inset-0 -z-20">
+        <div className="cyber-grid opacity-10" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
         
-        <div className="max-w-5xl text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ask the Crypto Experts
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-            Get instant, expert answers from AI specialists in crypto, DeFi, blockchain, and regulations. 
-            <span className="text-blue-400 font-semibold">Save, discuss, and explore</span> trending topics—all in one place.
-          </p>
-          
-          <div className="flex flex-wrap gap-4 justify-center">
-            <span className="px-6 py-3 rounded-full bg-gray-800/50 border border-blue-400/50 text-blue-400 font-semibold text-sm tracking-wider">
-              LIVE AI EXPERTS
-            </span>
-            <span className="px-6 py-3 rounded-full bg-gray-800/50 border border-purple-400/50 text-purple-400 font-semibold text-sm tracking-wider">
-              COMMUNITY Q&A
-            </span>
-            <span className="px-6 py-3 rounded-full bg-gray-800/50 border border-green-400/50 text-green-400 font-semibold text-sm tracking-wider">
-              SAVE & DISCUSS
-            </span>
+        {/* Floating orbs */}
+        {Array.from({ length: 8 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-xl animate-pulse"
+            style={{
+              width: `${Math.random() * 300 + 100}px`,
+              height: `${Math.random() * 300 + 100}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 4}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Enhanced Navigation Header */}
+      <header className="relative z-40 glass-strong border-b border-cyan-500/20 backdrop-blur-2xl">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-4 group">
+              <div className="relative">
+                <div className="w-12 h-12 glass-strong rounded-2xl flex items-center justify-center border border-cyan-500/30 group-hover:neon-glow-cyan transition-all">
+                  <Brain className="w-6 h-6 text-cyan-400 group-hover:animate-pulse" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-display text-holographic">Sage AI</h1>
+                <p className="text-xs text-cyan-400 font-cyber tracking-wider">ASK THE EXPERTS</p>
+              </div>
+            </Link>
+
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 px-4 py-2 glass rounded-full border border-green-500/30">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span className="text-sm font-cyber text-green-400">4 EXPERTS ONLINE</span>
+              </div>
+              
+              <button className="btn-cyber px-4 py-2 text-sm hover-lift">
+                <FiRefreshCw className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
-      </section>
+      </header>
 
-      <div className="flex flex-1 w-full max-w-7xl mx-auto gap-8 px-8">
-        {/* Enhanced Sidebar */}
-        <aside className="hidden md:flex flex-col gap-6 w-64 py-8 px-6 bg-gray-900/80 backdrop-blur-sm border-r border-gray-700 relative">
+      <div className="flex flex-1 w-full max-w-7xl mx-auto gap-8 px-6 py-8">
+        {/* Professional Sidebar */}
+        <aside className="hidden lg:flex flex-col w-80 glass-strong border border-cyan-500/20 rounded-3xl p-6 h-fit sticky top-8 hover:neon-glow-cyan transition-all group overflow-hidden">
+          {/* Holographic overlay */}
+          <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-10 transition-opacity duration-700" />
           
-          <Link href="/" className="flex items-center gap-3 mb-8">
-            <span className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full block"></span>
-            <span className="font-bold text-xl tracking-wide text-white">Sage AI</span>
-          </Link>
-          
-          <button 
-            onClick={() => setActiveTab('ask')} 
-            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-semibold tracking-wider transition-all ${
-              activeTab==='ask' 
-                ? 'bg-blue-600 text-white border border-blue-500' 
-                : 'bg-gray-800/50 border border-gray-700 hover:border-blue-500 text-gray-300 hover:text-white'
-            }`}
-          > 
-            <FiMessageSquare className="w-5 h-5" /> ASK
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab('saved')} 
-            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-semibold tracking-wider transition-all ${
-              activeTab==='saved' 
-                ? 'bg-purple-600 text-white border border-purple-500' 
-                : 'bg-gray-800/50 border border-gray-700 hover:border-purple-500 text-gray-300 hover:text-white'
-            }`}
-          > 
-            <FiBookmark className="w-5 h-5" /> SAVED
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab('trending')} 
-            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-semibold tracking-wider transition-all ${
-              activeTab==='trending' 
-                ? 'bg-green-600 text-white border border-green-500' 
-                : 'bg-gray-800/50 border border-gray-700 hover:border-green-500 text-gray-300 hover:text-white'
-            }`}
-          > 
-            <FiTrendingUp className="w-5 h-5" /> TRENDING
-          </button>
-          
-          <div className="mt-auto pt-8 border-t border-gray-700 flex flex-col gap-3">
+          <div className="relative z-10 space-y-6">
+            {/* Expert Status */}
+            <div className="text-center p-6 glass rounded-2xl border border-cyan-500/20">
+              <div className="flex justify-center mb-4">
+                <div className="relative">
+                  <RiRobot2Line className="w-12 h-12 text-cyan-400 animate-pulse" />
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-bounce" />
+                </div>
+              </div>
+              <h3 className="font-display text-xl text-holographic mb-2">AI Expert Panel</h3>
+              <p className="text-sm text-gray-400 font-cyber">4 Specialists Ready to Help</p>
+              <div className="flex justify-center gap-1 mt-3">
+                {['📈', '👨‍💻', '🏦', '⚖️'].map((emoji, i) => (
+                  <div key={i} className="w-8 h-8 glass rounded-full flex items-center justify-center text-sm border border-cyan-500/20">
+                    {emoji}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Navigation Tabs */}
+            <div className="space-y-3">
+              <button 
+                onClick={() => setActiveTab('ask')} 
+                className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-display transition-all hover-lift ${
+                  activeTab==='ask' 
+                    ? 'btn-holographic text-white border-cyan-500' 
+                    : 'glass border border-cyan-500/20 text-gray-300 hover:text-white hover:border-cyan-500/40'
+                }`}
+              > 
+                <MessageSquare className="w-5 h-5" />
+                <span className="text-lg font-semibold">ASK EXPERTS</span>
+                {activeTab === 'ask' && <RiSparklingFill className="w-4 h-4 text-cyan-400 ml-auto animate-pulse" />}
+              </button>
+              
+              <button 
+                onClick={() => setActiveTab('saved')} 
+                className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-display transition-all hover-lift ${
+                  activeTab==='saved' 
+                    ? 'btn-holographic text-white border-purple-500' 
+                    : 'glass border border-purple-500/20 text-gray-300 hover:text-white hover:border-purple-500/40'
+                }`}
+              > 
+                <FiBookmark className="w-5 h-5" />
+                <span className="text-lg font-semibold">SAVED ({savedQuestions.length})</span>
+                {activeTab === 'saved' && <RiSparklingFill className="w-4 h-4 text-purple-400 ml-auto animate-pulse" />}
+              </button>
+              
+              <button 
+                onClick={() => setActiveTab('trending')} 
+                className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-display transition-all hover-lift ${
+                  activeTab==='trending' 
+                    ? 'btn-holographic text-white border-green-500' 
+                    : 'glass border border-green-500/20 text-gray-300 hover:text-white hover:border-green-500/40'
+                }`}
+              > 
+                <TrendingUp className="w-5 h-5" />
+                <span className="text-lg font-semibold">TRENDING</span>
+                {activeTab === 'trending' && <RiSparklingFill className="w-4 h-4 text-green-400 ml-auto animate-pulse" />}
+              </button>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="glass p-4 rounded-xl border border-cyan-500/20 text-center hover-lift">
+                <div className="text-2xl font-bold text-cyan-400">{comments.length}</div>
+                <div className="text-xs text-gray-400 font-cyber">COMMENTS</div>
+              </div>
+              <div className="glass p-4 rounded-xl border border-purple-500/20 text-center hover-lift">
+                <div className="text-2xl font-bold text-purple-400">{savedQuestions.length}</div>
+                <div className="text-xs text-gray-400 font-cyber">SAVED</div>
+              </div>
+            </div>
+
+            {/* Help Section */}
             <button 
               onClick={toggleHelp} 
-              className="flex items-center gap-3 px-6 py-3 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-blue-500 transition-all font-semibold"
+              className="w-full flex items-center gap-3 px-6 py-4 glass rounded-2xl border border-yellow-500/20 text-yellow-400 hover:border-yellow-500/40 transition-all hover-lift font-display"
             > 
-              <FiHelpCircle className="w-4 h-4" /> HELP
+              <FiHelpCircle className="w-5 h-5" />
+              <span className="font-semibold">HELP & TIPS</span>
             </button>
           </div>
         </aside>
 
-        {/* Enhanced Main Content */}
-        <main className="flex-1 flex flex-col gap-10 py-8">
+        {/* Professional Main Content */}
+        <main className="flex-1 space-y-8">
           {/* Enhanced Notifications */}
-          <div className="fixed top-8 right-8 z-50 space-y-3">
+          <div className="fixed top-24 right-8 z-50 space-y-3">
             {notifications.map(n => (
-              <div key={n.id} className="bg-gray-800/95 backdrop-blur-sm border border-blue-500/50 rounded-xl p-4 shadow-lg animate-slide-up">
-                <span className="text-blue-400 font-semibold text-sm tracking-wide">{n.message}</span>
+              <div key={n.id} className="glass-strong border border-green-500/30 rounded-2xl p-4 shadow-xl animate-slide-up hover:neon-glow-cyan">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span className="text-green-400 font-display text-sm">{n.message}</span>
+                </div>
               </div>
             ))}
           </div>
 
           {/* Tab Content */}
           {activeTab === 'ask' && (
-            <section className="flex flex-col gap-10">
-              {/* Enhanced Question Input */}
-              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-blue-500 rounded-3xl p-8 flex flex-col gap-6 transition-all relative">
+            <section className="space-y-8">
+              {/* Professional Question Input Card */}
+              <div className="glass-strong border-2 border-cyan-500/30 rounded-3xl p-8 hover:neon-glow-cyan transition-all group overflow-hidden relative">
+                {/* Holographic overlay */}
+                <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-15 transition-opacity duration-700" />
                 
-                <div className="flex flex-col md:flex-row gap-4 items-center">
-                  <input 
-                    type="text" 
-                    value={username} 
-                    onChange={e => { 
-                      setUsername(e.target.value); 
-                      localStorage.setItem('cryptoAssistantUsername', e.target.value); 
-                    }} 
-                    className="w-40 p-4 rounded-xl bg-gray-900 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
-                    placeholder="Your name" 
-                  />
-                  
-                  <input 
-                    type="text" 
-                    value={question} 
-                    onChange={e => { 
-                      setQuestion(e.target.value); 
-                      setError(null); 
-                    }} 
-                    onKeyDown={handleKeyDown} 
-                    className="flex-1 p-4 rounded-xl bg-gray-900 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                    placeholder="Ask anything about crypto..." 
-                    disabled={loading} 
-                  />
-                  
-                  <button 
-                    onClick={handleAsk} 
-                    disabled={loading || !question.trim()} 
-                    className={`p-4 rounded-xl font-semibold tracking-wider transition-all ${
-                      loading 
-                        ? 'bg-gray-800 border border-gray-600 cursor-not-allowed opacity-70' 
-                        : !question.trim() 
-                          ? 'bg-gray-800 border border-gray-700 cursor-not-allowed opacity-50' 
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
-                    } flex items-center justify-center`}
-                  >
-                    {loading ? (
-                      <div className="loading-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                <div className="relative z-10 space-y-6">
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 glass-strong rounded-2xl flex items-center justify-center border border-cyan-500/30">
+                        <Brain className="w-6 h-6 text-cyan-400 animate-pulse" />
                       </div>
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        <FiSend className="w-5 h-5" />
-                        ASK
-                      </span>
-                    )}
-                  </button>
-                </div>
-                
-                {error && <p className="text-red-400 text-sm mt-2 font-cyber">{error}</p>}
-              </div>
+                      <div>
+                        <h2 className="font-display text-2xl text-holographic">Ask Your Question</h2>
+                        <p className="text-sm text-gray-400 font-cyber">Get expert insights from 4 AI specialists</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 px-4 py-2 glass rounded-full border border-cyan-500/30">
+                      <Users className="w-4 h-4 text-cyan-400" />
+                      <span className="text-sm font-cyber text-cyan-400">{username}</span>
+                    </div>
+                  </div>
 
-              {/* Enhanced AI & Discussion Section */}
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
-                {/* Enhanced AI Expert Cards */}
-                <div className="glass-strong border-2 border-cyan-500/30 rounded-3xl flex flex-col hover:neon-glow-cyan transition-all hover-lift relative overflow-hidden group">
-                  {/* Holographic overlay */}
-                  <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
-                  
-                  <div className="flex justify-between items-center p-8 border-b border-cyan-500/20 relative z-10">
-                    <h2 className="font-display text-xl flex items-center gap-3">
-                      <RiRobot2Line className="text-cyan-400 animate-pulse" /> 
-                      Expert Responses
-                    </h2>
-                    <button 
-                      onClick={handleSaveQuestion} 
-                      disabled={!question.trim() || aiResponses.some(ai => ai.answer.includes("Ask me anything"))} 
-                      className="btn-cyber px-4 py-2 text-sm flex items-center gap-2 disabled:opacity-50 hover-lift"
-                    >
-                      <FiBookmark className="w-4 h-4" /> SAVE ALL
-                    </button>
+                  {/* Input Section */}
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <div className="flex-1 relative">
+                        <input 
+                          type="text" 
+                          value={question} 
+                          onChange={e => { 
+                            setQuestion(e.target.value); 
+                            setError(null); 
+                          }} 
+                          onKeyDown={handleKeyDown} 
+                          className="w-full p-6 rounded-2xl glass border border-cyan-500/30 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-lg font-display transition-all" 
+                          placeholder="Ask anything about crypto, DeFi, blockchain, or regulations..." 
+                          disabled={loading} 
+                        />
+                        <div className="absolute top-2 right-2 flex gap-1">
+                          {loading && [...Array(3)].map((_, i) => (
+                            <div key={i} className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <button 
+                        onClick={handleAsk} 
+                        disabled={loading || !question.trim()} 
+                        className={`px-8 py-6 rounded-2xl font-display text-lg transition-all hover-lift ${
+                          loading 
+                            ? 'glass border border-gray-600 cursor-not-allowed opacity-70' 
+                            : !question.trim() 
+                              ? 'glass border border-gray-700 cursor-not-allowed opacity-50' 
+                              : 'btn-holographic border-cyan-500 hover:neon-glow-cyan'
+                        } flex items-center justify-center`}
+                      >
+                        {loading ? (
+                          <div className="flex items-center gap-3">
+                            <div className="loading-dots">
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                            </div>
+                            <span className="font-semibold">ANALYZING...</span>
+                          </div>
+                        ) : (
+                          <span className="flex items-center gap-3 font-semibold">
+                            <FiSend className="w-5 h-5" />
+                            ASK EXPERTS
+                          </span>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Username input and Quick Actions */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-cyan-500/20">
+                      <div className="flex items-center gap-4">
+                        <input 
+                          type="text" 
+                          value={username} 
+                          onChange={e => { 
+                            setUsername(e.target.value); 
+                            localStorage.setItem('cryptoAssistantUsername', e.target.value); 
+                          }} 
+                          className="px-4 py-2 rounded-lg glass border border-purple-500/30 placeholder-gray-400 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 text-sm font-display" 
+                          placeholder="Your display name" 
+                        />
+                        <div className="text-sm text-gray-400 font-cyber">as</div>
+                      </div>
+                      
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={handleSaveQuestion} 
+                          disabled={!question.trim() || aiResponses.some(ai => ai.answer.includes("Ask me anything"))} 
+                          className="btn-cyber px-4 py-2 text-sm flex items-center gap-2 disabled:opacity-50 hover-lift"
+                        >
+                          <FiBookmark className="w-4 h-4" /> SAVE
+                        </button>
+                        <button className="btn-cyber px-4 py-2 text-sm flex items-center gap-2 hover-lift">
+                          <FiShare2 className="w-4 h-4" /> SHARE
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="p-8 grid grid-cols-1 gap-6 relative z-10">
-                    {aiResponses.map(ai => (
-                      <div key={ai.id} className="glass-card border border-cyan-500/20 rounded-2xl p-6 transition-all hover:glass-strong hover:border-cyan-500/40 hover-lift group">
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="flex items-center gap-4">
-                            <span className="text-3xl">{ai.avatar}</span>
-                            <div>
-                              <h3 className="font-display text-lg text-white group-hover:text-cyan-400 transition-colors">{ai.name}</h3>
-                              <p className="text-xs text-gray-400 font-cyber">{ai.specialty}</p>
-                            </div>
+                  {error && (
+                    <div className="flex items-center gap-3 p-4 glass rounded-xl border border-red-500/30 text-red-400">
+                      <Shield className="w-5 h-5" />
+                      <span className="font-display">{error}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Professional Expert Responses Grid */}
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                {/* Individual Expert Cards */}
+                {aiResponses.map(ai => (
+                  <div key={ai.id} className="glass-strong border-2 border-cyan-500/20 rounded-3xl overflow-hidden hover:neon-glow-cyan transition-all hover-lift group">
+                    {/* Holographic overlay */}
+                    <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-15 transition-opacity duration-700" />
+                    
+                    {/* Expert Header */}
+                    <div className="p-6 border-b border-cyan-500/20 relative z-10 bg-gradient-to-r from-cyan-500/10 to-purple-500/10">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 glass-strong rounded-2xl flex items-center justify-center border border-cyan-500/30 text-2xl">
+                            {ai.avatar}
                           </div>
-                          <div className="flex gap-1">
-                            {[1,2,3,4,5].map(star => (
-                              <button 
-                                key={star} 
-                                onClick={() => handleRateAnswer(ai.id, star)} 
-                                className={`transition-all hover-lift ${
-                                  ai.rating && star <= ai.rating 
-                                    ? 'text-yellow-400 neon-glow-cyan' 
-                                    : 'text-gray-500 hover:text-yellow-400'
-                                }`}
-                              > 
-                                <FiStar fill={ai.rating && star <= ai.rating ? 'currentColor' : 'none'} className="w-4 h-4" /> 
-                              </button>
-                            ))}
+                          <div>
+                            <h3 className="font-display text-lg text-holographic group-hover:text-cyan-400 transition-colors">{ai.name}</h3>
+                            <p className="text-xs text-gray-400 font-cyber">{ai.specialty}</p>
                           </div>
                         </div>
                         
-                        <div className="mt-4">
-                          {ai.loading ? (
-                            <div className="space-y-4 loading-shimmer p-4 rounded-xl">
-                              {[...Array(4)].map((_, i) => (
-                                <div key={i} className={`h-4 rounded-full glass ${i%2===0 ? 'w-full' : 'w-5/6'}`}></div>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="text-gray-200 text-sm leading-relaxed">
-                              {ai.answer.startsWith('*') ? (
-                                <ul className="space-y-3">
-                                  {ai.answer.split('\n').filter(line => line.trim()).map((line, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                      <span className="text-cyan-400 mt-1">
-                                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                                      </span>
-                                      <span>{line.replace('*', '').trim()}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              ) : (
-                                <p>{ai.answer}</p>
-                              )}
-                            </div>
-                          )}
+                        {/* Status indicator */}
+                        <div className="flex items-center gap-2">
+                          <div className={`w-3 h-3 rounded-full ${ai.loading ? 'bg-yellow-400 animate-pulse' : 'bg-green-400'}`} />
+                          <span className="text-xs font-cyber text-gray-400">{ai.loading ? 'ANALYZING' : 'READY'}</span>
                         </div>
                       </div>
-                    ))}
+                    </div>
+                  
+                    {/* Expert Response Content */}
+                    <div className="p-6 relative z-10 min-h-[300px] flex flex-col">
+                      <div className="flex-1">
+                        {ai.loading ? (
+                          <div className="space-y-4">
+                            <div className="glass rounded-xl p-4">
+                              <div className="flex items-center gap-3 mb-4">
+                                <div className="loading-dots">
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                                </div>
+                                <span className="text-cyan-400 font-cyber">Analyzing your question...</span>
+                              </div>
+                              {[...Array(3)].map((_, i) => (
+                                <div key={i} className={`h-3 rounded-full glass mb-3 ${i%2===0 ? 'w-full' : 'w-4/5'} loading-shimmer`}></div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="space-y-4">
+                            {ai.answer.startsWith('*') ? (
+                              <ul className="space-y-3">
+                                {ai.answer.split('\n').filter(line => line.trim()).map((line, i) => (
+                                  <li key={i} className="flex items-start gap-3 text-sm">
+                                    <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 animate-pulse flex-shrink-0" />
+                                    <span className="text-gray-200 leading-relaxed">{line.replace('*', '').trim()}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="text-gray-200 text-sm leading-relaxed">{ai.answer}</p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Rating and Actions */}
+                      <div className="pt-4 mt-4 border-t border-cyan-500/20 flex items-center justify-between">
+                        <div className="flex gap-1">
+                          {[1,2,3,4,5].map(star => (
+                            <button 
+                              key={star} 
+                              onClick={() => handleRateAnswer(ai.id, star)} 
+                              className={`transition-all hover-lift p-1 ${
+                                ai.rating && star <= ai.rating 
+                                  ? 'text-yellow-400 neon-glow-cyan' 
+                                  : 'text-gray-500 hover:text-yellow-400'
+                              }`}
+                              disabled={ai.loading}
+                            > 
+                              <FiStar fill={ai.rating && star <= ai.rating ? 'currentColor' : 'none'} className="w-4 h-4" /> 
+                            </button>
+                          ))}
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <button className="btn-cyber px-3 py-1 text-xs hover-lift" disabled={ai.loading}>
+                            <FiThumbsUp className="w-3 h-3" />
+                          </button>
+                          <button className="btn-cyber px-3 py-1 text-xs hover-lift" disabled={ai.loading}>
+                            <FiShare2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                
+                ))}
+              </div>
+              
+              {/* Professional Discussion Panel */}
+              <div className="mt-8">
                 {/* Enhanced Discussion Card */}
                 <div className="glass-strong border-2 border-purple-500/30 rounded-3xl flex flex-col hover:neon-glow-purple transition-all hover-lift relative overflow-hidden group">
                   {/* Holographic overlay */}
