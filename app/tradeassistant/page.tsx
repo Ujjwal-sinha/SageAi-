@@ -78,33 +78,33 @@ ${analysis}`;
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-black via-[#181a22] to-blue-950 text-gray-100 font-inter">
+    <div className="min-h-screen flex bg-gradient-to-br from-gray-900 via-gray-950 to-black text-gray-100">
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-br from-[#181a22] via-[#16181d] to-[#23232a] border-r border-[#23232a] flex flex-col shadow-2xl z-10">
+      <aside className="w-72 bg-gray-900/80 backdrop-blur-sm border-r border-gray-700 flex flex-col shadow-2xl z-10">
         {/* Logo Section */}
         <div className="px-6 pt-8 pb-4">
           <Link href="/" className="flex items-center gap-3">
-            <Bot className="w-8 h-8 text-purple-500 drop-shadow-lg" />
-            <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight select-none">Sage AI</span>
+            <Bot className="w-8 h-8 text-blue-500" />
+            <span className="text-2xl font-bold text-white tracking-tight select-none">Sage AI</span>
           </Link>
         </div>
         {/* Navigation */}
         <nav className="flex flex-col flex-grow px-6 space-y-2 mt-4">
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold shadow-lg hover:scale-105 transition-all duration-200">
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition-all duration-200">
             <FaChartLine /> Dashboard
           </a>
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl text-gray-300 hover:bg-gray-800 hover:text-blue-300 transition-all duration-200">
             <FaWallet /> Portfolio
           </a>
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl text-gray-300 hover:bg-gray-800 hover:text-blue-300 transition-all duration-200">
             <FaHistory /> Trade History
           </a>
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl text-gray-300 hover:bg-gray-800 hover:text-blue-300 transition-all duration-200">
             <FaCog /> Settings
           </a>
         </nav>
         {/* Footer */}
-        <footer className="px-6 py-6 mt-auto text-xs text-gray-500 border-t border-[#23232a]">
+        <footer className="px-6 py-6 mt-auto text-xs text-gray-500 border-t border-gray-700">
           © {new Date().getFullYear()} SageAI. All rights reserved.
         </footer>
       </aside>
@@ -112,9 +112,9 @@ ${analysis}`;
       {/* Main Content */}
       <main className="flex-grow flex flex-col min-h-screen">
         {/* Hero Section */}
-        <section className="w-full px-4 md:px-0 pt-10 pb-6 flex flex-col items-center justify-center bg-gradient-to-br from-blue-700/80 via-purple-700/80 to-black/90 rounded-b-3xl shadow-xl mb-6">
+        <section className="w-full px-4 md:px-0 pt-10 pb-6 flex flex-col items-center justify-center bg-gradient-to-br from-blue-600/30 to-purple-600/30 backdrop-blur-sm rounded-b-3xl border border-gray-700 shadow-xl mb-6">
           <div className="max-w-2xl text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">Pro Crypto Trading Assistant</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">AI Trading Assistant</h1>
             <p className="text-lg md:text-xl text-gray-200 mb-4">Get instant, AI-powered trading recommendations for any token, chain, or sector. Analyze, strategize, and trade smarter with Sage AI.</p>
             <div className="flex flex-wrap gap-3 justify-center mb-2">
               <span className="px-4 py-2 rounded-full bg-blue-600/80 text-white font-medium text-sm shadow">Live Price Ticker</span>
@@ -125,8 +125,8 @@ ${analysis}`;
         </section>
 
         {/* Top Bar with Price Ticker */}
-        <header className="flex items-center justify-between bg-[#181a22] border-b border-[#23232a] px-10 py-4 shadow-lg rounded-t-3xl">
-          <h2 className="text-2xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text select-none tracking-tight flex items-center gap-2">
+        <header className="flex items-center justify-between bg-gray-900/90 backdrop-blur-sm border-b border-gray-700 px-10 py-4 shadow-lg rounded-t-3xl">
+          <h2 className="text-2xl font-bold text-white select-none tracking-tight flex items-center gap-2">
             <FaChartLine className="text-blue-400" /> Market Ticker
           </h2>
           <div className="flex space-x-6 overflow-x-auto no-scrollbar max-w-xl">
@@ -151,7 +151,7 @@ ${analysis}`;
         </header>
 
         {/* Main Dashboard Area */}
-        <section className="flex-grow overflow-y-auto p-6 md:p-10 space-y-10 bg-gradient-to-br from-black via-[#181a22] to-blue-950 rounded-3xl">
+        <section className="flex-grow overflow-y-auto p-6 md:p-10 space-y-10 bg-gray-950/50 backdrop-blur-sm rounded-3xl">
           {/* Input Form Card */}
           <motion.form
             layout
@@ -159,7 +159,7 @@ ${analysis}`;
               e.preventDefault();
               if (!loading && token && chain && sector) handleSubmit();
             }}
-            className="bg-gradient-to-br from-[#181a22] via-[#23232a] to-[#181a22] rounded-2xl shadow-2xl p-8 md:p-10 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 border border-[#23232a]"
+            className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-10 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 border border-gray-700"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -171,7 +171,7 @@ ${analysis}`;
                 id="token"
                 type="text"
                 list="token-list"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="px-4 py-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 placeholder="e.g. Bitcoin, Uniswap"
                 value={token}
                 onChange={e => setToken(e.target.value)}
@@ -191,7 +191,7 @@ ${analysis}`;
               <label htmlFor="chain" className="mb-2 text-base font-semibold text-blue-300">Blockchain</label>
               <select
                 id="chain"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="px-4 py-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 value={chain}
                 onChange={e => setChain(e.target.value)}
                 required
@@ -207,7 +207,7 @@ ${analysis}`;
               <label htmlFor="sector" className="mb-2 text-base font-semibold text-blue-300">Sector</label>
               <select
                 id="sector"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="px-4 py-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 value={sector}
                 onChange={e => setSector(e.target.value)}
                 required
@@ -223,7 +223,7 @@ ${analysis}`;
               <label htmlFor="model" className="mb-2 text-base font-semibold text-blue-300">LLM Model</label>
               <select
                 id="model"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="px-4 py-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 value={model}
                 onChange={e => setModel(e.target.value)}
               >
