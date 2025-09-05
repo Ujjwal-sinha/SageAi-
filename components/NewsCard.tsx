@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { NewsArticle } from '@/lib/services/web3NewsService';
+import { Brain, TrendingUp, ExternalLink, Calendar, Tag } from 'lucide-react';
 
 interface NewsCardProps {
   article: NewsArticle;
@@ -8,61 +9,76 @@ interface NewsCardProps {
 
 export default function NewsCard({ article, darkMode }: NewsCardProps) {
   return (
-    <div
-      className={`p-5 rounded-xl border ${
-        darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-      } hover:shadow-lg transition-shadow duration-200`}
-    >
-      <div className="flex justify-between items-center mb-2">
-        <span
-          className={`text-sm px-2 py-1 rounded-full ${
-            darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
-          }`}
-        >
-          {article.category || 'Web3'}
-        </span>
-        <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-          {article.date}
-        </span>
-      </div>
-      <h3 className="text-lg font-semibold mb-2">
-        <Link
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline"
-        >
-          {article.title}
-        </Link>
-      </h3>
-      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-3`}>
-        {article.excerpt}
-      </p>
-      {article.aiSummary && (
-        <p className={`text-sm italic ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
-          <strong>AI Summary:</strong> {article.aiSummary}
+    <div className="glass-card border border-cyan-500/20 hover:border-cyan-500/40 hover:neon-glow-cyan transition-all duration-500 hover-lift rounded-2xl overflow-hidden group relative">
+      {/* Holographic overlay */}
+      <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+      
+      <div className="p-8 relative z-10">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-6">
+          <span className="px-3 py-1 rounded-full glass border border-cyan-500/30 text-cyan-400 text-xs font-cyber tracking-wider">
+            {article.category || 'WEB3'}
+          </span>
+          <div className="flex items-center gap-2 text-xs text-gray-400 font-cyber">
+            <Calendar className="w-3 h-3" />
+            {article.date}
+          </div>
+        </div>
+        
+        {/* Title */}
+        <h3 className="text-lg font-display text-white mb-4 group-hover:text-cyan-400 transition-colors leading-tight">
+          <Link
+            href={article.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-glow transition-all flex items-start gap-2"
+          >
+            {article.title}
+            <ExternalLink className="w-4 h-4 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </Link>
+        </h3>
+        
+        {/* Excerpt */}
+        <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+          {article.excerpt}
         </p>
-      )}
-      {article.aiAnalysis && (
-        <p className={`text-sm italic ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-3`}>
-          <strong>AI Analysis:</strong> {article.aiAnalysis}
-        </p>
-      )}
-      <div className="flex justify-between items-center">
-        <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-          {article.source}
-        </span>
-        <div className="flex gap-2">
-          {article.entities?.map((entity, idx) => (
-            <span
-              key={idx}
-              className={`text-xs px-2 py-1 rounded-full ${
-                darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
-              }`}
-            >
-              {entity}
-            </span>
-          ))}
+        
+        {/* AI Insights */}
+        {article.aiSummary && (
+          <div className="mb-4 p-4 glass rounded-xl border border-cyan-500/20 hover-glow">
+            <div className="flex items-center gap-2 mb-2">
+              <Brain className="w-4 h-4 text-cyan-400 animate-pulse" />
+              <span className="text-xs font-cyber text-cyan-400 tracking-wider">AI SUMMARY</span>
+            </div>
+            <p className="text-sm text-gray-300 italic leading-relaxed">{article.aiSummary}</p>
+          </div>
+        )}
+        
+        {article.aiAnalysis && (
+          <div className="mb-6 p-4 glass rounded-xl border border-purple-500/20 hover-glow">
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-4 h-4 text-purple-400 animate-pulse" />
+              <span className="text-xs font-cyber text-purple-400 tracking-wider">AI ANALYSIS</span>
+            </div>
+            <p className="text-sm text-gray-300 italic leading-relaxed">{article.aiAnalysis}</p>
+          </div>
+        )}
+        
+        {/* Footer */}
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-gray-400 font-cyber tracking-wide">
+            {article.source}
+          </span>
+          <div className="flex gap-2">
+            {article.entities?.map((entity, idx) => (
+              <span
+                key={idx}
+                className="text-xs px-2 py-1 rounded-full glass border border-gray-600 text-gray-400 font-cyber"
+              >
+                {entity}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>
