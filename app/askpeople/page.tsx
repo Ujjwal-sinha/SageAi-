@@ -11,6 +11,7 @@ import { RiRobot2Line } from 'react-icons/ri';
 import Link from "next/link";
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
+import { Brain, Zap, Shield, Users, MessageSquare, TrendingUp } from 'lucide-react';
 
 interface Comment {
   id: string;
@@ -24,6 +25,7 @@ interface Comment {
 interface SavedQuestion {
   id: string;
   question: string;
+  
   answers: {aiName: string; answer: string}[];
   timestamp: Date;
 }
@@ -40,24 +42,18 @@ interface AIResponse {
 }
 
 const AskPeopleContent = () => {
-  // Core states
   const [question, setQuestion] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // UI states
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [username, setUsername] = useState<string>("CryptoExplorer");
   const [activeTab, setActiveTab] = useState<'ask' | 'saved' | 'trending'>('ask');
   const [savedQuestions, setSavedQuestions] = useState<SavedQuestion[]>([]);
   const [notifications, setNotifications] = useState<{id: number, message: string}[]>([]);
-  const [darkMode, setDarkMode] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [showHelp, setShowHelp] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  // AI Assistants
   const [aiResponses, setAiResponses] = useState<AIResponse[]>([
     {
       id: '1',
@@ -101,16 +97,13 @@ const AskPeopleContent = () => {
     }
   ]);
 
-  // Sample avatars
   const avatars = [
     '🦊', '🐺', '🐱', '🐭', '🐹', '🐰', '🦝', '🐻', '🐨', '🐯',
     '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦄'
   ];
 
-  // Get random avatar
   const getRandomAvatar = () => avatars[Math.floor(Math.random() * avatars.length)];
 
-  // Get API Key
   const getApiKey = () => {
     if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_GROQTA_API_KEY) {
       return process.env.NEXT_PUBLIC_GROQTA_API_KEY;
@@ -118,7 +111,6 @@ const AskPeopleContent = () => {
     return null;
   };
 
-  // Load saved data from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem('cryptoAssistantSavedQuestions');
@@ -135,7 +127,6 @@ const AskPeopleContent = () => {
     }
   }, []);
 
-  // Handle asking questions to all AIs
   const handleAsk = async () => {
     if (!question.trim()) {
       setError("Please enter a question");
@@ -152,7 +143,6 @@ const AskPeopleContent = () => {
     setError(null);
     setComments([]);
 
-    // Set all AIs to loading state
     setAiResponses(prev => prev.map(ai => ({
       ...ai,
       answer: "Analyzing your question...",
@@ -167,7 +157,6 @@ const AskPeopleContent = () => {
         timeout: 15000,
       });
 
-      // Create prompts for each AI role
       const prompts = {
         analyst: ChatPromptTemplate.fromMessages([
           ["system", `You are a cryptocurrency market analyst with 10 years experience. Respond with:
@@ -215,7 +204,6 @@ const AskPeopleContent = () => {
         ])
       };
 
-      // Process all AI responses in parallel
       const responses = await Promise.all([
         processAIResponse(chat, prompts.analyst, question, 0),
         processAIResponse(chat, prompts.developer, question, 1),
@@ -223,7 +211,6 @@ const AskPeopleContent = () => {
         processAIResponse(chat, prompts.lawyer, question, 3)
       ]);
 
-      // Update all AI responses
       setAiResponses(prev => prev.map((ai, index) => ({
         ...ai,
         answer: responses[index] || "Could not generate response",
@@ -245,7 +232,6 @@ const AskPeopleContent = () => {
     }
   };
 
-  // Process individual AI response
   const processAIResponse = async (chat: any, prompt: any, question: string, index: number) => {
     try {
       const messages = await prompt.formatMessages({
@@ -260,7 +246,6 @@ const AskPeopleContent = () => {
     }
   };
 
-  // Add comment
   const handleAddComment = () => {
     if (!newComment.trim()) return;
     
@@ -278,7 +263,6 @@ const AskPeopleContent = () => {
     addNotification(`${username} commented on this question`);
   };
 
-  // Save all responses to current question
   const handleSaveQuestion = () => {
     if (!question.trim() || aiResponses.some(ai => ai.answer.includes("Ask me anything"))) return;
     
@@ -298,7 +282,6 @@ const AskPeopleContent = () => {
     addNotification("Question and all responses saved");
   };
 
-  // Notification system
   const addNotification = (message: string) => {
     const id = Date.now();
     setNotifications(prev => [{ id, message }, ...prev.slice(0, 4)]);
@@ -307,7 +290,6 @@ const AskPeopleContent = () => {
     }, 5000);
   };
 
-  // Rating system
   const handleRateAnswer = (aiId: string, stars: number) => {
     setAiResponses(prev => prev.map(ai => 
       ai.id === aiId ? { ...ai, rating: stars } : ai
@@ -315,35 +297,15 @@ const AskPeopleContent = () => {
     addNotification(`You rated an answer ${stars} star${stars > 1 ? 's' : ''}`);
   };
 
-  // Toggle AI response expansion
-  const toggleExpandAnswer = (aiId: string) => {
-    setAiResponses(prev => prev.map(ai => 
-      ai.id === aiId ? { ...ai, expanded: !ai.expanded } : ai
-    ));
-  };
-
-  // Search saved questions
   const filteredQuestions = savedQuestions.filter(q =>
     q.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
     q.answers.some(a => a.answer.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  // Toggle help
   const toggleHelp = () => {
     setShowHelp(!showHelp);
   };
 
-  // Toggle theme
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-  };
-
-  // Toggle sidebar
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
-
-  // Format date
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
@@ -353,7 +315,6 @@ const AskPeopleContent = () => {
     }).format(date);
   };
 
-  // Keyboard shortcuts
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -369,114 +330,330 @@ const AskPeopleContent = () => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-gradient-to-br from-black via-gray-900 to-blue-950 text-gray-100' : 'bg-gradient-to-br from-blue-50 via-white to-purple-100 text-gray-900'}`}>
-      {/* Hero Section */}
-      <section className="w-full px-4 md:px-0 py-10 md:py-16 flex flex-col items-center justify-center bg-gradient-to-br from-blue-700/80 via-purple-700/80 to-black/90 rounded-b-3xl shadow-xl mb-8">
-        <div className="max-w-3xl text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 drop-shadow-lg">Ask the Crypto Experts</h1>
-          <p className="text-lg md:text-xl text-gray-200 mb-6">Get instant, expert answers from AI specialists in crypto, DeFi, blockchain, and regulations. Save, discuss, and explore trending topics—all in one place.</p>
-          <div className="flex flex-wrap gap-3 justify-center mb-2">
-            <span className="px-4 py-2 rounded-full bg-blue-600/80 text-white font-medium text-sm shadow">Live AI Experts</span>
-            <span className="px-4 py-2 rounded-full bg-purple-600/80 text-white font-medium text-sm shadow">Community Q&A</span>
-            <span className="px-4 py-2 rounded-full bg-pink-600/80 text-white font-medium text-sm shadow">Save & Discuss</span>
+    <div className="min-h-screen flex flex-col bg-black text-gray-100 relative overflow-hidden">
+      {/* Enhanced background */}
+      <div className="absolute inset-0 -z-20">
+        <div className="cyber-grid opacity-10" />
+        <div className="hex-pattern opacity-5" />
+        <div className="circuit-pattern opacity-3" />
+      </div>
+      
+      {/* Floating particles */}
+      <div className="absolute inset-0 -z-10">
+        {Array.from({ length: 12 }, (_, i) => (
+          <div
+            key={i}
+            className="blockchain-node"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Enhanced Hero Section */}
+      <section className="w-full px-8 py-16 flex flex-col items-center justify-center glass border-b border-cyan-500/20 relative overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" />
+        
+        <div className="max-w-5xl text-center relative z-10">
+          <h1 className="text-5xl md:text-6xl font-display text-holographic text-glow mb-6">
+            Ask the Crypto Experts
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+            Get instant, expert answers from AI specialists in crypto, DeFi, blockchain, and regulations. 
+            <span className="text-cyan-400 font-semibold">Save, discuss, and explore</span> trending topics—all in one place.
+          </p>
+          
+          <div className="flex flex-wrap gap-4 justify-center">
+            <span className="px-6 py-3 rounded-full glass border border-cyan-500/30 text-cyan-400 font-cyber text-sm tracking-wider">
+              LIVE AI EXPERTS
+            </span>
+            <span className="px-6 py-3 rounded-full glass border border-purple-500/30 text-purple-400 font-cyber text-sm tracking-wider">
+              COMMUNITY Q&A
+            </span>
+            <span className="px-6 py-3 rounded-full glass border border-green-500/30 text-green-400 font-cyber text-sm tracking-wider">
+              SAVE & DISCUSS
+            </span>
           </div>
         </div>
       </section>
 
-      <div className="flex flex-1 w-full max-w-7xl mx-auto gap-6 px-2 md:px-6">
-        {/* Sidebar */}
-        <aside className={`hidden md:flex flex-col gap-4 w-56 py-6 px-3 rounded-3xl shadow-xl ${darkMode ? 'bg-black/80 border border-gray-800' : 'bg-white/80 border border-gray-200'}`}>
-          <Link href="/" className="flex items-center gap-2 mb-8">
-            <span className="bg-gradient-to-r from-blue-400 to-purple-500 w-4 h-4 rounded-full animate-pulse"></span>
-            <span className="font-bold text-lg tracking-wide">Sage AI</span>
+      <div className="flex flex-1 w-full max-w-7xl mx-auto gap-8 px-8">
+        {/* Enhanced Sidebar */}
+        <aside className="hidden md:flex flex-col gap-6 w-64 py-8 px-6 glass-strong border-r border-cyan-500/20 relative">
+          {/* Animated border */}
+          <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent animate-pulse" />
+          
+          <Link href="/" className="flex items-center gap-3 mb-8 group">
+            <div className="relative">
+              <span className="w-4 h-4 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full animate-pulse block"></span>
+              <div className="absolute inset-0 bg-cyan-400/30 rounded-full blur-lg animate-pulse" />
+            </div>
+            <span className="font-display text-xl tracking-wide text-holographic group-hover:text-glow">Sage AI</span>
           </Link>
-          <button onClick={() => setActiveTab('ask')} className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab==='ask' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow' : darkMode ? 'hover:bg-gray-800' : 'hover:bg-blue-50'}`}> <FiMessageSquare /> Ask</button>
-          <button onClick={() => setActiveTab('saved')} className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab==='saved' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow' : darkMode ? 'hover:bg-gray-800' : 'hover:bg-blue-50'}`}> <FiBookmark /> Saved</button>
-          <button onClick={() => setActiveTab('trending')} className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab==='trending' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow' : darkMode ? 'hover:bg-gray-800' : 'hover:bg-blue-50'}`}> <FiTrendingUp /> Trending</button>
-          <div className="mt-auto pt-8 border-t border-gray-700 flex flex-col gap-2">
-            <button onClick={toggleHelp} className={`flex items-center gap-2 px-4 py-2 rounded-lg ${darkMode ? 'hover:bg-gray-800' : 'hover:bg-blue-50'}`}> <FiHelpCircle /> Help</button>
-            <button onClick={toggleTheme} className={`flex items-center gap-2 px-4 py-2 rounded-lg ${darkMode ? 'hover:bg-gray-800' : 'hover:bg-blue-50'}`}>{darkMode ? '☀️ Light' : '🌙 Dark'}</button>
+          
+          <button 
+            onClick={() => setActiveTab('ask')} 
+            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+              activeTab==='ask' 
+                ? 'btn-holographic border-2 border-cyan-500/50 neon-glow-cyan' 
+                : 'glass border border-gray-700 hover:border-cyan-500/30 text-gray-300 hover:text-white'
+            }`}
+          > 
+            <FiMessageSquare className="w-5 h-5" /> ASK
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('saved')} 
+            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+              activeTab==='saved' 
+                ? 'btn-holographic border-2 border-purple-500/50 neon-glow-purple' 
+                : 'glass border border-gray-700 hover:border-purple-500/30 text-gray-300 hover:text-white'
+            }`}
+          > 
+            <FiBookmark className="w-5 h-5" /> SAVED
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('trending')} 
+            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+              activeTab==='trending' 
+                ? 'btn-holographic border-2 border-green-500/50 neon-glow-cyan' 
+                : 'glass border border-gray-700 hover:border-green-500/30 text-gray-300 hover:text-white'
+            }`}
+          > 
+            <FiTrendingUp className="w-5 h-5" /> TRENDING
+          </button>
+          
+          <div className="mt-auto pt-8 border-t border-cyan-500/20 flex flex-col gap-3">
+            <button 
+              onClick={toggleHelp} 
+              className="flex items-center gap-3 px-6 py-3 rounded-lg glass border border-gray-700 hover:border-cyan-500/30 hover:glass-strong transition-all font-cyber"
+            > 
+              <FiHelpCircle className="w-4 h-4" /> HELP
+            </button>
           </div>
         </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 flex flex-col gap-8">
-          {/* Onboarding/Notifications */}
-          <div className="fixed top-6 right-6 z-50 space-y-2">
+        {/* Enhanced Main Content */}
+        <main className="flex-1 flex flex-col gap-10 py-8">
+          {/* Enhanced Notifications */}
+          <div className="fixed top-8 right-8 z-50 space-y-3">
             {notifications.map(n => (
-              <div key={n.id} className={`px-4 py-2 rounded shadow-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} border border-blue-400`}>{n.message}</div>
+              <div key={n.id} className="glass-card border border-cyan-500/30 rounded-xl p-4 neon-glow-cyan animate-slide-up">
+                <span className="text-cyan-400 font-cyber text-sm tracking-wide">{n.message}</span>
+              </div>
             ))}
           </div>
 
           {/* Tab Content */}
           {activeTab === 'ask' && (
-            <section className="flex flex-col gap-8">
-              {/* Question Input Card */}
-              <div className={`w-full rounded-2xl shadow-xl border ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} p-6 flex flex-col gap-4`}> 
-                <div className="flex flex-col md:flex-row gap-3 items-center">
-                  <input type="text" value={username} onChange={e => { setUsername(e.target.value); localStorage.setItem('cryptoAssistantUsername', e.target.value); }} className={`w-32 p-3 rounded-lg border ${darkMode ? 'border-gray-700 bg-gray-950 placeholder-gray-400' : 'border-gray-300 bg-white placeholder-gray-500'} focus:outline-none focus:ring-2 focus:ring-blue-500`} placeholder="Your name" />
-                  <input type="text" value={question} onChange={e => { setQuestion(e.target.value); setError(null); }} onKeyDown={handleKeyDown} className={`flex-1 p-3 rounded-lg border ${darkMode ? 'border-gray-700 bg-gray-950 placeholder-gray-400' : 'border-gray-300 bg-white placeholder-gray-500'} focus:outline-none focus:ring-2 focus:ring-blue-500`} placeholder="Ask anything about crypto..." disabled={loading} />
-                  <button onClick={handleAsk} disabled={loading || !question.trim()} className={`p-3 rounded-lg font-medium transition ${loading ? 'bg-blue-700' : !question.trim() ? (darkMode ? 'bg-gray-700' : 'bg-gray-200') : 'bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'} text-white flex items-center justify-center disabled:cursor-not-allowed`}>{loading ? (<svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>) : <FiSend />}</button>
+            <section className="flex flex-col gap-10">
+              {/* Enhanced Question Input */}
+              <div className="glass-strong border-2 border-cyan-500/30 rounded-3xl p-8 flex flex-col gap-6 hover:neon-glow-purple transition-all hover-lift relative overflow-hidden group"> 
+                {/* Holographic overlay */}
+                <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+                
+                <div className="flex flex-col md:flex-row gap-4 items-center relative z-10">
+                  <input 
+                    type="text" 
+                    value={username} 
+                    onChange={e => { 
+                      setUsername(e.target.value); 
+                      localStorage.setItem('cryptoAssistantUsername', e.target.value); 
+                    }} 
+                    className="w-40 p-4 rounded-xl glass border border-purple-500/30 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-cyber" 
+                    placeholder="Your name" 
+                  />
+                  
+                  <input 
+                    type="text" 
+                    value={question} 
+                    onChange={e => { 
+                      setQuestion(e.target.value); 
+                      setError(null); 
+                    }} 
+                    onKeyDown={handleKeyDown} 
+                    className="flex-1 p-4 rounded-xl glass border border-cyan-500/30 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 font-cyber" 
+                    placeholder="Ask anything about crypto..." 
+                    disabled={loading} 
+                  />
+                  
+                  <button 
+                    onClick={handleAsk} 
+                    disabled={loading || !question.trim()} 
+                    className={`p-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+                      loading 
+                        ? 'glass border border-gray-600 cursor-not-allowed opacity-70' 
+                        : !question.trim() 
+                          ? 'glass border border-gray-700 cursor-not-allowed opacity-50' 
+                          : 'btn-holographic hover:neon-glow-cyan'
+                    } flex items-center justify-center`}
+                  >
+                    {loading ? (
+                      <div className="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <FiSend className="w-5 h-5" />
+                        ASK
+                      </span>
+                    )}
+                  </button>
                 </div>
-                {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+                
+                {error && <p className="text-red-400 text-sm mt-2 font-cyber">{error}</p>}
               </div>
 
-              {/* AI & Discussion Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* AI Expert Cards */}
-                <div className={`rounded-2xl shadow-xl border ${darkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-blue-950 border-gray-800' : 'bg-gradient-to-br from-white via-blue-50 to-purple-100 border-gray-200'} flex flex-col`}>
-                  <div className="flex justify-between items-center p-5 border-b border-gray-700">
-                    <h2 className="font-semibold flex items-center gap-2 text-lg"><RiRobot2Line className="text-blue-400" /> Expert Responses</h2>
-                    <button onClick={handleSaveQuestion} disabled={!question.trim() || aiResponses.some(ai => ai.answer.includes("Ask me anything"))} className={`px-3 py-1 rounded-lg ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white text-sm flex items-center gap-2 disabled:opacity-50`}><FiBookmark /> Save All</button>
+              {/* Enhanced AI & Discussion Section */}
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+                {/* Enhanced AI Expert Cards */}
+                <div className="glass-strong border-2 border-cyan-500/30 rounded-3xl flex flex-col hover:neon-glow-cyan transition-all hover-lift relative overflow-hidden group">
+                  {/* Holographic overlay */}
+                  <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+                  
+                  <div className="flex justify-between items-center p-8 border-b border-cyan-500/20 relative z-10">
+                    <h2 className="font-display text-xl flex items-center gap-3">
+                      <RiRobot2Line className="text-cyan-400 animate-pulse" /> 
+                      Expert Responses
+                    </h2>
+                    <button 
+                      onClick={handleSaveQuestion} 
+                      disabled={!question.trim() || aiResponses.some(ai => ai.answer.includes("Ask me anything"))} 
+                      className="btn-cyber px-4 py-2 text-sm flex items-center gap-2 disabled:opacity-50 hover-lift"
+                    >
+                      <FiBookmark className="w-4 h-4" /> SAVE ALL
+                    </button>
                   </div>
-                  <div className="p-5 grid grid-cols-1 gap-5">
+                  
+                  <div className="p-8 grid grid-cols-1 gap-6 relative z-10">
                     {aiResponses.map(ai => (
-                      <div key={ai.id} className={`rounded-xl p-5 shadow border ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} transition-all duration-200`}>
-                        <div className="flex justify-between items-start mb-2">
-                          <div className="flex items-center gap-3">
+                      <div key={ai.id} className="glass-card border border-cyan-500/20 rounded-2xl p-6 transition-all hover:glass-strong hover:border-cyan-500/40 hover-lift group">
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="flex items-center gap-4">
                             <span className="text-3xl">{ai.avatar}</span>
                             <div>
-                              <h3 className="font-bold text-lg">{ai.name}</h3>
-                              <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{ai.specialty}</p>
+                              <h3 className="font-display text-lg text-white group-hover:text-cyan-400 transition-colors">{ai.name}</h3>
+                              <p className="text-xs text-gray-400 font-cyber">{ai.specialty}</p>
                             </div>
                           </div>
                           <div className="flex gap-1">
                             {[1,2,3,4,5].map(star => (
-                              <button key={star} onClick={() => handleRateAnswer(ai.id, star)} className={`${ai.rating && star <= ai.rating ? 'text-yellow-400' : darkMode ? 'text-gray-500' : 'text-gray-300'}`}> <FiStar fill={ai.rating && star <= ai.rating ? 'currentColor' : 'none'} /> </button>
+                              <button 
+                                key={star} 
+                                onClick={() => handleRateAnswer(ai.id, star)} 
+                                className={`transition-all hover-lift ${
+                                  ai.rating && star <= ai.rating 
+                                    ? 'text-yellow-400 neon-glow-cyan' 
+                                    : 'text-gray-500 hover:text-yellow-400'
+                                }`}
+                              > 
+                                <FiStar fill={ai.rating && star <= ai.rating ? 'currentColor' : 'none'} className="w-4 h-4" /> 
+                              </button>
                             ))}
                           </div>
                         </div>
-                        <div className="mt-2">
+                        
+                        <div className="mt-4">
                           {ai.loading ? (
-                            <div className="space-y-3 animate-pulse">
-                              {[...Array(4)].map((_, i) => (<div key={i} className={`h-4 rounded-full ${i%2===0 ? 'w-full' : 'w-5/6'} ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}></div>))}
+                            <div className="space-y-4 loading-shimmer p-4 rounded-xl">
+                              {[...Array(4)].map((_, i) => (
+                                <div key={i} className={`h-4 rounded-full glass ${i%2===0 ? 'w-full' : 'w-5/6'}`}></div>
+                              ))}
                             </div>
                           ) : (
-                            <div className={`prose ${darkMode ? 'prose-invert' : ''} max-w-none text-base`}>{ai.answer.startsWith('*') ? (<ul className="space-y-2">{ai.answer.split('\n').filter(line => line.trim()).map((line, i) => (<li key={i} className="flex items-start gap-2"><span className={`${darkMode ? 'text-blue-400' : 'text-blue-600'} mt-1`}>•</span><span>{line.replace('*', '').trim()}</span></li>))}</ul>) : (<p>{ai.answer}</p>)}</div>
+                            <div className="text-gray-200 text-sm leading-relaxed">
+                              {ai.answer.startsWith('*') ? (
+                                <ul className="space-y-3">
+                                  {ai.answer.split('\n').filter(line => line.trim()).map((line, i) => (
+                                    <li key={i} className="flex items-start gap-3">
+                                      <span className="text-cyan-400 mt-1">
+                                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                                      </span>
+                                      <span>{line.replace('*', '').trim()}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p>{ai.answer}</p>
+                              )}
+                            </div>
                           )}
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
-                {/* Discussion Card */}
-                <div className={`rounded-2xl shadow-xl border ${darkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-blue-950 border-gray-800' : 'bg-gradient-to-br from-white via-blue-50 to-purple-100 border-gray-200'} flex flex-col`}>
-                  <div className="p-5 border-b border-gray-700 flex items-center gap-2"><FiUsers /> <span className="font-semibold text-lg">Discussion ({comments.length})</span></div>
-                  <div className="flex-1 overflow-auto p-5">
+                
+                {/* Enhanced Discussion Card */}
+                <div className="glass-strong border-2 border-purple-500/30 rounded-3xl flex flex-col hover:neon-glow-purple transition-all hover-lift relative overflow-hidden group">
+                  {/* Holographic overlay */}
+                  <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+                  
+                  <div className="p-8 border-b border-purple-500/20 flex items-center gap-3 relative z-10">
+                    <FiUsers className="w-6 h-6 text-purple-400 animate-pulse" /> 
+                    <span className="font-display text-xl">Discussion ({comments.length})</span>
+                  </div>
+                  
+                  <div className="flex-1 overflow-auto p-8 custom-scrollbar relative z-10">
                     {comments.length > 0 ? (
-                      <div className="space-y-4">
+                      <div className="space-y-6">
                         {comments.map(comment => (
-                          <div key={comment.id} className={`p-4 rounded-lg ${comment.isUser ? (darkMode ? 'bg-blue-950' : 'bg-blue-50') : (darkMode ? 'bg-gray-900' : 'bg-gray-100')}`}> <div className="flex items-start gap-3"><div className="text-2xl">{comment.avatar}</div><div className="flex-1"><div className="flex justify-between items-start"><div className={`font-medium ${comment.isUser ? 'text-blue-400' : 'text-green-400'}`}>{comment.username} {comment.isUser && '(You)'}</div><div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{formatDate(comment.timestamp)}</div></div><p className={`mt-1 ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>{comment.text}</p></div></div></div>
+                          <div key={comment.id} className={`p-6 rounded-2xl glass-card border transition-all hover-lift ${
+                            comment.isUser 
+                              ? 'border-cyan-500/30 hover:neon-glow-cyan' 
+                              : 'border-purple-500/30 hover:neon-glow-purple'
+                          }`}> 
+                            <div className="flex items-start gap-4">
+                              <div className="text-2xl">{comment.avatar}</div>
+                              <div className="flex-1">
+                                <div className="flex justify-between items-start mb-2">
+                                  <div className={`font-cyber tracking-wide ${
+                                    comment.isUser ? 'text-cyan-400' : 'text-purple-400'
+                                  }`}>
+                                    {comment.username} {comment.isUser && '(You)'}
+                                  </div>
+                                  <div className="text-xs text-gray-400 font-cyber">
+                                    {formatDate(comment.timestamp)}
+                                  </div>
+                                </div>
+                                <p className="text-gray-200 leading-relaxed">{comment.text}</p>
+                              </div>
+                            </div>
+                          </div>
                         ))}
                       </div>
                     ) : (
-                      <div className={`p-4 text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>No comments yet. Be the first to share your thoughts!</div>
+                      <div className="p-8 text-center">
+                        <MessageSquare className="w-16 h-16 text-gray-500 mx-auto mb-4 animate-pulse" />
+                        <p className="text-gray-400 font-cyber tracking-wide">No comments yet. Be the first to share your thoughts!</p>
+                      </div>
                     )}
                   </div>
-                  <div className="p-5 border-t border-gray-700">
-                    <div className="flex gap-2">
-                      <textarea value={newComment} onChange={e => setNewComment(e.target.value)} onKeyDown={handleCommentKeyDown} className={`flex-1 p-3 rounded-lg border ${darkMode ? 'border-gray-700 bg-gray-950 placeholder-gray-400' : 'border-gray-300 bg-white placeholder-gray-500'} focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none`} placeholder="Add your comment..." rows={2} />
-                      <button onClick={handleAddComment} disabled={!newComment.trim()} className={`self-end p-3 rounded-lg font-medium transition ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white disabled:opacity-50 disabled:cursor-not-allowed`}><FiSend /></button>
+                  
+                  <div className="p-8 border-t border-purple-500/20 relative z-10">
+                    <div className="flex gap-4">
+                      <textarea 
+                        value={newComment} 
+                        onChange={e => setNewComment(e.target.value)} 
+                        onKeyDown={handleCommentKeyDown} 
+                        className="flex-1 p-4 rounded-xl glass border border-purple-500/30 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none font-cyber custom-scrollbar" 
+                        placeholder="Add your comment..." 
+                        rows={3} 
+                      />
+                      <button 
+                        onClick={handleAddComment} 
+                        disabled={!newComment.trim()} 
+                        className="self-end btn-holographic px-6 py-4 font-cyber tracking-wider disabled:opacity-50 disabled:cursor-not-allowed hover-lift"
+                      >
+                        <FiSend className="w-5 h-5" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -484,51 +661,114 @@ const AskPeopleContent = () => {
             </section>
           )}
 
-          {/* Saved Tab */}
+          {/* Enhanced Saved Tab */}
           {activeTab === 'saved' && (
             <section className="flex flex-col gap-8">
-              <div className={`rounded-2xl shadow-xl border ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} p-6 mb-2`}>
+              <div className="glass-strong border border-cyan-500/30 rounded-2xl p-6 hover-glow">
                 <div className="relative">
-                  <FiSearch className={`absolute left-4 top-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
-                  <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className={`w-full pl-12 pr-4 py-3 rounded-xl ${darkMode ? 'bg-gray-950 border-gray-800' : 'bg-white border-gray-300'} border focus:outline-none focus:ring-2 focus:ring-blue-500`} placeholder="Search saved questions..." />
+                  <FiSearch className="absolute left-4 top-4 text-cyan-400" />
+                  <input 
+                    type="text" 
+                    value={searchQuery} 
+                    onChange={e => setSearchQuery(e.target.value)} 
+                    className="w-full pl-12 pr-4 py-4 rounded-xl glass border border-cyan-500/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-cyber" 
+                    placeholder="Search saved questions..." 
+                  />
                 </div>
               </div>
+              
               {filteredQuestions.length > 0 ? (
-                <div className="grid gap-4">
+                <div className="grid gap-6">
                   {filteredQuestions.map(q => (
-                    <div key={q.id} className={`p-5 rounded-2xl border shadow ${darkMode ? 'border-gray-800 bg-gray-900 hover:bg-blue-950' : 'border-gray-200 bg-white hover:bg-blue-50'} transition cursor-pointer`} onClick={() => { setQuestion(q.question); setAiResponses(prev => prev.map(ai => { const savedAnswer = q.answers.find(a => a.aiName === ai.name); return { ...ai, answer: savedAnswer?.answer || "No response found", expanded: true }; })); setActiveTab('ask'); window.scrollTo(0,0); }}>
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="font-medium text-lg">{q.question}</h3>
-                        <span className={`text-xs px-2 py-1 rounded ${darkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>{new Date(q.timestamp).toLocaleDateString()}</span>
+                    <div 
+                      key={q.id} 
+                      className="glass-card border border-cyan-500/20 hover:border-cyan-500/40 rounded-2xl p-8 transition-all hover:neon-glow-cyan cursor-pointer hover-lift group" 
+                      onClick={() => { 
+                        setQuestion(q.question); 
+                        setAiResponses(prev => prev.map(ai => { 
+                          const savedAnswer = q.answers.find(a => a.aiName === ai.name); 
+                          return { 
+                            ...ai, 
+                            answer: savedAnswer?.answer || "No response found", 
+                            expanded: true 
+                          }; 
+                        })); 
+                        setActiveTab('ask'); 
+                        window.scrollTo(0,0); 
+                      }}
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <h3 className="font-display text-lg text-white group-hover:text-cyan-400 transition-colors">{q.question}</h3>
+                        <span className="px-3 py-1 rounded-full glass border border-cyan-500/30 text-xs text-cyan-400 font-cyber tracking-wider">
+                          {new Date(q.timestamp).toLocaleDateString()}
+                        </span>
                       </div>
-                      <div className={`prose ${darkMode ? 'prose-invert' : ''} max-w-none mt-3`}>
+                      <div className="text-sm text-gray-300 leading-relaxed">
                         <p className="line-clamp-2">{q.answers.map(a => `${a.aiName}: ${a.answer.split('\n')[0]}`).join(' • ')}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className={`p-8 text-center rounded-2xl ${darkMode ? 'bg-gray-900' : 'bg-blue-50'}`}> <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{searchQuery ? 'No matching saved questions found' : 'You have no saved questions yet'}</p> <button onClick={() => setActiveTab('ask')} className={`mt-4 px-4 py-2 rounded-xl ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white transition`}>Ask a Question</button> </div>
+                <div className="glass-card border border-gray-700 rounded-3xl p-16 text-center"> 
+                  <Brain className="w-16 h-16 text-gray-500 mx-auto mb-6 animate-pulse" />
+                  <p className="text-gray-400 font-cyber tracking-wide mb-6">
+                    {searchQuery ? 'No matching saved questions found' : 'You have no saved questions yet'}
+                  </p>
+                  <button 
+                    onClick={() => setActiveTab('ask')} 
+                    className="btn-holographic px-8 py-4 font-cyber tracking-wider hover-lift"
+                  >
+                    ASK A QUESTION
+                  </button>
+                </div>
               )}
             </section>
           )}
 
-          {/* Trending Tab */}
+          {/* Enhanced Trending Tab */}
           {activeTab === 'trending' && (
             <section className="flex flex-col gap-8">
-              <div className={`rounded-2xl shadow-xl border ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} p-6 mb-2`}>
-                <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><FiTrendingUp className="text-blue-400" /> Trending in Crypto</h2>
-                <div className="grid gap-3">
-                  {[{ topic: "Bitcoin Halving 2025 Analysis", posts: 1423, hot: true },{ topic: "Ethereum Dencun Upgrade Impact", posts: 892, hot: true },{ topic: "Solana vs Polygon: Layer 1 Showdown", posts: 765 },{ topic: "NFT Market Recovery Signs", posts: 621 },{ topic: "DeFi Yield Farming Strategies", posts: 587 },{ topic: "CBDC Developments Worldwide", posts: 432 },{ topic: "Meme Coin Season Predictions", posts: 398 }].map((item, i) => (
-                    <div key={i} className={`p-4 rounded-xl cursor-pointer transition ${darkMode ? 'bg-blue-950 hover:bg-blue-900' : 'bg-blue-50 hover:bg-blue-100'} flex justify-between items-center`} onClick={() => { setQuestion(item.topic); setActiveTab('ask'); }}>
-                      <div className="flex items-center gap-3">
-                        <span className={`font-bold ${i < 3 ? 'text-lg' : 'text-md'} ${i < 3 ? 'text-blue-400' : darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{i + 1}</span>
-                        <div className="flex items-center gap-2">
-                          <span>{item.topic}</span>
-                          {item.hot && (<span className="px-2 py-0.5 text-xs rounded-full bg-red-500 text-white">Hot</span>)}
+              <div className="glass-strong border border-green-500/30 rounded-2xl p-8 hover-glow">
+                <h2 className="text-2xl font-display mb-6 flex items-center gap-3">
+                  <FiTrendingUp className="text-green-400 animate-pulse" /> 
+                  Trending in Crypto
+                </h2>
+                
+                <div className="grid gap-4">
+                  {[
+                    { topic: "Bitcoin Halving 2025 Analysis", posts: 1423, hot: true },
+                    { topic: "Ethereum Dencun Upgrade Impact", posts: 892, hot: true },
+                    { topic: "Solana vs Polygon: Layer 1 Showdown", posts: 765 },
+                    { topic: "NFT Market Recovery Signs", posts: 621 },
+                    { topic: "DeFi Yield Farming Strategies", posts: 587 },
+                    { topic: "CBDC Developments Worldwide", posts: 432 },
+                    { topic: "Meme Coin Season Predictions", posts: 398 }
+                  ].map((item, i) => (
+                    <div 
+                      key={i} 
+                      className="glass-card border border-green-500/20 hover:border-green-500/40 rounded-xl p-6 cursor-pointer transition-all hover:neon-glow-cyan hover-lift flex justify-between items-center group" 
+                      onClick={() => { 
+                        setQuestion(item.topic); 
+                        setActiveTab('ask'); 
+                      }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className={`font-bold font-cyber text-lg ${
+                          i < 3 ? 'text-cyan-400' : 'text-gray-400'
+                        }`}>
+                          {i + 1}
+                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-white group-hover:text-cyan-400 transition-colors">{item.topic}</span>
+                          {item.hot && (
+                            <span className="px-2 py-1 text-xs rounded-full bg-red-500/20 border border-red-500/30 text-red-400 font-cyber animate-pulse">
+                              HOT
+                            </span>
+                          )}
                         </div>
                       </div>
-                      <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{item.posts} discussions</span>
+                      <span className="text-sm text-gray-400 font-cyber">{item.posts} discussions</span>
                     </div>
                   ))}
                 </div>
@@ -538,20 +778,66 @@ const AskPeopleContent = () => {
         </main>
       </div>
 
-      {/* Help Modal */}
+      {/* Enhanced Help Modal */}
       {showHelp && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className={`p-6 rounded-2xl max-w-2xl w-full ${darkMode ? 'bg-gray-900' : 'bg-white'} shadow-xl`}>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold flex items-center gap-2"><FiHelpCircle className="text-blue-400" /> How to use CryptoChat</h2>
-              <button onClick={toggleHelp} className={`p-2 rounded-full ${darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-200'}`}> <FiX /> </button>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div className="glass-strong border-2 border-cyan-500/30 rounded-3xl p-8 max-w-2xl w-full neon-glow-purple relative overflow-hidden group">
+            {/* Holographic overlay */}
+            <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+            
+            <div className="relative z-10">
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-display flex items-center gap-3">
+                  <FiHelpCircle className="text-cyan-400 animate-pulse" /> 
+                  How to use CryptoChat
+                </h2>
+                <button 
+                  onClick={toggleHelp} 
+                  className="p-3 rounded-full glass border border-cyan-500/30 hover:neon-glow-cyan transition-all"
+                > 
+                  <FiX className="w-5 h-5 text-cyan-400" /> 
+                </button>
+              </div>
+              
+              <div className="space-y-8">
+                <div className="flex gap-6">
+                  <div className="w-16 h-16 glass-card rounded-2xl flex items-center justify-center text-2xl border border-cyan-500/30">
+                    <FiMessageSquare className="text-cyan-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-white mb-2">Ask Questions</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">Type your crypto-related question and get instant expert answers with key points.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-6">
+                  <div className="w-16 h-16 glass-card rounded-2xl flex items-center justify-center text-2xl border border-purple-500/30">
+                    <FiBookmark className="text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-white mb-2">Save Knowledge</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">Bookmark important answers to your personal collection for quick access later.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-6">
+                  <div className="w-16 h-16 glass-card rounded-2xl flex items-center justify-center text-2xl border border-green-500/30">
+                    <FiTrendingUp className="text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-white mb-2">Stay Updated</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">Check trending topics to see what the crypto community is discussing right now.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <button 
+                onClick={toggleHelp} 
+                className="mt-8 w-full btn-holographic py-4 font-cyber tracking-wider hover-lift"
+              >
+                GOT IT!
+              </button>
             </div>
-            <div className="space-y-6">
-              <div className="flex gap-4"><div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${darkMode ? 'bg-gray-800' : 'bg-blue-100'} text-blue-400`}><FiMessageSquare /></div><div><h3 className="font-medium mb-1">Ask Questions</h3><p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Type your crypto-related question and get instant expert answers with key points.</p></div></div>
-              <div className="flex gap-4"><div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${darkMode ? 'bg-gray-800' : 'bg-purple-100'} text-purple-400`}><FiBookmark /></div><div><h3 className="font-medium mb-1">Save Knowledge</h3><p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Bookmark important answers to your personal collection for quick access later.</p></div></div>
-              <div className="flex gap-4"><div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${darkMode ? 'bg-gray-800' : 'bg-green-100'} text-green-400`}><FiTrendingUp /></div><div><h3 className="font-medium mb-1">Stay Updated</h3><p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Check trending topics to see what the crypto community is discussing right now.</p></div></div>
-            </div>
-            <button onClick={toggleHelp} className={`mt-6 w-full py-3 rounded-xl font-medium ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white transition`}>Got it!</button>
           </div>
         </div>
       )}
