@@ -330,51 +330,28 @@ const AskPeopleContent = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-gray-100 relative overflow-hidden">
-      {/* Enhanced background */}
-      <div className="absolute inset-0 -z-20">
-        <div className="cyber-grid opacity-10" />
-        <div className="hex-pattern opacity-5" />
-        <div className="circuit-pattern opacity-3" />
-      </div>
-      
-      {/* Floating particles */}
-      <div className="absolute inset-0 -z-10">
-        {Array.from({ length: 12 }, (_, i) => (
-          <div
-            key={i}
-            className="blockchain-node"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`
-            }}
-          />
-        ))}
-      </div>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-950 to-black text-gray-100 relative">
 
       {/* Enhanced Hero Section */}
-      <section className="w-full px-8 py-16 flex flex-col items-center justify-center glass border-b border-cyan-500/20 relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" />
+      <section className="w-full px-8 py-16 flex flex-col items-center justify-center bg-gray-900/50 backdrop-blur-sm border-b border-gray-700 relative">
         
-        <div className="max-w-5xl text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-display text-holographic text-glow mb-6">
+        <div className="max-w-5xl text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ask the Crypto Experts
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
             Get instant, expert answers from AI specialists in crypto, DeFi, blockchain, and regulations. 
-            <span className="text-cyan-400 font-semibold">Save, discuss, and explore</span> trending topics—all in one place.
+            <span className="text-blue-400 font-semibold">Save, discuss, and explore</span> trending topics—all in one place.
           </p>
           
           <div className="flex flex-wrap gap-4 justify-center">
-            <span className="px-6 py-3 rounded-full glass border border-cyan-500/30 text-cyan-400 font-cyber text-sm tracking-wider">
+            <span className="px-6 py-3 rounded-full bg-gray-800/50 border border-blue-400/50 text-blue-400 font-semibold text-sm tracking-wider">
               LIVE AI EXPERTS
             </span>
-            <span className="px-6 py-3 rounded-full glass border border-purple-500/30 text-purple-400 font-cyber text-sm tracking-wider">
+            <span className="px-6 py-3 rounded-full bg-gray-800/50 border border-purple-400/50 text-purple-400 font-semibold text-sm tracking-wider">
               COMMUNITY Q&A
             </span>
-            <span className="px-6 py-3 rounded-full glass border border-green-500/30 text-green-400 font-cyber text-sm tracking-wider">
+            <span className="px-6 py-3 rounded-full bg-gray-800/50 border border-green-400/50 text-green-400 font-semibold text-sm tracking-wider">
               SAVE & DISCUSS
             </span>
           </div>
@@ -383,24 +360,19 @@ const AskPeopleContent = () => {
 
       <div className="flex flex-1 w-full max-w-7xl mx-auto gap-8 px-8">
         {/* Enhanced Sidebar */}
-        <aside className="hidden md:flex flex-col gap-6 w-64 py-8 px-6 glass-strong border-r border-cyan-500/20 relative">
-          {/* Animated border */}
-          <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent animate-pulse" />
+        <aside className="hidden md:flex flex-col gap-6 w-64 py-8 px-6 bg-gray-900/80 backdrop-blur-sm border-r border-gray-700 relative">
           
-          <Link href="/" className="flex items-center gap-3 mb-8 group">
-            <div className="relative">
-              <span className="w-4 h-4 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full animate-pulse block"></span>
-              <div className="absolute inset-0 bg-cyan-400/30 rounded-full blur-lg animate-pulse" />
-            </div>
-            <span className="font-display text-xl tracking-wide text-holographic group-hover:text-glow">Sage AI</span>
+          <Link href="/" className="flex items-center gap-3 mb-8">
+            <span className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full block"></span>
+            <span className="font-bold text-xl tracking-wide text-white">Sage AI</span>
           </Link>
           
           <button 
             onClick={() => setActiveTab('ask')} 
-            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-semibold tracking-wider transition-all ${
               activeTab==='ask' 
-                ? 'btn-holographic border-2 border-cyan-500/50 neon-glow-cyan' 
-                : 'glass border border-gray-700 hover:border-cyan-500/30 text-gray-300 hover:text-white'
+                ? 'bg-blue-600 text-white border border-blue-500' 
+                : 'bg-gray-800/50 border border-gray-700 hover:border-blue-500 text-gray-300 hover:text-white'
             }`}
           > 
             <FiMessageSquare className="w-5 h-5" /> ASK
@@ -408,10 +380,10 @@ const AskPeopleContent = () => {
           
           <button 
             onClick={() => setActiveTab('saved')} 
-            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-semibold tracking-wider transition-all ${
               activeTab==='saved' 
-                ? 'btn-holographic border-2 border-purple-500/50 neon-glow-purple' 
-                : 'glass border border-gray-700 hover:border-purple-500/30 text-gray-300 hover:text-white'
+                ? 'bg-purple-600 text-white border border-purple-500' 
+                : 'bg-gray-800/50 border border-gray-700 hover:border-purple-500 text-gray-300 hover:text-white'
             }`}
           > 
             <FiBookmark className="w-5 h-5" /> SAVED
@@ -419,19 +391,19 @@ const AskPeopleContent = () => {
           
           <button 
             onClick={() => setActiveTab('trending')} 
-            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+            className={`flex items-center gap-4 px-6 py-4 rounded-xl font-semibold tracking-wider transition-all ${
               activeTab==='trending' 
-                ? 'btn-holographic border-2 border-green-500/50 neon-glow-cyan' 
-                : 'glass border border-gray-700 hover:border-green-500/30 text-gray-300 hover:text-white'
+                ? 'bg-green-600 text-white border border-green-500' 
+                : 'bg-gray-800/50 border border-gray-700 hover:border-green-500 text-gray-300 hover:text-white'
             }`}
           > 
             <FiTrendingUp className="w-5 h-5" /> TRENDING
           </button>
           
-          <div className="mt-auto pt-8 border-t border-cyan-500/20 flex flex-col gap-3">
+          <div className="mt-auto pt-8 border-t border-gray-700 flex flex-col gap-3">
             <button 
               onClick={toggleHelp} 
-              className="flex items-center gap-3 px-6 py-3 rounded-lg glass border border-gray-700 hover:border-cyan-500/30 hover:glass-strong transition-all font-cyber"
+              className="flex items-center gap-3 px-6 py-3 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-blue-500 transition-all font-semibold"
             > 
               <FiHelpCircle className="w-4 h-4" /> HELP
             </button>
@@ -443,8 +415,8 @@ const AskPeopleContent = () => {
           {/* Enhanced Notifications */}
           <div className="fixed top-8 right-8 z-50 space-y-3">
             {notifications.map(n => (
-              <div key={n.id} className="glass-card border border-cyan-500/30 rounded-xl p-4 neon-glow-cyan animate-slide-up">
-                <span className="text-cyan-400 font-cyber text-sm tracking-wide">{n.message}</span>
+              <div key={n.id} className="bg-gray-800/95 backdrop-blur-sm border border-blue-500/50 rounded-xl p-4 shadow-lg animate-slide-up">
+                <span className="text-blue-400 font-semibold text-sm tracking-wide">{n.message}</span>
               </div>
             ))}
           </div>
@@ -453,11 +425,9 @@ const AskPeopleContent = () => {
           {activeTab === 'ask' && (
             <section className="flex flex-col gap-10">
               {/* Enhanced Question Input */}
-              <div className="glass-strong border-2 border-cyan-500/30 rounded-3xl p-8 flex flex-col gap-6 hover:neon-glow-purple transition-all hover-lift relative overflow-hidden group"> 
-                {/* Holographic overlay */}
-                <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-blue-500 rounded-3xl p-8 flex flex-col gap-6 transition-all relative">
                 
-                <div className="flex flex-col md:flex-row gap-4 items-center relative z-10">
+                <div className="flex flex-col md:flex-row gap-4 items-center">
                   <input 
                     type="text" 
                     value={username} 
@@ -465,7 +435,7 @@ const AskPeopleContent = () => {
                       setUsername(e.target.value); 
                       localStorage.setItem('cryptoAssistantUsername', e.target.value); 
                     }} 
-                    className="w-40 p-4 rounded-xl glass border border-purple-500/30 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-cyber" 
+                    className="w-40 p-4 rounded-xl bg-gray-900 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
                     placeholder="Your name" 
                   />
                   
@@ -477,7 +447,7 @@ const AskPeopleContent = () => {
                       setError(null); 
                     }} 
                     onKeyDown={handleKeyDown} 
-                    className="flex-1 p-4 rounded-xl glass border border-cyan-500/30 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 font-cyber" 
+                    className="flex-1 p-4 rounded-xl bg-gray-900 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
                     placeholder="Ask anything about crypto..." 
                     disabled={loading} 
                   />
@@ -485,12 +455,12 @@ const AskPeopleContent = () => {
                   <button 
                     onClick={handleAsk} 
                     disabled={loading || !question.trim()} 
-                    className={`p-4 rounded-xl font-cyber tracking-wider transition-all hover-lift ${
+                    className={`p-4 rounded-xl font-semibold tracking-wider transition-all ${
                       loading 
-                        ? 'glass border border-gray-600 cursor-not-allowed opacity-70' 
+                        ? 'bg-gray-800 border border-gray-600 cursor-not-allowed opacity-70' 
                         : !question.trim() 
-                          ? 'glass border border-gray-700 cursor-not-allowed opacity-50' 
-                          : 'btn-holographic hover:neon-glow-cyan'
+                          ? 'bg-gray-800 border border-gray-700 cursor-not-allowed opacity-50' 
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
                     } flex items-center justify-center`}
                   >
                     {loading ? (
