@@ -6,10 +6,9 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { Bot } from 'lucide-react';
+import { Bot, Shield, Code2, Zap, Brain, Cpu } from 'lucide-react';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -82,87 +81,175 @@ const ContractPageContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-purple-900 flex">
-      {/* Sidebar */}
-      <aside className="w-64 min-h-full flex flex-col items-center py-10 px-4 bg-gradient-to-b from-black/90 via-gray-900/80 to-purple-900/80 border-r border-gray-800 shadow-lg">
-        <Card className="w-full mb-8 bg-gradient-to-r from-blue-900/80 to-purple-900/80 border-none shadow-md">
-          <CardContent className="flex flex-col items-center py-6">
-            <Link href="/" className="flex items-center gap-2 mb-2">
-              <Bot className="w-8 h-8 text-purple-400" />
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-gray-300">Sage AI</span>
+    <div className="min-h-screen bg-black flex relative overflow-hidden">
+      {/* Enhanced background */}
+      <div className="absolute inset-0 -z-20">
+        <div className="cyber-grid opacity-10" />
+        <div className="hex-pattern opacity-5" />
+        <div className="circuit-pattern opacity-3" />
+      </div>
+      
+      {/* Floating particles */}
+      <div className="absolute inset-0 -z-10">
+        {Array.from({ length: 15 }, (_, i) => (
+          <div
+            key={i}
+            className="blockchain-node"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Enhanced Sidebar */}
+      <aside className="w-80 min-h-full flex flex-col items-center py-12 px-6 glass-strong border-r border-cyan-500/20 neon-glow-purple relative">
+        {/* Animated border */}
+        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent animate-pulse" />
+        
+        <Card className="w-full mb-12 glass-card border-2 border-cyan-500/30 hover:neon-glow-cyan transition-all">
+          <CardContent className="flex flex-col items-center py-8">
+            <Link href="/" className="flex items-center gap-3 mb-4 group">
+              <div className="relative">
+                <Bot className="w-10 h-10 text-cyan-400 group-hover:animate-pulse" />
+                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all" />
+              </div>
+              <span className="text-2xl font-display text-holographic group-hover:text-glow">Sage AI</span>
             </Link>
-            <span className="text-xs text-gray-400 tracking-wide">Smart Contracts</span>
+            <span className="text-xs text-cyan-400 font-cyber tracking-wider">SMART CONTRACTS</span>
           </CardContent>
         </Card>
-        <div className="flex flex-col gap-2 w-full flex-1">
+        
+        <div className="flex flex-col gap-4 w-full flex-1">
           <Button
-            variant={sidebarTab === 'generator' ? 'secondary' : 'ghost'}
-            className={`w-full justify-start px-6 py-3 rounded-lg font-semibold text-base transition-all duration-150 ${sidebarTab === 'generator' ? 'ring-2 ring-purple-500 bg-gradient-to-r from-purple-800/80 via-blue-800/80 to-gray-700/80 text-white' : ''}`}
+            variant={sidebarTab === 'generator' ? 'default' : 'ghost'}
+            className={`w-full justify-start px-8 py-4 rounded-2xl font-cyber text-base transition-all duration-300 hover-lift ${
+              sidebarTab === 'generator' 
+                ? 'btn-holographic border-2 border-cyan-500/50 neon-glow-cyan' 
+                : 'glass border border-gray-700 hover:border-cyan-500/30'
+            }`}
             onClick={() => setSidebarTab('generator')}
           >
-            Generator
+            <Code2 className="w-5 h-5 mr-3" />
+            GENERATOR
           </Button>
+          
           <Button
-            variant={sidebarTab === 'auditor' ? 'secondary' : 'ghost'}
-            className={`w-full justify-start px-6 py-3 rounded-lg font-semibold text-base transition-all duration-150 ${sidebarTab === 'auditor' ? 'ring-2 ring-purple-500 bg-gradient-to-r from-purple-800/80 via-blue-800/80 to-gray-700/80 text-white' : ''}`}
+            variant={sidebarTab === 'auditor' ? 'default' : 'ghost'}
+            className={`w-full justify-start px-8 py-4 rounded-2xl font-cyber text-base transition-all duration-300 hover-lift ${
+              sidebarTab === 'auditor' 
+                ? 'btn-holographic border-2 border-purple-500/50 neon-glow-purple' 
+                : 'glass border border-gray-700 hover:border-purple-500/30'
+            }`}
             onClick={() => setSidebarTab('auditor')}
           >
-            Auditor
+            <Shield className="w-5 h-5 mr-3" />
+            AUDITOR
           </Button>
         </div>
-        {/* Sidebar short content at the bottom */}
+        
+        {/* Enhanced sidebar content */}
         <div className="w-full mt-auto">
           {sidebarTab === 'generator' && (
-            <div className="mb-4 text-xs text-gray-300 bg-gray-900/60 rounded p-3">
-              <b>How it works:</b>
-              <ul className="list-disc ml-4 mt-1">
-                <li>Select blockchain & contract type</li>
-                <li>Generate secure code instantly</li>
-                <li>Copy, deploy, or audit</li>
+            <div className="glass-card p-6 rounded-2xl border border-cyan-500/20 hover-glow">
+              <h4 className="font-display text-cyan-400 mb-4 flex items-center gap-2">
+                <Brain className="w-5 h-5 animate-pulse" />
+                How it works:
+              </h4>
+              <ul className="space-y-2 text-xs text-gray-300 font-cyber">
+                <li className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full mt-1 animate-pulse" />
+                  Select blockchain & contract type
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full mt-1 animate-pulse" />
+                  Generate secure code instantly
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full mt-1 animate-pulse" />
+                  Copy, deploy, or audit
+                </li>
               </ul>
-              <b className="block mt-2">Templates:</b>
-              <ul className="list-disc ml-4">
-                <li>ERC20, ERC721, Crowdsale</li>
-              </ul>
+              
+              <h4 className="font-display text-purple-400 mt-6 mb-3 flex items-center gap-2">
+                <Zap className="w-4 h-4 animate-pulse" />
+                Templates:
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {['ERC20', 'ERC721', 'Crowdsale'].map((template) => (
+                  <span key={template} className="px-2 py-1 rounded-full glass border border-purple-500/30 text-xs text-purple-400 font-cyber">
+                    {template}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
+          
           {sidebarTab === 'auditor' && (
-            <div className="mb-4 text-xs text-gray-300 bg-gray-900/60 rounded p-3">
-              <b>Security Tips:</b>
-              <ul className="list-disc ml-4 mt-1">
-                <li>Audit before mainnet</li>
-                <li>Use OpenZeppelin libs</li>
-                <li>Test on testnets</li>
+            <div className="glass-card p-6 rounded-2xl border border-purple-500/20 hover-glow">
+              <h4 className="font-display text-purple-400 mb-4 flex items-center gap-2">
+                <Shield className="w-5 h-5 animate-pulse" />
+                Security Tips:
+              </h4>
+              <ul className="space-y-2 text-xs text-gray-300 font-cyber">
+                <li className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-red-400 rounded-full mt-1 animate-pulse" />
+                  Audit before mainnet deployment
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full mt-1 animate-pulse" />
+                  Use OpenZeppelin libraries
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full mt-1 animate-pulse" />
+                  Test extensively on testnets
+                </li>
               </ul>
-              <b className="block mt-2">Common Risks:</b>
-              <ul className="list-disc ml-4">
-                <li>Reentrancy, overflows</li>
-                <li>Unprotected admin</li>
-              </ul>
+              
+              <h4 className="font-display text-red-400 mt-6 mb-3 flex items-center gap-2">
+                <Shield className="w-4 h-4 animate-pulse" />
+                Common Risks:
+              </h4>
+              <div className="space-y-1 text-xs text-gray-400 font-cyber">
+                <div>• Reentrancy attacks</div>
+                <div>• Integer overflows</div>
+                <div>• Unprotected admin functions</div>
+              </div>
             </div>
           )}
         </div>
       </aside>
-      {/* Main Content */}
-      <main className="flex-1 px-0 sm:px-12 py-12 max-w-5xl mx-auto">
-        <h1 className="text-4xl font-extrabold mb-10 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-gray-300 drop-shadow-lg">
+
+      {/* Enhanced Main Content */}
+      <main className="flex-1 px-8 py-12 max-w-6xl mx-auto">
+        <h1 className="text-5xl md:text-6xl font-display mb-16 text-center text-holographic text-glow">
           Smart Contract Generator & Auditor
         </h1>
+        
         {sidebarTab === 'generator' && (
-          <Card className="mb-10 bg-gradient-to-br from-black/80 via-gray-900/80 to-purple-900/70 border border-purple-800 shadow-xl">
-            <CardHeader>
-              <CardTitle className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-gray-300">Smart Contract Generator</CardTitle>
+          <Card className="mb-12 glass-strong border-2 border-cyan-500/30 hover:neon-glow-cyan transition-all rounded-3xl overflow-hidden group">
+            {/* Holographic overlay */}
+            <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+            
+            <CardHeader className="relative z-10">
+              <CardTitle className="text-3xl font-display text-holographic flex items-center gap-3">
+                <Code2 className="w-8 h-8 text-cyan-400 animate-pulse" />
+                Smart Contract Generator
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              {/* Controls */}
-              <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+            
+            <CardContent className="relative z-10">
+              {/* Enhanced Controls */}
+              <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                 <div>
-                  <label htmlFor="chain" className="block mb-1 font-semibold text-purple-400">Blockchain</label>
+                  <label htmlFor="chain" className="block mb-3 font-display text-cyan-400 text-lg">Blockchain</label>
                   <select
                     id="chain"
                     value={selectedChain}
                     onChange={(e) => setSelectedChain(e.target.value)}
-                    className="w-full rounded border border-gray-700 bg-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full rounded-xl border border-cyan-500/30 glass px-4 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-cyber text-white"
                   >
                     <option>Ethereum</option>
                     <option>Polygon</option>
@@ -176,12 +263,12 @@ const ContractPageContent = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="contractType" className="block mb-1 font-semibold text-purple-400">Contract Type</label>
+                  <label htmlFor="contractType" className="block mb-3 font-display text-purple-400 text-lg">Contract Type</label>
                   <select
                     id="contractType"
                     value={contractType}
                     onChange={(e) => setContractType(e.target.value)}
-                    className="w-full rounded border border-gray-700 bg-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full rounded-xl border border-purple-500/30 glass px-4 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 font-cyber text-white"
                   >
                     <option>ERC20</option>
                     <option>ERC721</option>
@@ -193,126 +280,198 @@ const ContractPageContent = () => {
                     <option>SomniaBlockchainCustom</option>
                   </select>
                 </div>
+                
                 <div className="flex items-end">
                   <Button
                     onClick={handleGenerate}
                     disabled={isGenerating}
-                    className="w-full flex items-center justify-center gap-2 rounded font-semibold text-white transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 h-[48px]"
-                    style={{marginTop: 0}}
+                    className="w-full btn-holographic font-bold text-lg py-6 hover-lift group"
                   >
                     {isGenerating ? (
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                      </svg>
+                      <span className="flex items-center gap-3">
+                        <div className="loading-dots">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                        GENERATING...
+                      </span>
                     ) : (
-                      <ClipboardIcon className="h-5 w-5" />
+                      <span className="flex items-center gap-3">
+                        <Zap className="w-5 h-5 group-hover:animate-pulse" />
+                        GENERATE
+                      </span>
                     )}
-                    Generate
                   </Button>
                 </div>
               </section>
 
-              {/* Generated Code */}
-              <section className="mb-6 relative">
-                <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-2xl font-semibold">Generated Smart Contract</h2>
+              {/* Enhanced Generated Code */}
+              <section className="mb-8 relative">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-display text-white flex items-center gap-3">
+                    <Code2 className="w-6 h-6 text-cyan-400 animate-pulse" />
+                    Generated Smart Contract
+                  </h2>
                   <button
                     onClick={() => copyToClipboard(generatedCode, setCopyGenCode)}
                     disabled={!generatedCode}
-                    className="flex items-center gap-1 text-blue-400 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
-                    title="Copy generated code"
+                    className="flex items-center gap-2 btn-cyber px-4 py-2 disabled:opacity-40 disabled:cursor-not-allowed hover-lift"
                   >
-                    {copyGenCode ? <CheckIcon className="h-5 w-5" /> : <ClipboardIcon className="h-5 w-5" />}
-                    Copy
+                    {copyGenCode ? (
+                      <>
+                        <CheckIcon className="h-5 w-5 text-green-400" />
+                        <span className="font-cyber">COPIED</span>
+                      </>
+                    ) : (
+                      <>
+                        <ClipboardIcon className="h-5 w-5" />
+                        <span className="font-cyber">COPY</span>
+                      </>
+                    )}
                   </button>
                 </div>
+                
                 {generatedCode ? (
-                  <SyntaxHighlighter
-                    language="solidity"
-                    style={oneDark}
-                    customStyle={{
-                      borderRadius: '0.375rem',
-                      maxHeight: '400px',
-                      overflowY: 'auto',
-                      backgroundColor: '#000000',
-                    }}
-                  >
-                    {generatedCode}
-                  </SyntaxHighlighter>
+                  <div className="glass-strong rounded-2xl border border-cyan-500/30 overflow-hidden hover-glow">
+                    <SyntaxHighlighter
+                      language="solidity"
+                      style={oneDark}
+                      customStyle={{
+                        borderRadius: '0',
+                        maxHeight: '500px',
+                        overflowY: 'auto',
+                        backgroundColor: 'transparent',
+                        padding: '2rem',
+                        fontSize: '14px',
+                      }}
+                      className="custom-scrollbar"
+                    >
+                      {generatedCode}
+                    </SyntaxHighlighter>
+                  </div>
                 ) : (
-                  <textarea
-                    readOnly
-                    placeholder="Generated smart contract will appear here"
-                    className="w-full min-h-[16rem] rounded border border-gray-700 p-4 font-mono text-sm sm:text-base resize-y bg-black text-gray-100"
-                  />
+                  <div className="glass border border-gray-700 rounded-2xl p-8 min-h-[400px] flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Brain className="w-16 h-16 text-gray-500 mx-auto animate-pulse" />
+                      <p className="text-gray-400 font-cyber tracking-wide">Generated smart contract will appear here</p>
+                    </div>
+                  </div>
                 )}
               </section>
             </CardContent>
           </Card>
         )}
+        
         {sidebarTab === 'auditor' && (
-          <Card className="mb-10 bg-gradient-to-br from-black/80 via-gray-900/80 to-purple-900/70 border border-purple-800 shadow-xl">
-            <CardHeader>
-              <CardTitle className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-gray-300">Audit Contract</CardTitle>
+          <Card className="mb-12 glass-strong border-2 border-purple-500/30 hover:neon-glow-purple transition-all rounded-3xl overflow-hidden group">
+            {/* Holographic overlay */}
+            <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+            
+            <CardHeader className="relative z-10">
+              <CardTitle className="text-3xl font-display text-holographic flex items-center gap-3">
+                <Shield className="w-8 h-8 text-purple-400 animate-pulse" />
+                Contract Security Auditor
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              {/* Audit Section */}
-              <section className="mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-2xl font-semibold">Audit Contract</h2>
+            
+            <CardContent className="relative z-10">
+              {/* Enhanced Audit Section */}
+              <section className="mb-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-display text-white flex items-center gap-3">
+                    <Shield className="w-6 h-6 text-purple-400 animate-pulse" />
+                    Audit Contract
+                  </h2>
                   <button
                     onClick={() => copyToClipboard(contractCode, setCopyAuditCode)}
                     disabled={!contractCode}
-                    className="flex items-center gap-1 text-blue-400 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
-                    title="Copy contract code"
+                    className="flex items-center gap-2 btn-cyber px-4 py-2 disabled:opacity-40 disabled:cursor-not-allowed hover-lift"
                   >
-                    {copyAuditCode ? <CheckIcon className="h-5 w-5" /> : <ClipboardIcon className="h-5 w-5" />}
-                    Copy
+                    {copyAuditCode ? (
+                      <>
+                        <CheckIcon className="h-5 w-5 text-green-400" />
+                        <span className="font-cyber">COPIED</span>
+                      </>
+                    ) : (
+                      <>
+                        <ClipboardIcon className="h-5 w-5" />
+                        <span className="font-cyber">COPY</span>
+                      </>
+                    )}
                   </button>
                 </div>
+                
                 <textarea
                   value={contractCode}
                   onChange={(e) => setContractCode(e.target.value)}
-                  placeholder="Paste smart contract code to audit"
-                  className="w-full min-h-[16rem] rounded border border-gray-700 p-4 font-mono text-sm sm:text-base resize-y bg-black text-gray-100"
+                  placeholder="Paste smart contract code to audit..."
+                  className="w-full min-h-[400px] rounded-2xl border border-purple-500/30 glass p-6 font-mono text-sm resize-y text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 custom-scrollbar"
                 />
               </section>
-              <Button
-                onClick={handleAudit}
-                disabled={isAuditing || !contractCode.trim()}
-                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 rounded bg-gradient-to-r from-purple-700 via-blue-700 to-gray-700 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:bg-purple-800 disabled:opacity-60 disabled:cursor-not-allowed mb-10"
-              >
-                {isAuditing ? (
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                  </svg>
-                ) : (
-                  'Run Audit'
-                )}
-              </Button>
-              {/* Audit Results */}
+              
+              <div className="flex justify-center mb-12">
+                <Button
+                  onClick={handleAudit}
+                  disabled={isAuditing || !contractCode.trim()}
+                  className="btn-holographic font-bold text-lg px-12 py-4 hover-lift group"
+                >
+                  {isAuditing ? (
+                    <span className="flex items-center gap-3">
+                      <div className="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      AUDITING...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-3">
+                      <Shield className="w-6 h-6 group-hover:animate-pulse" />
+                      RUN SECURITY AUDIT
+                    </span>
+                  )}
+                </Button>
+              </div>
+              
+              {/* Enhanced Audit Results */}
               <section>
-                <h3 className="text-xl font-semibold mb-4">Audit Results</h3>
+                <h3 className="text-2xl font-display mb-8 text-white flex items-center gap-3">
+                  <Shield className="w-6 h-6 text-green-400 animate-pulse" />
+                  Security Audit Results
+                </h3>
+                
                 {auditResults.length === 0 ? (
-                  <p className="text-gray-400 text-center">No issues found or audit not run yet.</p>
+                  <div className="glass border border-gray-700 rounded-2xl p-12 text-center">
+                    <Shield className="w-16 h-16 text-gray-500 mx-auto mb-4 animate-pulse" />
+                    <p className="text-gray-400 font-cyber tracking-wide">No security issues found or audit not run yet.</p>
+                  </div>
                 ) : (
-                  <ul className="space-y-4 max-h-[400px] overflow-y-auto">
+                  <ul className="space-y-6 max-h-[500px] overflow-y-auto custom-scrollbar">
                     {auditResults.map((result, i) => (
                       <li
                         key={i}
-                        className={`p-4 rounded border-l-4 shadow-sm ${
+                        className={`glass-card p-6 rounded-2xl border-l-4 hover-lift transition-all ${
                           result.severity === 'high'
-                            ? 'border-red-600 bg-red-900/30'
+                            ? 'border-red-500 bg-red-500/10 hover:neon-glow-pink'
                             : result.severity === 'medium'
-                            ? 'border-yellow-500 bg-yellow-900/30'
-                            : 'border-green-500 bg-green-900/30'
+                            ? 'border-yellow-500 bg-yellow-500/10 hover:neon-glow-cyan'
+                            : 'border-green-500 bg-green-500/10 hover:neon-glow-cyan'
                         }`}
                       >
-                        <strong className="block mb-1 text-lg capitalize">{result.severity}:</strong>
-                        <p className="font-semibold mb-1">{result.title}</p>
-                        <p className="text-sm text-gray-300 whitespace-pre-line">{result.description}</p>
+                        <div className="flex items-start gap-4">
+                          <div className={`px-3 py-1 rounded-full glass border text-xs font-cyber tracking-wider ${
+                            result.severity === 'high' ? 'border-red-500/30 text-red-400' :
+                            result.severity === 'medium' ? 'border-yellow-500/30 text-yellow-400' :
+                            'border-green-500/30 text-green-400'
+                          }`}>
+                            {result.severity.toUpperCase()}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-display text-white text-lg mb-2">{result.title}</h4>
+                            <p className="text-sm text-gray-300 whitespace-pre-line leading-relaxed">{result.description}</p>
+                          </div>
+                        </div>
                       </li>
                     ))}
                   </ul>
