@@ -5,39 +5,41 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden group',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden group',
   {
     variants: {
       variant: {
         default: 
-          'btn-web3 text-white shadow-glow-blue hover:scale-105 hover:shadow-glow-purple border border-accent/20',
+          'btn-holographic text-white hover-lift border border-cyan-500/20 hover:neon-glow-cyan',
         primary:
-          'bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 shadow-glow-blue hover:shadow-glow-purple hover:scale-105 border border-blue-500/30',
+          'bg-gradient-to-r from-cyan-600 via-purple-600 to-blue-700 text-white hover:from-cyan-700 hover:via-purple-700 hover:to-blue-800 neon-glow-cyan hover:neon-glow-purple hover-lift border border-cyan-500/30',
         secondary:
-          'glass text-foreground hover:glass-strong hover:scale-105 border border-white/10 hover:border-white/20',
+          'glass-card text-white hover:glass-strong hover-lift border border-white/20 hover:border-cyan-500/30 hover:neon-glow-cyan',
         outline:
-          'border-2 border-accent/50 bg-transparent text-accent hover:bg-accent/10 hover:border-accent hover:scale-105 hover:shadow-glow-blue backdrop-blur-sm',
+          'btn-cyber bg-transparent text-cyan-400 hover:text-white hover-lift backdrop-blur-sm',
         ghost: 
-          'text-muted-foreground hover:text-foreground hover:bg-accent/10 hover:scale-105 rounded-lg',
+          'text-gray-300 hover:text-white hover:glass hover-lift rounded-lg',
         destructive:
-          'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 hover:scale-105',
+          'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 neon-glow-pink hover-lift',
         success:
-          'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white hover:from-emerald-700 hover:to-emerald-800 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-105',
+          'bg-gradient-to-r from-green-600 to-emerald-700 text-white hover:from-green-700 hover:to-emerald-800 neon-glow-cyan hover-lift',
         link: 
-          'text-accent underline-offset-4 hover:underline hover:text-accent/80',
+          'text-cyan-400 underline-offset-4 hover:underline hover:text-cyan-300',
         gradient: 
-          'gradient-shift text-white hover:scale-105 shadow-glow-blue hover:shadow-glow-purple border border-accent/20',
+          'cyber-gradient text-white hover-lift neon-glow-cyan hover:neon-glow-purple border border-cyan-500/20',
         neon:
-          'bg-transparent border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-300 hover:shadow-glow-cyan hover:scale-105 font-mono uppercase tracking-wider',
+          'bg-transparent border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-300 hover:neon-glow-cyan hover-lift font-cyber uppercase tracking-wider',
+        holographic:
+          'btn-holographic text-white hover-lift border border-white/20 hover:border-cyan-500/30',
       },
       size: {
-        default: 'h-11 px-6 py-2.5 text-sm',
-        sm: 'h-9 px-4 py-2 text-xs',
-        lg: 'h-14 px-8 py-3 text-base',
-        xl: 'h-16 px-10 py-4 text-lg',
-        icon: 'h-11 w-11 p-0',
-        'icon-sm': 'h-9 w-9 p-0',
-        'icon-lg': 'h-14 w-14 p-0',
+        default: 'h-12 px-6 py-3 text-sm',
+        sm: 'h-10 px-4 py-2 text-xs',
+        lg: 'h-16 px-8 py-4 text-base',
+        xl: 'h-20 px-12 py-5 text-lg',
+        icon: 'h-12 w-12 p-0',
+        'icon-sm': 'h-10 w-10 p-0',
+        'icon-lg': 'h-16 w-16 p-0',
       },
     },
     defaultVariants: {
@@ -67,12 +69,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={loading || props.disabled}
         {...props}
       >
-        {/* Shimmer effect on hover */}
-        <div className="absolute inset-0 -top-2 -left-2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 w-0 group-hover:w-full transition-all duration-500 ease-out opacity-0 group-hover:opacity-100" />
+        {/* Enhanced shimmer effect */}
+        <div className="absolute inset-0 -top-2 -left-2 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 w-0 group-hover:w-full transition-all duration-700 ease-out opacity-0 group-hover:opacity-100" />
         
-        <div className="relative flex items-center gap-2">
+        {/* Holographic overlay */}
+        <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+        
+        <div className="relative flex items-center gap-2 z-10">
           {loading ? (
-            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            <div className="loading-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           ) : leftIcon ? (
             leftIcon
           ) : null}
