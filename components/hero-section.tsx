@@ -157,27 +157,7 @@ export function HeroSection() {
                 </span>
               </div>
             </div>
-            
-            {/* Feature highlights grid */}
-            <div className="grid grid-cols-2 gap-4 py-6">
-              <div className="flex items-center gap-4 glass-card rounded-xl p-4 hover-lift group">
-                <Brain className="w-6 h-6 text-cyan-400 group-hover:animate-pulse" />
-                <span className="text-sm font-medium">Neural Networks</span>
-              </div>
-              <div className="flex items-center gap-4 glass-card rounded-xl p-4 hover-lift group">
-                <Shield className="w-6 h-6 text-green-400 group-hover:animate-pulse" />
-                <span className="text-sm font-medium">Quantum Security</span>
-              </div>
-              <div className="flex items-center gap-4 glass-card rounded-xl p-4 hover-lift group">
-                <Zap className="w-6 h-6 text-yellow-400 group-hover:animate-pulse" />
-                <span className="text-sm font-medium">Instant Processing</span>
-              </div>
-              <div className="flex items-center gap-4 glass-card rounded-xl p-4 hover-lift group">
-                <Cpu className="w-6 h-6 text-purple-400 group-hover:animate-pulse" />
-                <span className="text-sm font-medium">AI-Powered</span>
-              </div>
-            </div>
-            
+
             {/* Enhanced CTA Buttons */}
             <div className="flex flex-wrap gap-6 pt-8">
               <Link href="/dashboard">
