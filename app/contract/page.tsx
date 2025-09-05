@@ -81,54 +81,34 @@ const ContractPageContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex relative overflow-hidden">
-      {/* Enhanced background */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-black flex relative">
+      {/* Subtle background */}
       <div className="absolute inset-0 -z-20">
-        <div className="cyber-grid opacity-10" />
-        <div className="hex-pattern opacity-5" />
-        <div className="circuit-pattern opacity-3" />
-      </div>
-      
-      {/* Floating particles */}
-      <div className="absolute inset-0 -z-10">
-        {Array.from({ length: 15 }, (_, i) => (
-          <div
-            key={i}
-            className="blockchain-node"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`
-            }}
-          />
-        ))}
+        <div className="cyber-grid opacity-3" />
       </div>
 
-      {/* Enhanced Sidebar */}
-      <aside className="w-80 min-h-full flex flex-col items-center py-12 px-6 glass-strong border-r border-cyan-500/20 neon-glow-purple relative">
-        {/* Animated border */}
-        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent animate-pulse" />
+      {/* Modern Sidebar */}
+      <aside className="w-80 min-h-full flex flex-col items-center py-12 px-6 bg-gray-900/80 backdrop-blur-sm border-r border-gray-700 relative">
         
-        <Card className="w-full mb-12 glass-card border-2 border-cyan-500/30 hover:neon-glow-cyan transition-all">
+        <Card className="w-full mb-12 bg-gray-800/50 border border-gray-700 hover:border-blue-500 transition-all">
           <CardContent className="flex flex-col items-center py-8">
             <Link href="/" className="flex items-center gap-3 mb-4 group">
               <div className="relative">
-                <Bot className="w-10 h-10 text-cyan-400 group-hover:animate-pulse" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all" />
+                <Bot className="w-10 h-10 text-blue-400" />
               </div>
-              <span className="text-2xl font-display text-holographic group-hover:text-glow">Sage AI</span>
+              <span className="text-2xl font-bold text-white">Sage AI</span>
             </Link>
-            <span className="text-xs text-cyan-400 font-cyber tracking-wider">SMART CONTRACTS</span>
+            <span className="text-xs text-blue-400 font-semibold tracking-wider">SMART CONTRACTS</span>
           </CardContent>
         </Card>
         
         <div className="flex flex-col gap-4 w-full flex-1">
           <Button
             variant={sidebarTab === 'generator' ? 'default' : 'ghost'}
-            className={`w-full justify-start px-8 py-4 rounded-2xl font-cyber text-base transition-all duration-300 hover-lift ${
+            className={`w-full justify-start px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 ${
               sidebarTab === 'generator' 
-                ? 'btn-holographic border-2 border-cyan-500/50 neon-glow-cyan' 
-                : 'glass border border-gray-700 hover:border-cyan-500/30'
+                ? 'bg-blue-600 text-white border-blue-500' 
+                : 'bg-gray-800/50 border border-gray-700 text-gray-300 hover:border-blue-500 hover:text-white'
             }`}
             onClick={() => setSidebarTab('generator')}
           >
@@ -138,10 +118,10 @@ const ContractPageContent = () => {
           
           <Button
             variant={sidebarTab === 'auditor' ? 'default' : 'ghost'}
-            className={`w-full justify-start px-8 py-4 rounded-2xl font-cyber text-base transition-all duration-300 hover-lift ${
+            className={`w-full justify-start px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 ${
               sidebarTab === 'auditor' 
-                ? 'btn-holographic border-2 border-purple-500/50 neon-glow-purple' 
-                : 'glass border border-gray-700 hover:border-purple-500/30'
+                ? 'bg-purple-600 text-white border-purple-500' 
+                : 'bg-gray-800/50 border border-gray-700 text-gray-300 hover:border-purple-500 hover:text-white'
             }`}
             onClick={() => setSidebarTab('auditor')}
           >
@@ -224,32 +204,30 @@ const ContractPageContent = () => {
 
       {/* Enhanced Main Content */}
       <main className="flex-1 px-8 py-12 max-w-6xl mx-auto">
-        <h1 className="text-5xl md:text-6xl font-display mb-16 text-center text-holographic text-glow">
+        <h1 className="text-4xl md:text-5xl font-bold mb-16 text-center text-white">
           Smart Contract Generator & Auditor
         </h1>
         
         {sidebarTab === 'generator' && (
-          <Card className="mb-12 glass-strong border-2 border-cyan-500/30 hover:neon-glow-cyan transition-all rounded-3xl overflow-hidden group">
-            {/* Holographic overlay */}
-            <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+          <Card className="mb-12 bg-gray-800/50 border border-gray-700 hover:border-blue-500 transition-all rounded-xl overflow-hidden">
             
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-3xl font-display text-holographic flex items-center gap-3">
-                <Code2 className="w-8 h-8 text-cyan-400 animate-pulse" />
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
+                <Code2 className="w-8 h-8 text-blue-400" />
                 Smart Contract Generator
               </CardTitle>
             </CardHeader>
             
-            <CardContent className="relative z-10">
+            <CardContent>
               {/* Enhanced Controls */}
               <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                 <div>
-                  <label htmlFor="chain" className="block mb-3 font-display text-cyan-400 text-lg">Blockchain</label>
+                  <label htmlFor="chain" className="block mb-3 font-semibold text-blue-400 text-lg">Blockchain</label>
                   <select
                     id="chain"
                     value={selectedChain}
                     onChange={(e) => setSelectedChain(e.target.value)}
-                    className="w-full rounded-xl border border-cyan-500/30 glass px-4 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-cyber text-white"
+                    className="w-full rounded-xl border border-gray-600 bg-gray-800 px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white"
                   >
                     <option>Ethereum</option>
                     <option>Polygon</option>
@@ -263,12 +241,12 @@ const ContractPageContent = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="contractType" className="block mb-3 font-display text-purple-400 text-lg">Contract Type</label>
+                  <label htmlFor="contractType" className="block mb-3 font-semibold text-purple-400 text-lg">Contract Type</label>
                   <select
                     id="contractType"
                     value={contractType}
                     onChange={(e) => setContractType(e.target.value)}
-                    className="w-full rounded-xl border border-purple-500/30 glass px-4 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 font-cyber text-white"
+                    className="w-full rounded-xl border border-gray-600 bg-gray-800 px-4 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white"
                   >
                     <option>ERC20</option>
                     <option>ERC721</option>
@@ -285,7 +263,7 @@ const ContractPageContent = () => {
                   <Button
                     onClick={handleGenerate}
                     disabled={isGenerating}
-                    className="w-full btn-holographic font-bold text-lg py-6 hover-lift group"
+                    className="w-full bg-blue-600 hover:bg-blue-700 font-bold text-lg py-6 text-white"
                   >
                     {isGenerating ? (
                       <span className="flex items-center gap-3">
