@@ -1,185 +1,66 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowLeft, TrendingUp, BarChart3, Zap, Brain, Target, DollarSign, Activity,
-  Sparkles, ChevronDown, RefreshCw, Star, Layers, Globe, AlertTriangle
-} from 'lucide-react';
+import { tradingAdvice } from '@/lib/ta';
+import { motion } from 'framer-motion';
+import { FaChartLine, FaWallet, FaHistory, FaCog } from 'react-icons/fa';
 import Link from 'next/link';
-import Head from 'next/head';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Bot } from 'lucide-react';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
-import { tradingAdvice } from '@/lib/ta';
 
-// Define interfaces for type safety
-interface Price {
-  symbol: string;
-  name: string;
-  price: string;
-  change: string;
-  changeType: 'positive' | 'negative';
-  marketCap: string;
-}
-
-interface Chain {
-  name: string;
-  icon: string;
-  color: string;
-}
-
-interface Sector {
-  name: string;
-  icon: string;
-  description: string;
-}
-
-interface Model {
-  label: string;
-  value: string;
-  description: string;
-  recommended?: boolean;
-}
-
-
-// Define mockPrices to fix TS2304
-const mockPrices: Price[] = [
-  { symbol: 'BTC', name: 'Bitcoin', price: '28,450.23', change: '+1.2%', changeType: 'positive', marketCap: '554.2B' },
-  { symbol: 'ETH', name: 'Ethereum', price: '1,850.15', change: '-0.4%', changeType: 'negative', marketCap: '222.4B' },
-  { symbol: 'SOL', name: 'Solana', price: '24.50', change: '+3.8%', changeType: 'positive', marketCap: '11.2B' },
-  { symbol: 'BNB', name: 'BNB', price: '320.10', change: '+0.7%', changeType: 'positive', marketCap: '48.7B' },
-  { symbol: 'ADA', name: 'Cardano', price: '0.485', change: '-2.1%', changeType: 'negative', marketCap: '17.2B' },
-  { symbol: 'AVAX', name: 'Avalanche', price: '12.45', change: '+5.2%', changeType: 'positive', marketCap: '5.1B' },
+const mockPrices = [
+  { symbol: 'BTC', price: '28,450.23', change: '+1.2%' },
+  { symbol: 'ETH', price: '1,850.15', change: '-0.4%' },
+  { symbol: 'SOL', price: '24.50', change: '+3.8%' },
+  { symbol: 'BNB', price: '320.10', change: '+0.7%' },
 ];
-
-const chains: Chain[] = [
-  { name: 'Ethereum', icon: '⟠', color: 'text-blue-400' },
-  { name: 'Solana', icon: '◎', color: 'text-purple-400' },
-  { name: 'Binance Smart Chain', icon: '🟡', color: 'text-yellow-400' },
-  { name: 'Polygon', icon: '⬟', color: 'text-purple-500' },
-  { name: 'Avalanche', icon: '🔺', color: 'text-red-400' },
-  { name: 'Arbitrum', icon: '🌀', color: 'text-cyan-400' },
-  { name: 'Optimism', icon: '🔴', color: 'text-red-500' },
-  { name: 'Somnia Blockchain', icon: '✦', color: 'text-green-400' },
-  { name: 'Other', icon: '⚡', color: 'text-gray-400' },
-];
-
-const sectors: Sector[] = [
-  { name: 'DeFi', icon: '🏦', description: 'Decentralized Finance' },
-  { name: 'NFT', icon: '🖼️', description: 'Non-Fungible Tokens' },
-  { name: 'GameFi', icon: '🎮', description: 'Gaming & Finance' },
-  { name: 'Infrastructure', icon: '🏗️', description: 'Blockchain Infrastructure' },
-  { name: 'DAO', icon: '🏛️', description: 'Decentralized Organizations' },
-  { name: 'SocialFi', icon: '👥', description: 'Social Finance' },
-  { name: 'Memecoin', icon: '🐸', description: 'Meme Cryptocurrencies' },
-  { name: 'AI', icon: '🤖', description: 'Artificial Intelligence' },
-  { name: 'Other', icon: '📊', description: 'Other Sectors' },
-];
-
-const models: Model[] = [
-  { 
-    label: 'LLaMA 3.3-70B', 
-    value: 'llama-3.3-70b-versatile',
-    description: 'Most powerful model for complex analysis',
-    recommended: true
-  },
-  { 
-    label: 'Gemma-9B', 
-    value: 'gemma2-9b-it',
-    description: 'Fast and efficient for quick insights'
-  },
-  { 
-    label: 'Kimi K2', 
-    value: 'moonshotai/kimi-k2-instruct',
-    description: 'Specialized in market analysis'
-  },
-];
-
-// Client-only AnimatedBackground component to avoid hydration mismatch
-const AnimatedBackground = () => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) return null;
-
-  return (
-    <div className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5" />
-      {Array.from({ length: 12 }, (_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full bg-gradient-to-r from-cyan-400/10 to-purple-400/10 blur-xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -100, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: Math.random() * 10 + 15,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          style={{
-            width: `${Math.random() * 200 + 100}px`,
-            height: `${Math.random() * 200 + 100}px`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-        />
-      ))}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
-    </div>
-  );
-};
 
 const TradeAssistantContent = () => {
-  const [token, setToken] = useState<string>('');
-  const [chain, setChain] = useState<string>('');
-  const [sector, setSector] = useState<string>('');
-  const [model, setModel] = useState<string>('llama-3.3-70b-versatile');
-  const [analysis, setAnalysis] = useState<string>('');
-  const [output, setOutput] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showAdvanced, setShowAdvanced] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [prices, setPrices] = useState<Price[]>(mockPrices);
+  const [token, setToken] = useState('');
+  const [chain, setChain] = useState('');
+  const [sector, setSector] = useState('');
+  const [model, setModel] = useState('gemma2-9b-it');
+  const [analysis, setAnalysis] = useState('');
+  const [output, setOutput] = useState('');
+  const [loading, setLoading] = useState(false);
 
+  const chains = [
+    'Ethereum', 'Solana', 'Binance Smart Chain', 'Polygon',
+    'Avalanche', 'Arbitrum', 'Optimism', 'Somnia Blockchain', 'Other',
+  ];
+  const sectors = [
+    'DeFi', 'NFT', 'GameFi', 'Infrastructure', 'DAO', 'SocialFi', 'Memecoin', 'Other',
+  ];
+  const models = [
+      { label: 'Gemma-7B', value: 'gemma2-9b-it' },
+    { label: 'LLaMA3.3-70B', value: 'llama-3.3-70b-versatile' },
+    { label: 'kimi-k2-instruct', value: 'moonshotai/kimi-k2-instruct' },
+  ];
+
+  // Simulate real-time price ticker update
+  const [prices, setPrices] = useState(mockPrices);
   useEffect(() => {
     const interval = setInterval(() => {
       setPrices((prev) =>
         prev.map((p) => {
-          const volatility = p.symbol === 'BTC' ? 0.5 : p.symbol === 'ETH' ? 0.8 : 2.0;
-          const changePercent = Number((Math.random() * volatility * 2 - volatility).toFixed(2));
+          const changePercent = Number((Math.random() * 2 - 1).toFixed(2));
           const priceNum = parseFloat(p.price.replace(/,/g, ''));
-          const newPrice = Math.max(0.001, priceNum * (1 + changePercent / 100));
-          const formattedPrice = newPrice < 1 ? newPrice.toFixed(3) : newPrice.toFixed(2);
-          
+          const newPrice = (priceNum * (1 + changePercent / 100)).toFixed(2);
           return {
             ...p,
-            price: formattedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+            price: newPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
             change: `${changePercent > 0 ? '+' : ''}${changePercent}%`,
-            changeType: changePercent > 0 ? 'positive' : 'negative',
           };
         })
       );
-    }, 6000);
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
-
-  const refreshPrices = () => {
-    setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1000);
-  };
 
   const handleSubmit = async () => {
     setLoading(true);
     setOutput('');
-    console.log('Submitting with:', { token, chain, sector, model, analysis });
     try {
       const inputData = `[Token]: ${token}
 [Chain]: ${chain}
@@ -188,427 +69,241 @@ const TradeAssistantContent = () => {
 [Analysis] 
 ${analysis}`;
       const result = await tradingAdvice(inputData, model);
-      console.log('API response:', result);
       setOutput(result);
     } catch (error) {
-      console.error('Error in handleSubmit:', error);
-      setOutput('⚠️ Error: Could not fetch trading advice. Please check your connection and try again.');
+      setOutput('⚠️ Error: Could not fetch trading advice.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white relative overflow-hidden">
-      <AnimatedBackground />
-      {/* Header */}
-      <header className="relative z-50 bg-black/20 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-6">
-              <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="text-cyan-400 hover:text-cyan-300 hover:bg-white/5 gap-2 transition-all duration-300">
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Dashboard
-                </Button>
-              </Link>
-              <div className="h-8 w-px bg-white/20" />
-              <div className="flex items-center gap-4">
-                <motion.div 
-                  className="p-3 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-2xl"
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                >
-                  <TrendingUp className="w-8 h-8 text-white" />
-                </motion.div>
-                <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                    AI Trading Assistant
-                  </h1>
-                  <p className="text-sm text-gray-400">Advanced market analysis powered by AI</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <motion.button
-                onClick={refreshPrices}
-                className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <RefreshCw className={`w-5 h-5 text-cyan-400 ${refreshing ? 'animate-spin' : ''}`} />
-              </motion.button>
-            </div>
-          </div>
+    <div className="min-h-screen flex bg-gradient-to-br from-black via-[#181a22] to-blue-950 text-gray-100 font-inter">
+      {/* Sidebar */}
+      <aside className="w-72 bg-gradient-to-br from-[#181a22] via-[#16181d] to-[#23232a] border-r border-[#23232a] flex flex-col shadow-2xl z-10">
+        {/* Logo Section */}
+        <div className="px-6 pt-8 pb-4">
+          <Link href="/" className="flex items-center gap-3">
+            <Bot className="w-8 h-8 text-purple-500 drop-shadow-lg" />
+            <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight select-none">Sage AI</span>
+          </Link>
         </div>
-      </header>
+        {/* Navigation */}
+        <nav className="flex flex-col flex-grow px-6 space-y-2 mt-4">
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold shadow-lg hover:scale-105 transition-all duration-200">
+            <FaChartLine /> Dashboard
+          </a>
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
+            <FaWallet /> Portfolio
+          </a>
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
+            <FaHistory /> Trade History
+          </a>
+          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
+            <FaCog /> Settings
+          </a>
+        </nav>
+        {/* Footer */}
+        <footer className="px-6 py-6 mt-auto text-xs text-gray-500 border-t border-[#23232a]">
+          © {new Date().getFullYear()} SageAI. All rights reserved.
+        </footer>
+      </aside>
 
-      {/* Enhanced Market Ticker */}
-      <div className="relative z-40 bg-black/30 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Activity className="w-5 h-5 text-cyan-400 animate-pulse" />
-            <span className="text-sm font-semibold text-cyan-400 tracking-wider">LIVE MARKET DATA</span>
-            <div className="flex items-center gap-2 text-xs text-gray-400">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span>Real-time updates</span>
+      {/* Main Content */}
+      <main className="flex-grow flex flex-col min-h-screen">
+        {/* Hero Section */}
+        <section className="w-full px-4 md:px-0 pt-10 pb-6 flex flex-col items-center justify-center bg-gradient-to-br from-blue-700/80 via-purple-700/80 to-black/90 rounded-b-3xl shadow-xl mb-6">
+          <div className="max-w-2xl text-center">
+            <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">Pro Crypto Trading Assistant</h1>
+            <p className="text-lg md:text-xl text-gray-200 mb-4">Get instant, AI-powered trading recommendations for any token, chain, or sector. Analyze, strategize, and trade smarter with Sage AI.</p>
+            <div className="flex flex-wrap gap-3 justify-center mb-2">
+              <span className="px-4 py-2 rounded-full bg-blue-600/80 text-white font-medium text-sm shadow">Live Price Ticker</span>
+              <span className="px-4 py-2 rounded-full bg-purple-600/80 text-white font-medium text-sm shadow">Multi-Chain Support</span>
+              <span className="px-4 py-2 rounded-full bg-pink-600/80 text-white font-medium text-sm shadow">AI Analysis</span>
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {prices.map(({ symbol, name, price, change, changeType, marketCap }, index) => (
+        </section>
+
+        {/* Top Bar with Price Ticker */}
+        <header className="flex items-center justify-between bg-[#181a22] border-b border-[#23232a] px-10 py-4 shadow-lg rounded-t-3xl">
+          <h2 className="text-2xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text select-none tracking-tight flex items-center gap-2">
+            <FaChartLine className="text-blue-400" /> Market Ticker
+          </h2>
+          <div className="flex space-x-6 overflow-x-auto no-scrollbar max-w-xl">
+            {prices.map(({ symbol, price, change }) => (
               <motion.div
                 key={symbol}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300 group"
+                initial={{ scale: 1 }}
+                animate={{ scale: 1.05 }}
+                transition={{ repeat: Infinity, repeatType: "reverse", duration: 2 }}
+                className={`flex flex-col items-center min-w-[90px] px-4 py-2 rounded-xl shadow border 
+                  ${change.startsWith('+')
+                    ? 'bg-gradient-to-br from-green-800/40 to-green-900/80 border-green-700/30 text-green-300'
+                    : 'bg-gradient-to-br from-red-800/40 to-red-900/80 border-red-700/30 text-red-300'
+                  }`}
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg text-white">{symbol}</span>
-                    <span className={`text-xs px-2 py-1 rounded-full font-semibold ${
-                      changeType === 'positive' 
-                        ? 'bg-green-500/20 text-green-400' 
-                        : 'bg-red-500/20 text-red-400'
-                    }`}>
-                      {change}
-                    </span>
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-xl font-mono text-white group-hover:text-cyan-400 transition-colors">
-                    ${price}
-                  </div>
-                  <div className="text-xs text-gray-400">{name}</div>
-                  <div className="text-xs text-gray-500">MC: ${marketCap}</div>
-                </div>
+                <span className="font-bold text-lg">{symbol}</span>
+                <span className="text-base font-mono">{price} USD</span>
+                <span className="text-xs">{change}</span>
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
+        </header>
 
-      {/* Main Content */}
-      <main className="relative z-30 max-w-7xl mx-auto px-4 py-12 space-y-12">
-        {/* Hero Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-8"
-        >
-          <div className="space-y-4">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <motion.div
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        {/* Main Dashboard Area */}
+        <section className="flex-grow overflow-y-auto p-6 md:p-10 space-y-10 bg-gradient-to-br from-black via-[#181a22] to-blue-950 rounded-3xl">
+          {/* Input Form Card */}
+          <motion.form
+            layout
+            onSubmit={e => {
+              e.preventDefault();
+              if (!loading && token && chain && sector) handleSubmit();
+            }}
+            className="bg-gradient-to-br from-[#181a22] via-[#23232a] to-[#181a22] rounded-2xl shadow-2xl p-8 md:p-10 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 border border-[#23232a]"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Token Name */}
+            <div className="flex flex-col">
+              <label htmlFor="token" className="mb-2 text-base font-semibold text-blue-300">Token Name</label>
+              <input
+                id="token"
+                type="text"
+                list="token-list"
+                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                placeholder="e.g. Bitcoin, Uniswap"
+                value={token}
+                onChange={e => setToken(e.target.value)}
+                required
+                autoComplete="off"
+              />
+              <datalist id="token-list">
+                <option value="Bitcoin" />
+                <option value="Ethereum" />
+                <option value="Solana" />
+                <option value="Uniswap" />
+                <option value="Chainlink" />
+              </datalist>
+            </div>
+            {/* Blockchain */}
+            <div className="flex flex-col">
+              <label htmlFor="chain" className="mb-2 text-base font-semibold text-blue-300">Blockchain</label>
+              <select
+                id="chain"
+                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                value={chain}
+                onChange={e => setChain(e.target.value)}
+                required
               >
-                <Brain className="w-16 h-16 text-cyan-400" />
-              </motion.div>
-              <div className="text-left">
-                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent">
-                  Next-Gen Trading Intelligence
-                </h2>
-                <p className="text-xl text-gray-400 mt-2">Harness the power of advanced AI for superior market insights</p>
-              </div>
+                <option value="" disabled>Select Chain</option>
+                {chains.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </div>
-            <div className="flex flex-wrap gap-4 justify-center">
-              {[
-                { icon: Zap, text: 'Lightning Fast', color: 'from-yellow-400 to-orange-400' },
-                { icon: Target, text: 'Precision Analysis', color: 'from-cyan-400 to-blue-400' },
-                { icon: Globe, text: 'Multi-Chain', color: 'from-purple-400 to-pink-400' },
-                { icon: Sparkles, text: 'AI Powered', color: 'from-green-400 to-emerald-400' }
-              ].map(({ icon: Icon, text, color }, index) => (
-                <motion.div
-                  key={text}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`flex items-center gap-3 px-6 py-3 bg-gradient-to-r ${color} bg-opacity-20 border border-white/20 rounded-full backdrop-blur-sm`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="text-sm font-semibold">{text}</span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Trading Analysis Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
-            <div className="p-8 md:p-12">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-3 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-2xl">
-                  <BarChart3 className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white">Market Analysis</h3>
-                  <p className="text-gray-400">Get AI-powered insights for any cryptocurrency</p>
-                </div>
-              </div>
-
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (!loading && token && chain && sector) {
-                    console.log('Form submitted');
-                    handleSubmit();
-                  } else {
-                    console.log('Form submission blocked:', { loading, token, chain, sector });
-                  }
-                }}
-                className="space-y-8"
+            {/* Sector */}
+            <div className="flex flex-col">
+              <label htmlFor="sector" className="mb-2 text-base font-semibold text-blue-300">Sector</label>
+              <select
+                id="sector"
+                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                value={sector}
+                onChange={e => setSector(e.target.value)}
+                required
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div className="space-y-3">
-                    <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
-                      🪙 TOKEN / CRYPTOCURRENCY
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        list="token-list"
-                        className={`w-full px-4 py-4 bg-white/5 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all backdrop-blur-sm ${
-                          !token && !loading ? 'border-red-500/50' : 'border-white/20'
-                        }`}
-                        placeholder="e.g. Bitcoin, Ethereum, Solana..."
-                        value={token}
-                        onChange={e => setToken(e.target.value)}
-                        required
-                      />
-                      {!token && !loading && (
-                        <p className="text-xs text-red-400 mt-1">Token is required</p>
-                      )}
-                      <datalist id="token-list">
-                        <option value="Bitcoin" />
-                        <option value="Ethereum" />
-                        <option value="Solana" />
-                        <option value="Uniswap" />
-                        <option value="Chainlink" />
-                        <option value="Polygon" />
-                        <option value="Avalanche" />
-                      </datalist>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
-                      ⛓️ BLOCKCHAIN NETWORK
-                    </label>
-                    <div className="relative">
-                      <select
-                        className={`w-full px-4 py-4 bg-white/5 border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all backdrop-blur-sm appearance-none ${
-                          !chain && !loading ? 'border-red-500/50' : 'border-white/20'
-                        }`}
-                        value={chain}
-                        onChange={e => setChain(e.target.value)}
-                        required
-                      >
-                        <option value="" disabled>Select Network</option>
-                        {chains.map((c) => (
-                          <option key={c.name} value={c.name} className="bg-gray-900">
-                            {c.icon} {c.name}
-                          </option>
-                        ))}
-                      </select>
-                      {!chain && !loading && (
-                        <p className="text-xs text-red-400 mt-1">Chain is required</p>
-                      )}
-                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
-                      🏢 MARKET SECTOR
-                    </label>
-                    <div className="relative">
-                      <select
-                        className={`w-full px-4 py-4 bg-white/5 border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all backdrop-blur-sm appearance-none ${
-                          !sector && !loading ? 'border-red-500/50' : 'border-white/20'
-                        }`}
-                        value={sector}
-                        onChange={e => setSector(e.target.value)}
-                        required
-                      >
-                        <option value="" disabled>Select Sector</option>
-                        {sectors.map((s) => (
-                          <option key={s.name} value={s.name} className="bg-gray-900">
-                            {s.icon} {s.name}
-                          </option>
-                        ))}
-                      </select>
-                      {!sector && !loading && (
-                        <p className="text-xs text-red-400 mt-1">Sector is required</p>
-                      )}
-                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-t border-white/10 pt-6">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      console.log('Toggling showAdvanced:', !showAdvanced);
-                      setShowAdvanced(!showAdvanced);
-                    }}
-                    className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 transition-colors"
-                  >
-                    <Layers className="w-5 h-5" />
-                    <span className="font-semibold">Advanced Options</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  <AnimatePresence>
-                    {showAdvanced && (
-                      <motion.div
-                        initial={{ opacity: 1, height: 'auto' }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="mt-6 space-y-6"
-                      >
-                        <div className="space-y-3">
-                          <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
-                            🤖 AI MODEL
-                          </label>
-                          {models.length === 0 ? (
-                            <p className="text-red-400">No models available</p>
-                          ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                              {models.map((model_option) => (
-                                <motion.button
-                                  key={model_option.value}
-                                  type="button"
-                                  onClick={() => {
-                                    console.log('Selected model:', model_option.value);
-                                    setModel(model_option.value);
-                                  }}
-                                  className={`p-4 rounded-xl border transition-all text-left ${
-                                    model === model_option.value
-                                      ? 'bg-cyan-600/20 border-cyan-500/50 text-cyan-300'
-                                      : 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10'
-                                  }`}
-                                  whileHover={{ scale: 1.02 }}
-                                  whileTap={{ scale: 0.98 }}
-                                >
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <span className="font-semibold">{model_option.label}</span>
-                                    {model_option.recommended && (
-                                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                    )}
-                                  </div>
-                                  <p className="text-xs text-gray-400">{model_option.description}</p>
-                                </motion.button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="space-y-3">
-                          <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
-                            📝 YOUR ANALYSIS (OPTIONAL)
-                          </label>
-                          <textarea
-                            rows={4}
-                            className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none transition-all backdrop-blur-sm"
-                            placeholder="Share your technical analysis, market observations, specific questions, or trading strategy..."
-                            value={analysis}
-                            onChange={e => setAnalysis(e.target.value)}
-                          />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="flex justify-center pt-6">
-                  <motion.button
-                    type="submit"
-                    disabled={loading || !token || !chain || !sector}
-                    className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center gap-4 ${
-                      loading || !token || !chain || !sector
-                        ? 'bg-gray-600/50 cursor-not-allowed opacity-50 text-gray-400'
-                        : 'bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 hover:from-cyan-700 hover:via-purple-700 hover:to-pink-700 text-white shadow-2xl shadow-cyan-500/25'
-                    }`}
-                    whileHover={!loading && token && chain && sector ? { scale: 1.05 } : {}}
-                    whileTap={!loading && token && chain && sector ? { scale: 0.95 } : {}}
-                  >
-                    {loading ? (
-                      <>
-                        <div className="animate-spin h-6 w-6 border-2 border-white border-t-transparent rounded-full" />
-                        <span>Analyzing Market Data...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Brain className="w-6 h-6" />
-                        <span>Generate AI Trading Analysis</span>
-                        <Sparkles className="w-5 h-5" />
-                      </>
-                    )}
-                  </motion.button>
-                </div>
-              </form>
+                <option value="" disabled>Select Sector</option>
+                {sectors.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
             </div>
-          </Card>
-        </motion.div>
+            {/* Model */}
+            <div className="flex flex-col md:col-span-1">
+              <label htmlFor="model" className="mb-2 text-base font-semibold text-blue-300">LLM Model</label>
+              <select
+                id="model"
+                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                value={model}
+                onChange={e => setModel(e.target.value)}
+              >
+                {models.map((m) => (
+                  <option key={m.value} value={m.value}>{m.label}</option>
+                ))}
+              </select>
+            </div>
+            {/* Analysis (full width) */}
+            <div className="md:col-span-3 flex flex-col">
+              <label htmlFor="analysis" className="mb-2 text-base font-semibold text-blue-300">Your Analysis (Optional)</label>
+              <textarea
+                id="analysis"
+                rows={4}
+                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-all"
+                placeholder="Add your own technical analysis, tokenomics notes, or market observations..."
+                value={analysis}
+                onChange={e => setAnalysis(e.target.value)}
+              />
+            </div>
+            {/* Submit Button (full width) */}
+            <div className="md:col-span-3 flex justify-center mt-2">
+              <motion.button
+                type="submit"
+                whileHover={{ scale: loading ? 1 : 1.06 }}
+                whileTap={{ scale: loading ? 1 : 0.97 }}
+                disabled={loading || !token || !chain || !sector}
+                className={`w-full max-w-md py-4 rounded-xl font-bold shadow-xl transition-all duration-200 text-lg
+                  ${
+                    loading
+                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 cursor-not-allowed opacity-70 text-gray-200'
+                      : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer'
+                  }`}
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center space-x-2">
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8H4z"
+                      ></path>
+                    </svg>
+                    <span>Generating Analysis...</span>
+                  </span>
+                ) : (
+                  'Get Trading Recommendation'
+                )}
+              </motion.button>
+            </div>
+          </motion.form>
 
-        <AnimatePresence>
+          {/* Output Panel */}
           {output && (
-            <motion.div
-              initial={{ opacity: 0, y: 40, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+            <motion.section
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="bg-gradient-to-br from-[#181a22] via-[#23232a] to-[#181a22] border border-[#23232a] rounded-2xl p-8 max-w-5xl mx-auto max-h-[400px] overflow-y-auto font-mono text-base whitespace-pre-wrap text-gray-100 shadow-2xl"
             >
-              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden">
-                <div className="p-8 md:p-12">
-                  <div className="flex items-center gap-4 mb-8">
-                    <motion.div 
-                      className="p-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      <DollarSign className="w-8 h-8 text-white" />
-                    </motion.div>
-                    <div>
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                        AI Trading Analysis
-                      </h3>
-                      <p className="text-gray-400">
-                        Powered by {models.find(m => m.value === model)?.label ?? 'Unknown Model'}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="bg-black/40 rounded-2xl p-6 border border-green-500/20 backdrop-blur-sm">
-                    <pre className="whitespace-pre-wrap text-gray-100 text-sm leading-relaxed font-mono">
-                      {output}
-                    </pre>
-                  </div>
-                  <div className="mt-6 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <AlertTriangle className="w-4 h-4" />
-                      <span>This is AI-generated analysis. Please do your own research.</span>
-                    </div>
-                    <Button
-                      onClick={() => navigator.clipboard.writeText(output)}
-                      variant="ghost"
-                      size="sm"
-                      className="text-cyan-400 hover:text-cyan-300"
-                    >
-                      Copy Analysis
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
+              <h2 className="text-2xl font-bold mb-4 text-transparent bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text">
+                Trading Recommendation
+              </h2>
+              <pre>{output}</pre>
+            </motion.section>
           )}
-        </AnimatePresence>
+        </section>
       </main>
     </div>
   );
@@ -616,13 +311,8 @@ ${analysis}`;
 
 export default function ProCryptoTradingAssistant() {
   return (
-    <>
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <FeatureGate feature={FeatureType.TRADE_ASSISTANT}>
-        <TradeAssistantContent />
-      </FeatureGate>
-    </>
+    <FeatureGate feature={FeatureType.TRADE_ASSISTANT}>
+      <TradeAssistantContent />
+    </FeatureGate>
   );
 }
