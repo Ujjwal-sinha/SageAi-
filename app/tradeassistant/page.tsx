@@ -10,10 +10,12 @@ import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
 
 const mockPrices = [
-  { symbol: 'BTC', price: '28,450.23', change: '+1.2%' },
-  { symbol: 'ETH', price: '1,850.15', change: '-0.4%' },
-  { symbol: 'SOL', price: '24.50', change: '+3.8%' },
-  { symbol: 'BNB', price: '320.10', change: '+0.7%' },
+  { symbol: 'BTC', price: '28,450.23', change: '+1.2%', volume: '$2.1B', high24h: '29,100.00', low24h: '27,800.00' },
+  { symbol: 'ETH', price: '1,850.15', change: '-0.4%', volume: '$980M', high24h: '1,890.50', low24h: '1,820.00' },
+  { symbol: 'SOL', price: '24.50', change: '+3.8%', volume: '$145M', high24h: '25.20', low24h: '23.10' },
+  { symbol: 'BNB', price: '320.10', change: '+0.7%', volume: '$67M', high24h: '325.80', low24h: '315.20' },
+  { symbol: 'ADA', price: '0.85', change: '+2.1%', volume: '$89M', high24h: '0.88', low24h: '0.82' },
+  { symbol: 'AVAX', price: '42.30', change: '-1.3%', volume: '$78M', high24h: '44.50', low24h: '41.80' },
 ];
 
 const TradeAssistantContent = () => {
@@ -24,6 +26,9 @@ const TradeAssistantContent = () => {
   const [analysis, setAnalysis] = useState('');
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [savedAnalyses, setSavedAnalyses] = useState<string[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [riskLevel, setRiskLevel] = useState('Medium');
 
   const chains = [
     'Ethereum', 'Solana', 'Binance Smart Chain', 'Polygon',
@@ -33,10 +38,11 @@ const TradeAssistantContent = () => {
     'DeFi', 'NFT', 'GameFi', 'Infrastructure', 'DAO', 'SocialFi', 'Memecoin', 'Other',
   ];
   const models = [
-      { label: 'Gemma-7B', value: 'gemma2-9b-it' },
-    { label: 'LLaMA3.3-70B', value: 'llama-3.3-70b-versatile' },
-    { label: 'kimi-k2-instruct', value: 'moonshotai/kimi-k2-instruct' },
+    { label: 'Gemma-7B', value: 'gemma2-9b-it', description: 'Fast & efficient for quick analysis' },
+    { label: 'LLaMA3.3-70B', value: 'llama-3.3-70b-versatile', description: 'Advanced reasoning for complex strategies' },
+    { label: 'kimi-k2-instruct', value: 'moonshotai/kimi-k2-instruct', description: 'Specialized for financial insights' },
   ];
+  const riskLevels = ['Low', 'Medium', 'High', 'Aggressive'];
 
   // Simulate real-time price ticker update
   const [prices, setPrices] = useState(mockPrices);
@@ -65,6 +71,8 @@ const TradeAssistantContent = () => {
       const inputData = `[Token]: ${token}
 [Chain]: ${chain}
 [Sector]: ${sector}
+
+[Risk Level]: ${riskLevel}
 
 [Analysis] 
 ${analysis}`;
@@ -163,8 +171,8 @@ ${analysis}`;
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
                   <span className="text-gray-400 text-sm font-medium uppercase tracking-wider">Live Market Data</span>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {prices.map(({ symbol, price, change }, index) => (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  {prices.map(({ symbol, price, change, volume, high24h, low24h }, index) => (
                     <motion.div
                       key={symbol}
                       initial={{ opacity: 0, y: 20 }}
@@ -173,16 +181,25 @@ ${analysis}`;
                       className="group relative"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-xl blur-lg group-hover:blur-md transition-all duration-300"></div>
-                      <div className="relative bg-gray-800/50 border border-gray-600/50 rounded-xl p-4 hover:border-cyan-500/30 transition-all duration-300">
+                      <div className="relative bg-gray-800/50 border border-gray-600/50 rounded-xl p-3 hover:border-cyan-500/30 transition-all duration-300 group">
                         <div className="text-center">
                           <div className="text-gray-400 text-xs font-medium uppercase tracking-wider mb-1">{symbol}</div>
-                          <div className="text-white font-bold text-lg font-mono">${price}</div>
-                          <div className={`text-sm font-semibold ${
+                          <div className="text-white font-bold text-base font-mono">${price}</div>
+                          <div className={`text-xs font-semibold mb-2 ${
                             change.startsWith('+') 
                               ? 'text-green-400' 
                               : 'text-red-400'
                           }`}>
                             {change}
+                          </div>
+                          
+                          {/* Additional Info - Shown on Hover */}
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-gray-500 space-y-1">
+                            <div>Vol: {volume}</div>
+                            <div className="flex justify-between text-[10px]">
+                              <span className="text-green-400">H: ${high24h}</span>
+                              <span className="text-red-400">L: ${low24h}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -267,7 +284,7 @@ ${analysis}`;
               className="p-8 space-y-8"
             >
               {/* Form Fields Grid with Enhanced Design */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {[
                   {
                     id: 'token',
@@ -316,6 +333,17 @@ ${analysis}`;
                     isModel: true,
                     gradient: 'from-pink-500/20 to-cyan-500/20',
                     border: 'border-pink-500/30'
+                  },
+                  {
+                    id: 'risk',
+                    label: 'Risk Level',
+                    icon: FaCog,
+                    type: 'select',
+                    value: riskLevel,
+                    onChange: setRiskLevel,
+                    options: riskLevels,
+                    gradient: 'from-orange-500/20 to-red-500/20',
+                    border: 'border-orange-500/30'
                   }
                 ].map((field, index) => (
                   <motion.div
@@ -365,7 +393,7 @@ ${analysis}`;
                           {!field.isModel && <option value="" disabled>{field.placeholder}</option>}
                           {field.isModel ? 
                             (field.options as typeof models).map((m) => (
-                              <option key={m.value} value={m.value}>{m.label}</option>
+                              <option key={m.value} value={m.value} title={m.description}>{m.label}</option>
                             )) :
                             (field.options as string[]).map((option) => (
                               <option key={option} value={option}>{option}</option>
@@ -556,15 +584,33 @@ ${analysis}`;
                       
                       {/* Action Buttons */}
                       <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-600/30">
-                        <button className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg text-gray-300 hover:text-white transition-all duration-300">
+                        <button 
+                          onClick={() => navigator.clipboard.writeText(output)}
+                          className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg text-gray-300 hover:text-white transition-all duration-300"
+                        >
                           <span>📋</span>
                           <span className="text-sm">Copy Analysis</span>
                         </button>
-                        <button className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg text-gray-300 hover:text-white transition-all duration-300">
+                        <button 
+                          onClick={() => {
+                            setSavedAnalyses([...savedAnalyses, `${token} - ${new Date().toLocaleDateString()}: ${output}`]);
+                          }}
+                          className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg text-gray-300 hover:text-white transition-all duration-300"
+                        >
                           <span>💾</span>
                           <span className="text-sm">Save Report</span>
                         </button>
-                        <button className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg text-gray-300 hover:text-white transition-all duration-300">
+                        <button 
+                          onClick={() => setShowHistory(!showHistory)}
+                          className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg text-gray-300 hover:text-white transition-all duration-300"
+                        >
+                          <span>📊</span>
+                          <span className="text-sm">View History ({savedAnalyses.length})</span>
+                        </button>
+                        <button 
+                          onClick={handleSubmit}
+                          className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-cyan-600/50 to-blue-600/50 hover:from-cyan-500/50 hover:to-blue-500/50 border border-cyan-500/50 rounded-lg text-cyan-300 hover:text-white transition-all duration-300"
+                        >
                           <span>🔄</span>
                           <span className="text-sm">Refresh Analysis</span>
                         </button>
@@ -572,6 +618,106 @@ ${analysis}`;
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* History Panel */}
+        {showHistory && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative mt-12"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-cyan-500/5 rounded-3xl blur-3xl"></div>
+            
+            <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-800/60 to-black/80 backdrop-blur-2xl rounded-3xl border border-gray-700/50 shadow-2xl overflow-hidden">
+              <div className="relative bg-gradient-to-r from-gray-800/80 to-gray-900/80 border-b border-gray-700/50">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-cyan-600/10 to-blue-600/10"></div>
+                <div className="relative px-8 py-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-xl border border-purple-500/30">
+                        <FaHistory className="w-5 h-5 text-purple-400" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-white">Analysis History</h3>
+                      <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm">
+                        {savedAnalyses.length} saved
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setShowHistory(false)}
+                      className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors duration-300"
+                    >
+                      <span className="text-gray-400 hover:text-white text-lg">✕</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8">
+                {savedAnalyses.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="text-gray-400 text-lg mb-2">No saved analyses yet</div>
+                    <div className="text-gray-500 text-sm">Save your first analysis to see it here</div>
+                  </div>
+                ) : (
+                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                    {savedAnalyses.map((analysis, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                        className="bg-gray-800/30 border border-gray-600/30 rounded-xl p-4 hover:border-purple-500/30 transition-all duration-300"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="text-sm text-gray-400">
+                            Analysis #{savedAnalyses.length - index}
+                          </div>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => navigator.clipboard.writeText(analysis)}
+                              className="text-gray-500 hover:text-cyan-400 transition-colors duration-300"
+                              title="Copy to clipboard"
+                            >
+                              📋
+                            </button>
+                            <button
+                              onClick={() => {
+                                const newAnalyses = savedAnalyses.filter((_, i) => i !== index);
+                                setSavedAnalyses(newAnalyses);
+                              }}
+                              className="text-gray-500 hover:text-red-400 transition-colors duration-300"
+                              title="Delete analysis"
+                            >
+                              🗑️
+                            </button>
+                          </div>
+                        </div>
+                        <div className="text-gray-200 text-sm bg-gray-900/40 rounded-lg p-3 max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed">
+                            {analysis}
+                          </pre>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+
+                {savedAnalyses.length > 0 && (
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      onClick={() => setSavedAnalyses([])}
+                      className="flex items-center space-x-2 px-4 py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600/50 rounded-lg text-red-300 hover:text-red-200 transition-all duration-300"
+                    >
+                      <span>🗑️</span>
+                      <span className="text-sm">Clear All History</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
