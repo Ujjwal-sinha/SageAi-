@@ -1,33 +1,61 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { tradingAdvice } from '@/lib/ta';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, 
-  TrendingUp, 
-  BarChart3, 
-  Zap, 
-  Brain, 
-  Target, 
-  DollarSign, 
-  Activity,
-  Sparkles,
-  ChevronDown,
-  RefreshCw,
-  Star,
-  Layers,
-  Globe,
-  TrendingDown,
-  AlertTriangle
+  ArrowLeft, TrendingUp, BarChart3, Zap, Brain, Target, DollarSign, Activity,
+  Sparkles, ChevronDown, RefreshCw, Star, Layers, Globe, AlertTriangle
 } from 'lucide-react';
 import Link from 'next/link';
+import Head from 'next/head';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
 
-const mockPrices = [
+// Define interfaces for type safety
+interface Price {
+  symbol: string;
+  name: string;
+  price: string;
+  change: string;
+  changeType: 'positive' | 'negative';
+  marketCap: string;
+}
+
+interface Chain {
+  name: string;
+  icon: string;
+  color: string;
+}
+
+interface Sector {
+  name: string;
+  icon: string;
+  description: string;
+}
+
+interface Model {
+  label: string;
+  value: string;
+  description: string;
+  recommended?: boolean;
+}
+
+// Mock tradingAdvice function (replace with actual API implementation)
+const tradingAdvice = async (inputData: string, model: string): Promise<string> => {
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  const [token] = inputData.match(/\[Token\]: (.*?)\n/) || ['Unknown Token'];
+  return `Analysis for ${token} using model ${model}:
+- Current price: $1000 (mock data)
+- Trend: Bullish
+- Recommendation: Consider buying if price drops below $950
+- Technical indicators: RSI 65, MACD positive crossover
+Note: This is a mock response. Implement the actual tradingAdvice API.`;
+};
+
+// Define mockPrices to fix TS2304
+const mockPrices: Price[] = [
   { symbol: 'BTC', name: 'Bitcoin', price: '28,450.23', change: '+1.2%', changeType: 'positive', marketCap: '554.2B' },
   { symbol: 'ETH', name: 'Ethereum', price: '1,850.15', change: '-0.4%', changeType: 'negative', marketCap: '222.4B' },
   { symbol: 'SOL', name: 'Solana', price: '24.50', change: '+3.8%', changeType: 'positive', marketCap: '11.2B' },
@@ -36,62 +64,101 @@ const mockPrices = [
   { symbol: 'AVAX', name: 'Avalanche', price: '12.45', change: '+5.2%', changeType: 'positive', marketCap: '5.1B' },
 ];
 
+const chains: Chain[] = [
+  { name: 'Ethereum', icon: '⟠', color: 'text-blue-400' },
+  { name: 'Solana', icon: '◎', color: 'text-purple-400' },
+  { name: 'Binance Smart Chain', icon: '🟡', color: 'text-yellow-400' },
+  { name: 'Polygon', icon: '⬟', color: 'text-purple-500' },
+  { name: 'Avalanche', icon: '🔺', color: 'text-red-400' },
+  { name: 'Arbitrum', icon: '🌀', color: 'text-cyan-400' },
+  { name: 'Optimism', icon: '🔴', color: 'text-red-500' },
+  { name: 'Somnia Blockchain', icon: '✦', color: 'text-green-400' },
+  { name: 'Other', icon: '⚡', color: 'text-gray-400' },
+];
+
+const sectors: Sector[] = [
+  { name: 'DeFi', icon: '🏦', description: 'Decentralized Finance' },
+  { name: 'NFT', icon: '🖼️', description: 'Non-Fungible Tokens' },
+  { name: 'GameFi', icon: '🎮', description: 'Gaming & Finance' },
+  { name: 'Infrastructure', icon: '🏗️', description: 'Blockchain Infrastructure' },
+  { name: 'DAO', icon: '🏛️', description: 'Decentralized Organizations' },
+  { name: 'SocialFi', icon: '👥', description: 'Social Finance' },
+  { name: 'Memecoin', icon: '🐸', description: 'Meme Cryptocurrencies' },
+  { name: 'AI', icon: '🤖', description: 'Artificial Intelligence' },
+  { name: 'Other', icon: '📊', description: 'Other Sectors' },
+];
+
+const models: Model[] = [
+  { 
+    label: 'LLaMA 3.3-70B', 
+    value: 'llama-3.3-70b-versatile',
+    description: 'Most powerful model for complex analysis',
+    recommended: true
+  },
+  { 
+    label: 'Gemma-9B', 
+    value: 'gemma2-9b-it',
+    description: 'Fast and efficient for quick insights'
+  },
+  { 
+    label: 'Kimi K2', 
+    value: 'moonshotai/kimi-k2-instruct',
+    description: 'Specialized in market analysis'
+  },
+];
+
+// Client-only AnimatedBackground component to avoid hydration mismatch
+const AnimatedBackground = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null;
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5" />
+      {Array.from({ length: 12 }, (_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-gradient-to-r from-cyan-400/10 to-purple-400/10 blur-xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -100, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 15,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          style={{
+            width: `${Math.random() * 200 + 100}px`,
+            height: `${Math.random() * 200 + 100}px`,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+        />
+      ))}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+    </div>
+  );
+};
+
 const TradeAssistantContent = () => {
-  const [token, setToken] = useState('');
-  const [chain, setChain] = useState('');
-  const [sector, setSector] = useState('');
-  const [model, setModel] = useState('llama-3.3-70b-versatile');
-  const [analysis, setAnalysis] = useState('');
-  const [output, setOutput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [token, setToken] = useState<string>('');
+  const [chain, setChain] = useState<string>('');
+  const [sector, setSector] = useState<string>('');
+  const [model, setModel] = useState<string>('llama-3.3-70b-versatile');
+  const [analysis, setAnalysis] = useState<string>('');
+  const [output, setOutput] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [prices, setPrices] = useState<Price[]>(mockPrices);
 
-  const chains = [
-    { name: 'Ethereum', icon: '⟠', color: 'text-blue-400' },
-    { name: 'Solana', icon: '◎', color: 'text-purple-400' },
-    { name: 'Binance Smart Chain', icon: '🟡', color: 'text-yellow-400' },
-    { name: 'Polygon', icon: '⬟', color: 'text-purple-500' },
-    { name: 'Avalanche', icon: '🔺', color: 'text-red-400' },
-    { name: 'Arbitrum', icon: '🌀', color: 'text-cyan-400' },
-    { name: 'Optimism', icon: '🔴', color: 'text-red-500' },
-    { name: 'Somnia Blockchain', icon: '✦', color: 'text-green-400' },
-    { name: 'Other', icon: '⚡', color: 'text-gray-400' },
-  ];
-
-  const sectors = [
-    { name: 'DeFi', icon: '🏦', description: 'Decentralized Finance' },
-    { name: 'NFT', icon: '🖼️', description: 'Non-Fungible Tokens' },
-    { name: 'GameFi', icon: '🎮', description: 'Gaming & Finance' },
-    { name: 'Infrastructure', icon: '🏗️', description: 'Blockchain Infrastructure' },
-    { name: 'DAO', icon: '🏛️', description: 'Decentralized Organizations' },
-    { name: 'SocialFi', icon: '👥', description: 'Social Finance' },
-    { name: 'Memecoin', icon: '🐸', description: 'Meme Cryptocurrencies' },
-    { name: 'AI', icon: '🤖', description: 'Artificial Intelligence' },
-    { name: 'Other', icon: '📊', description: 'Other Sectors' },
-  ];
-
-  const models = [
-    { 
-      label: 'LLaMA 3.3-70B', 
-      value: 'llama-3.3-70b-versatile',
-      description: 'Most powerful model for complex analysis',
-      recommended: true
-    },
-    { 
-      label: 'Gemma-9B', 
-      value: 'gemma2-9b-it',
-      description: 'Fast and efficient for quick insights'
-    },
-    { 
-      label: 'Kimi K2', 
-      value: 'moonshotai/kimi-k2-instruct',
-      description: 'Specialized in market analysis'
-    },
-  ];
-
-  // Enhanced price ticker with more realistic updates
-  const [prices, setPrices] = useState(mockPrices);
   useEffect(() => {
     const interval = setInterval(() => {
       setPrices((prev) =>
@@ -122,6 +189,7 @@ const TradeAssistantContent = () => {
   const handleSubmit = async () => {
     setLoading(true);
     setOutput('');
+    console.log('Submitting with:', { token, chain, sector, model, analysis });
     try {
       const inputData = `[Token]: ${token}
 [Chain]: ${chain}
@@ -130,8 +198,10 @@ const TradeAssistantContent = () => {
 [Analysis] 
 ${analysis}`;
       const result = await tradingAdvice(inputData, model);
+      console.log('API response:', result);
       setOutput(result);
     } catch (error) {
+      console.error('Error in handleSubmit:', error);
       setOutput('⚠️ Error: Could not fetch trading advice. Please check your connection and try again.');
     } finally {
       setLoading(false);
@@ -140,38 +210,7 @@ ${analysis}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5" />
-        
-        {/* Floating orbs */}
-        {Array.from({ length: 12 }, (_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-r from-cyan-400/10 to-purple-400/10 blur-xl"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -100, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 15,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            style={{
-              width: `${Math.random() * 200 + 100}px`,
-              height: `${Math.random() * 200 + 100}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-        
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
-      </div>
-
+      <AnimatedBackground />
       {/* Header */}
       <header className="relative z-50 bg-black/20 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -200,7 +239,6 @@ ${analysis}`;
                 </div>
               </div>
             </div>
-            
             <div className="flex items-center gap-4">
               <motion.button
                 onClick={refreshPrices}
@@ -226,7 +264,6 @@ ${analysis}`;
               <span>Real-time updates</span>
             </div>
           </div>
-          
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {prices.map(({ symbol, name, price, change, changeType, marketCap }, index) => (
               <motion.div
@@ -284,7 +321,6 @@ ${analysis}`;
                 <p className="text-xl text-gray-400 mt-2">Harness the power of advanced AI for superior market insights</p>
               </div>
             </div>
-            
             <div className="flex flex-wrap gap-4 justify-center">
               {[
                 { icon: Zap, text: 'Lightning Fast', color: 'from-yellow-400 to-orange-400' },
@@ -325,14 +361,19 @@ ${analysis}`;
                 </div>
               </div>
 
-              <form onSubmit={e => {
-                e.preventDefault();
-                if (!loading && token && chain && sector) handleSubmit();
-              }} className="space-y-8">
-                
-                {/* Basic Inputs */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!loading && token && chain && sector) {
+                    console.log('Form submitted');
+                    handleSubmit();
+                  } else {
+                    console.log('Form submission blocked:', { loading, token, chain, sector });
+                  }
+                }}
+                className="space-y-8"
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {/* Token Input */}
                   <div className="space-y-3">
                     <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
                       🪙 TOKEN / CRYPTOCURRENCY
@@ -341,12 +382,17 @@ ${analysis}`;
                       <input
                         type="text"
                         list="token-list"
-                        className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all backdrop-blur-sm"
+                        className={`w-full px-4 py-4 bg-white/5 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all backdrop-blur-sm ${
+                          !token && !loading ? 'border-red-500/50' : 'border-white/20'
+                        }`}
                         placeholder="e.g. Bitcoin, Ethereum, Solana..."
                         value={token}
                         onChange={e => setToken(e.target.value)}
                         required
                       />
+                      {!token && !loading && (
+                        <p className="text-xs text-red-400 mt-1">Token is required</p>
+                      )}
                       <datalist id="token-list">
                         <option value="Bitcoin" />
                         <option value="Ethereum" />
@@ -359,14 +405,15 @@ ${analysis}`;
                     </div>
                   </div>
 
-                  {/* Chain Selection */}
                   <div className="space-y-3">
                     <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
                       ⛓️ BLOCKCHAIN NETWORK
                     </label>
                     <div className="relative">
                       <select
-                        className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all backdrop-blur-sm appearance-none"
+                        className={`w-full px-4 py-4 bg-white/5 border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all backdrop-blur-sm appearance-none ${
+                          !chain && !loading ? 'border-red-500/50' : 'border-white/20'
+                        }`}
                         value={chain}
                         onChange={e => setChain(e.target.value)}
                         required
@@ -378,18 +425,22 @@ ${analysis}`;
                           </option>
                         ))}
                       </select>
+                      {!chain && !loading && (
+                        <p className="text-xs text-red-400 mt-1">Chain is required</p>
+                      )}
                       <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                     </div>
                   </div>
 
-                  {/* Sector Selection */}
                   <div className="space-y-3">
                     <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
                       🏢 MARKET SECTOR
                     </label>
                     <div className="relative">
                       <select
-                        className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all backdrop-blur-sm appearance-none"
+                        className={`w-full px-4 py-4 bg-white/5 border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all backdrop-blur-sm appearance-none ${
+                          !sector && !loading ? 'border-red-500/50' : 'border-white/20'
+                        }`}
                         value={sector}
                         onChange={e => setSector(e.target.value)}
                         required
@@ -401,63 +452,74 @@ ${analysis}`;
                           </option>
                         ))}
                       </select>
+                      {!sector && !loading && (
+                        <p className="text-xs text-red-400 mt-1">Sector is required</p>
+                      )}
                       <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                     </div>
                   </div>
                 </div>
 
-                {/* Advanced Options Toggle */}
                 <div className="border-t border-white/10 pt-6">
                   <button
                     type="button"
-                    onClick={() => setShowAdvanced(!showAdvanced)}
+                    onClick={() => {
+                      console.log('Toggling showAdvanced:', !showAdvanced);
+                      setShowAdvanced(!showAdvanced);
+                    }}
                     className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 transition-colors"
                   >
                     <Layers className="w-5 h-5" />
                     <span className="font-semibold">Advanced Options</span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
                   </button>
-                  
+
                   <AnimatePresence>
-                    {showAdvanced && (
+                    {showAdvanced ? (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
                         className="mt-6 space-y-6"
                       >
-                        {/* AI Model Selection */}
                         <div className="space-y-3">
                           <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
                             🤖 AI MODEL
                           </label>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {models.map((model_option) => (
-                              <motion.button
-                                key={model_option.value}
-                                type="button"
-                                onClick={() => setModel(model_option.value)}
-                                className={`p-4 rounded-xl border transition-all text-left ${
-                                  model === model_option.value
-                                    ? 'bg-cyan-600/20 border-cyan-500/50 text-cyan-300'
-                                    : 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10'
-                                }`}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                              >
-                                <div className="flex items-center gap-2 mb-2">
-                                  <span className="font-semibold">{model_option.label}</span>
-                                  {model_option.recommended && (
-                                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                  )}
-                                </div>
-                                <p className="text-xs text-gray-400">{model_option.description}</p>
-                              </motion.button>
-                            ))}
-                          </div>
+                          {models.length === 0 ? (
+                            <p className="text-red-400">No models available</p>
+                          ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              {models.map((model_option) => (
+                                <motion.button
+                                  key={model_option.value}
+                                  type="button"
+                                  onClick={() => {
+                                    console.log('Selected model:', model_option.value);
+                                    setModel(model_option.value);
+                                  }}
+                                  className={`p-4 rounded-xl border transition-all text-left ${
+                                    model === model_option.value
+                                      ? 'bg-cyan-600/20 border-cyan-500/50 text-cyan-300'
+                                      : 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10'
+                                  }`}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                >
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span className="font-semibold">{model_option.label}</span>
+                                    {model_option.recommended && (
+                                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-gray-400">{model_option.description}</p>
+                                </motion.button>
+                              ))}
+                            </div>
+                          )}
                         </div>
 
-                        {/* Analysis Input */}
                         <div className="space-y-3">
                           <label className="block text-sm font-semibold text-cyan-300 tracking-wider">
                             📝 YOUR ANALYSIS (OPTIONAL)
@@ -471,11 +533,10 @@ ${analysis}`;
                           />
                         </div>
                       </motion.div>
-                    )}
+                    ) : null}
                   </AnimatePresence>
                 </div>
 
-                {/* Submit Button */}
                 <div className="flex justify-center pt-6">
                   <motion.button
                     type="submit"
@@ -507,7 +568,6 @@ ${analysis}`;
           </Card>
         </motion.div>
 
-        {/* Enhanced Output Panel */}
         <AnimatePresence>
           {output && (
             <motion.div
@@ -530,16 +590,16 @@ ${analysis}`;
                       <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                         AI Trading Analysis
                       </h3>
-                      <p className="text-gray-400">Powered by {models.find(m => m.value === model)?.label}</p>
+                      <p className="text-gray-400">
+                        Powered by {models.find(m => m.value === model)?.label ?? 'Unknown Model'}
+                      </p>
                     </div>
                   </div>
-                  
                   <div className="bg-black/40 rounded-2xl p-6 border border-green-500/20 backdrop-blur-sm">
                     <pre className="whitespace-pre-wrap text-gray-100 text-sm leading-relaxed font-mono">
                       {output}
                     </pre>
                   </div>
-                  
                   <div className="mt-6 flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <AlertTriangle className="w-4 h-4" />
@@ -566,8 +626,13 @@ ${analysis}`;
 
 export default function ProCryptoTradingAssistant() {
   return (
-    <FeatureGate feature={FeatureType.TRADE_ASSISTANT}>
-      <TradeAssistantContent />
-    </FeatureGate>
+    <>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <FeatureGate feature={FeatureType.TRADE_ASSISTANT}>
+        <TradeAssistantContent />
+      </FeatureGate>
+    </>
   );
 }
