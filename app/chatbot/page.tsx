@@ -416,6 +416,14 @@ Format responses with:
           ))}
         </div>
 
+        <div className="flex items-center justify-between mb-8 relative z-10">
+          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 text-cyan-400 hover:text-cyan-300 transition-all duration-300">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Dashboard
+          </Link>
+        </div>
         <Link href="/">
           <h1 className="text-2xl font-bold mb-8 text-white flex items-center relative z-10">
             <span className="bg-white w-3 h-3 rounded-full mr-3 animate-pulse bg-gradient-to-r from-blue-400 to-purple-500"></span>
