@@ -17,9 +17,9 @@ const mockPrices = [
 ];
 
 const TradeAssistantContent = () => {
-  const [token, setToken] = useState('');
-  const [chain, setChain] = useState('');
-  const [sector, setSector] = useState('');
+  const [token, setToken] = useState('Bitcoin');
+  const [chain, setChain] = useState('Binance Smart Chain');
+  const [sector, setSector] = useState('DeFi');
   const [model, setModel] = useState('gemma2-9b-it');
   const [analysis, setAnalysis] = useState('');
   const [output, setOutput] = useState('');
@@ -78,194 +78,201 @@ ${analysis}`;
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-black via-[#181a22] to-blue-950 text-gray-100 font-inter">
-      {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-br from-[#181a22] via-[#16181d] to-[#23232a] border-r border-[#23232a] flex flex-col shadow-2xl z-10">
-        {/* Logo Section */}
-        <div className="px-6 pt-8 pb-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Bot className="w-8 h-8 text-purple-500 drop-shadow-lg" />
-            <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight select-none">Sage AI</span>
-          </Link>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white">
+      {/* Header Navigation */}
+      <header className="bg-black/20 backdrop-blur-lg border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/" className="flex items-center space-x-3">
+              <Bot className="w-8 h-8 text-cyan-400" />
+              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                Sage AI
+              </span>
+            </Link>
+            <nav className="hidden md:flex space-x-8">
+              <Link href="/dashboard" className="text-gray-300 hover:text-white transition-colors">Dashboard</Link>
+              <Link href="/news" className="text-gray-300 hover:text-white transition-colors">News</Link>
+              <Link href="/chatbot" className="text-gray-300 hover:text-white transition-colors">Chatbot</Link>
+              <Link href="/tradeassistant" className="text-cyan-400 font-medium">Trade Assistant</Link>
+            </nav>
+          </div>
         </div>
-        {/* Navigation */}
-        <nav className="flex flex-col flex-grow px-6 space-y-2 mt-4">
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold shadow-lg hover:scale-105 transition-all duration-200">
-            <FaChartLine /> Dashboard
-          </a>
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
-            <FaWallet /> Portfolio
-          </a>
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
-            <FaHistory /> Trade History
-          </a>
-          <a href="#" className="flex items-center gap-3 py-3 px-5 rounded-xl hover:bg-[#23232a] hover:text-purple-300 transition-all duration-200">
-            <FaCog /> Settings
-          </a>
-        </nav>
-        {/* Footer */}
-        <footer className="px-6 py-6 mt-auto text-xs text-gray-500 border-t border-[#23232a]">
-          © {new Date().getFullYear()} SageAI. All rights reserved.
-        </footer>
-      </aside>
+      </header>
 
-      {/* Main Content */}
-      <main className="flex-grow flex flex-col min-h-screen">
-        {/* Hero Section */}
-        <section className="w-full px-4 md:px-0 pt-10 pb-6 flex flex-col items-center justify-center bg-gradient-to-br from-blue-700/80 via-purple-700/80 to-black/90 rounded-b-3xl shadow-xl mb-6">
-          <div className="max-w-2xl text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">Pro Crypto Trading Assistant</h1>
-            <p className="text-lg md:text-xl text-gray-200 mb-4">Get instant, AI-powered trading recommendations for any token, chain, or sector. Analyze, strategize, and trade smarter with Sage AI.</p>
-            <div className="flex flex-wrap gap-3 justify-center mb-2">
-              <span className="px-4 py-2 rounded-full bg-blue-600/80 text-white font-medium text-sm shadow">Live Price Ticker</span>
-              <span className="px-4 py-2 rounded-full bg-purple-600/80 text-white font-medium text-sm shadow">Multi-Chain Support</span>
-              <span className="px-4 py-2 rounded-full bg-pink-600/80 text-white font-medium text-sm shadow">AI Analysis</span>
+      {/* Hero Section */}
+      <section className="relative py-20 px-4">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-600/10"></div>
+        <div className="relative max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              AI Trading Assistant
+            </span>
+          </h1>
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Get professional trading insights powered by advanced AI. Analyze market trends, assess risks, and make informed decisions.
+          </p>
+          
+          {/* Live Market Ticker */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-black/40 backdrop-blur-lg rounded-full px-6 py-3 border border-gray-700">
+              <div className="flex space-x-6">
+                {prices.map(({ symbol, price, change }) => (
+                  <motion.div
+                    key={symbol}
+                    className="flex items-center space-x-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <span className="text-gray-400 text-sm">{symbol}</span>
+                    <span className="text-white font-mono">${price}</span>
+                    <span className={`text-xs ${change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                      {change}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Top Bar with Price Ticker */}
-        <header className="flex items-center justify-between bg-[#181a22] border-b border-[#23232a] px-10 py-4 shadow-lg rounded-t-3xl">
-          <h2 className="text-2xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text select-none tracking-tight flex items-center gap-2">
-            <FaChartLine className="text-blue-400" /> Market Ticker
-          </h2>
-          <div className="flex space-x-6 overflow-x-auto no-scrollbar max-w-xl">
-            {prices.map(({ symbol, price, change }) => (
-              <motion.div
-                key={symbol}
-                initial={{ scale: 1 }}
-                animate={{ scale: 1.05 }}
-                transition={{ repeat: Infinity, repeatType: "reverse", duration: 2 }}
-                className={`flex flex-col items-center min-w-[90px] px-4 py-2 rounded-xl shadow border 
-                  ${change.startsWith('+')
-                    ? 'bg-gradient-to-br from-green-800/40 to-green-900/80 border-green-700/30 text-green-300'
-                    : 'bg-gradient-to-br from-red-800/40 to-red-900/80 border-red-700/30 text-red-300'
-                  }`}
-              >
-                <span className="font-bold text-lg">{symbol}</span>
-                <span className="text-base font-mono">{price} USD</span>
-                <span className="text-xs">{change}</span>
-              </motion.div>
-            ))}
+      {/* Main Trading Form */}
+      <section className="max-w-6xl mx-auto px-4 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-gray-900/60 backdrop-blur-xl rounded-3xl border border-gray-700 overflow-hidden"
+        >
+          {/* Form Header */}
+          <div className="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 px-8 py-6 border-b border-gray-700">
+            <h2 className="text-2xl font-bold text-white mb-2">Trading Analysis Form</h2>
+            <p className="text-gray-400">Enter your trading parameters for AI-powered market insights</p>
           </div>
-        </header>
 
-        {/* Main Dashboard Area */}
-        <section className="flex-grow overflow-y-auto p-6 md:p-10 space-y-10 bg-gradient-to-br from-black via-[#181a22] to-blue-950 rounded-3xl">
-          {/* Input Form Card */}
-          <motion.form
-            layout
+          {/* Form Content */}
+          <form
             onSubmit={e => {
               e.preventDefault();
               if (!loading && token && chain && sector) handleSubmit();
             }}
-            className="bg-gradient-to-br from-[#181a22] via-[#23232a] to-[#181a22] rounded-2xl shadow-2xl p-8 md:p-10 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 border border-[#23232a]"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            className="p-8"
           >
-            {/* Token Name */}
-            <div className="flex flex-col">
-              <label htmlFor="token" className="mb-2 text-base font-semibold text-blue-300">Token Name</label>
-              <input
-                id="token"
-                type="text"
-                list="token-list"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                placeholder="e.g. Bitcoin, Uniswap"
-                value={token}
-                onChange={e => setToken(e.target.value)}
-                required
-                autoComplete="off"
-              />
-              <datalist id="token-list">
-                <option value="Bitcoin" />
-                <option value="Ethereum" />
-                <option value="Solana" />
-                <option value="Uniswap" />
-                <option value="Chainlink" />
-              </datalist>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {/* Token Name */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-cyan-400 mb-2">
+                  <FaChartLine className="inline mr-2" />
+                  Token Name
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    list="token-list"
+                    value={token}
+                    onChange={e => setToken(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                    placeholder="Bitcoin"
+                    required
+                  />
+                  <datalist id="token-list">
+                    <option value="Bitcoin" />
+                    <option value="Ethereum" />
+                    <option value="Solana" />
+                    <option value="Uniswap" />
+                    <option value="Chainlink" />
+                  </datalist>
+                </div>
+              </div>
+
+              {/* Blockchain */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-cyan-400 mb-2">
+                  <FaWallet className="inline mr-2" />
+                  Blockchain
+                </label>
+                <select
+                  value={chain}
+                  onChange={e => setChain(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  required
+                >
+                  <option value="" disabled>Select Blockchain</option>
+                  {chains.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Sector */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-cyan-400 mb-2">
+                  <FaCog className="inline mr-2" />
+                  Sector
+                </label>
+                <select
+                  value={sector}
+                  onChange={e => setSector(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  required
+                >
+                  <option value="" disabled>Select Sector</option>
+                  {sectors.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* LLM Model */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-cyan-400 mb-2">
+                  <Bot className="inline mr-2" />
+                  AI Model
+                </label>
+                <select
+                  value={model}
+                  onChange={e => setModel(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                >
+                  {models.map((m) => (
+                    <option key={m.value} value={m.value}>{m.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-            {/* Blockchain */}
-            <div className="flex flex-col">
-              <label htmlFor="chain" className="mb-2 text-base font-semibold text-blue-300">Blockchain</label>
-              <select
-                id="chain"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                value={chain}
-                onChange={e => setChain(e.target.value)}
-                required
-              >
-                <option value="" disabled>Select Chain</option>
-                {chains.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-            </div>
-            {/* Sector */}
-            <div className="flex flex-col">
-              <label htmlFor="sector" className="mb-2 text-base font-semibold text-blue-300">Sector</label>
-              <select
-                id="sector"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                value={sector}
-                onChange={e => setSector(e.target.value)}
-                required
-              >
-                <option value="" disabled>Select Sector</option>
-                {sectors.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-            </div>
-            {/* Model */}
-            <div className="flex flex-col md:col-span-1">
-              <label htmlFor="model" className="mb-2 text-base font-semibold text-blue-300">LLM Model</label>
-              <select
-                id="model"
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                value={model}
-                onChange={e => setModel(e.target.value)}
-              >
-                {models.map((m) => (
-                  <option key={m.value} value={m.value}>{m.label}</option>
-                ))}
-              </select>
-            </div>
-            {/* Analysis (full width) */}
-            <div className="md:col-span-3 flex flex-col">
-              <label htmlFor="analysis" className="mb-2 text-base font-semibold text-blue-300">Your Analysis (Optional)</label>
+
+            {/* Analysis Input */}
+            <div className="mb-8">
+              <label className="block text-sm font-medium text-cyan-400 mb-3">
+                <FaHistory className="inline mr-2" />
+                Your Analysis (Optional)
+              </label>
               <textarea
-                id="analysis"
-                rows={4}
-                className="px-4 py-3 rounded-lg bg-black/80 border border-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-all"
-                placeholder="Add your own technical analysis, tokenomics notes, or market observations..."
                 value={analysis}
                 onChange={e => setAnalysis(e.target.value)}
+                rows={6}
+                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all resize-none"
+                placeholder="Add your own technical analysis, tokenomics notes, or market observations..."
               />
             </div>
-            {/* Submit Button (full width) */}
-            <div className="md:col-span-3 flex justify-center mt-2">
+
+            {/* Submit Button */}
+            <div className="flex justify-center">
               <motion.button
                 type="submit"
-                whileHover={{ scale: loading ? 1 : 1.06 }}
-                whileTap={{ scale: loading ? 1 : 0.97 }}
                 disabled={loading || !token || !chain || !sector}
-                className={`w-full max-w-md py-4 rounded-xl font-bold shadow-xl transition-all duration-200 text-lg
-                  ${
-                    loading
-                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 cursor-not-allowed opacity-70 text-gray-200'
-                      : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer'
-                  }`}
+                className={`px-12 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 ${
+                  loading || !token || !chain || !sector
+                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg hover:shadow-cyan-500/25 transform hover:scale-105'
+                }`}
+                whileHover={loading ? {} : { scale: 1.05 }}
+                whileTap={loading ? {} : { scale: 0.95 }}
               >
                 {loading ? (
-                  <span className="flex items-center justify-center space-x-2">
-                    <svg
-                      className="animate-spin h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                  <div className="flex items-center space-x-3">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                       <circle
                         className="opacity-25"
                         cx="12"
@@ -273,38 +280,49 @@ ${analysis}`;
                         r="10"
                         stroke="currentColor"
                         strokeWidth="4"
-                      ></circle>
+                        fill="none"
+                      />
                       <path
                         className="opacity-75"
                         fill="currentColor"
                         d="M4 12a8 8 0 018-8v8H4z"
-                      ></path>
+                      />
                     </svg>
-                    <span>Generating Analysis...</span>
-                  </span>
+                    <span>Analyzing Market...</span>
+                  </div>
                 ) : (
-                  'Get Trading Recommendation'
+                  <div className="flex items-center space-x-2">
+                    <FaChartLine />
+                    <span>Get Trading Recommendation</span>
+                  </div>
                 )}
               </motion.button>
             </div>
-          </motion.form>
+          </form>
+        </motion.div>
 
-          {/* Output Panel */}
-          {output && (
-            <motion.section
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="bg-gradient-to-br from-[#181a22] via-[#23232a] to-[#181a22] border border-[#23232a] rounded-2xl p-8 max-w-5xl mx-auto max-h-[400px] overflow-y-auto font-mono text-base whitespace-pre-wrap text-gray-100 shadow-2xl"
-            >
-              <h2 className="text-2xl font-bold mb-4 text-transparent bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text">
-                Trading Recommendation
-              </h2>
-              <pre>{output}</pre>
-            </motion.section>
-          )}
-        </section>
-      </main>
+        {/* Output Section */}
+        {output && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-gray-900/60 backdrop-blur-xl rounded-3xl border border-gray-700 overflow-hidden mt-8"
+          >
+            <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 px-8 py-6 border-b border-gray-700">
+              <h3 className="text-2xl font-bold text-white mb-2">Trading Recommendation</h3>
+              <p className="text-gray-400">AI-powered market analysis and trading insights</p>
+            </div>
+            <div className="p-8">
+              <div className="bg-gray-800/30 rounded-xl p-6 border border-gray-600">
+                <pre className="text-gray-100 font-mono text-sm leading-relaxed whitespace-pre-wrap overflow-x-auto">
+                  {output}
+                </pre>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </section>
     </div>
   );
 };
