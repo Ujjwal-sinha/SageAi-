@@ -295,7 +295,7 @@ ${analysis}`;
 
             {/* Results */}
             {output && (
-              <Card className="flex-1 min-h-0 flex flex-col">
+              <Card className="flex-1 min-h-0 flex flex-col mt-6">
                 <CardHeader className="flex-shrink-0 pb-4">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-xl flex items-center gap-2">
@@ -331,13 +331,13 @@ ${analysis}`;
                   </p>
                 </CardHeader>
                 <CardContent className="flex-1 min-h-0">
-                  <ScrollArea className="h-full">
-                    <div className="bg-muted/30 rounded-lg p-6 border">
-                      <pre className="text-sm whitespace-pre-wrap leading-relaxed">
+                  <div className="h-full min-h-[400px] max-h-[500px] overflow-y-auto border rounded-lg bg-muted/30">
+                    <div className="p-4">
+                      <pre className="text-sm whitespace-pre-wrap leading-relaxed text-foreground font-mono">
                         {output}
                       </pre>
                     </div>
-                  </ScrollArea>
+                  </div>
                 </CardContent>
               </Card>
             )}
