@@ -357,6 +357,15 @@ const AskPeopleContent = () => {
       <header className="relative z-40 glass-strong border-b border-cyan-500/20 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 glass rounded-full border border-cyan-500/30 text-cyan-400 hover:text-cyan-300 hover:bg-white/5 transition-all duration-300 hover-lift">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Dashboard
+              </Link>
+              <div className="h-8 w-px bg-white/20" />
+            </div>
             <Link href="/" className="flex items-center gap-4 group">
               <div className="relative">
                 <div className="w-12 h-12 glass-strong rounded-2xl flex items-center justify-center border border-cyan-500/30 group-hover:neon-glow-cyan transition-all">
