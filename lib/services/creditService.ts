@@ -26,6 +26,7 @@ export interface CreditThresholds {
 
 export class CreditService {
   private thresholds: CreditThresholds = {};
+  consumeFeature: any;
 
   constructor() {
     this.loadThresholds();

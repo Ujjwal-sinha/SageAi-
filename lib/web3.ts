@@ -16,6 +16,7 @@ export interface TokenConfig {
 }
 
 export class Web3Service {
+  [x: string]: any;
   private provider: ethers.JsonRpcProvider | null = null;
   private tokenContract: ethers.Contract | null = null;
 

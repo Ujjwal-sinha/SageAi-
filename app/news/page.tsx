@@ -174,6 +174,15 @@ const Web3NewsContent = () => {
         <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent animate-pulse" />
         
         <div className="p-8 flex items-center justify-between border-b border-cyan-500/20">
+          <div className="flex items-center gap-6">
+            <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 glass rounded-full border border-cyan-500/30 text-cyan-400 hover:text-cyan-300 hover:bg-white/5 transition-all duration-300 hover-lift">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Dashboard
+            </Link>
+            <div className="h-8 w-px bg-white/20" />
+          </div>
           <h1 className="text-2xl font-display tracking-tight">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
