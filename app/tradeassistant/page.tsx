@@ -33,8 +33,8 @@ const mockPrices = [
 ];
 
 const TradeAssistantContent = () => {
-  const [token, setToken] = useState('Bitcoin');
-  const [chain, setChain] = useState('Binance Smart Chain');
+  const [token, setToken] = useState('Solana');
+  const [chain, setChain] = useState('Solana');
   const [sector, setSector] = useState('DeFi');
   const [model, setModel] = useState('gemma2-9b-it');
   const [analysis, setAnalysis] = useState('');
