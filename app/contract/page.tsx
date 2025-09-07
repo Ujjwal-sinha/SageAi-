@@ -90,6 +90,15 @@ const ContractPageContent = () => {
       {/* Modern Sidebar */}
       <aside className="w-80 min-h-full flex flex-col items-center py-12 px-6 bg-gray-900/80 backdrop-blur-sm border-r border-gray-700 relative">
         
+        <div className="w-full mb-6">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-xl border border-gray-600 text-blue-400 hover:text-blue-300 transition-all duration-300">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Dashboard
+          </Link>
+        </div>
+        
         <Card className="w-full mb-12 bg-gray-800/50 border border-gray-700 hover:border-blue-500 transition-all">
           <CardContent className="flex flex-col items-center py-8">
             <Link href="/" className="flex items-center gap-3 mb-4 group">
