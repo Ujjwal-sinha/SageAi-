@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
+import { tradingAdvice } from '@/lib/ta';
 
 // Define interfaces for type safety
 interface Price {
@@ -42,17 +43,6 @@ interface Model {
   recommended?: boolean;
 }
 
-// Mock tradingAdvice function (replace with actual API implementation)
-const tradingAdvice = async (inputData: string, model: string): Promise<string> => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  const [token] = inputData.match(/\[Token\]: (.*?)\n/) || ['Unknown Token'];
-  return `Analysis for ${token} using model ${model}:
-- Current price: $1000 (mock data)
-- Trend: Bullish
-- Recommendation: Consider buying if price drops below $950
-- Technical indicators: RSI 65, MACD positive crossover
-Note: This is a mock response. Implement the actual tradingAdvice API.`;
-};
 
 // Define mockPrices to fix TS2304
 const mockPrices: Price[] = [
@@ -155,7 +145,7 @@ const TradeAssistantContent = () => {
   const [analysis, setAnalysis] = useState<string>('');
   const [output, setOutput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [prices, setPrices] = useState<Price[]>(mockPrices);
 
@@ -475,9 +465,9 @@ ${analysis}`;
                   </button>
 
                   <AnimatePresence>
-                    {showAdvanced ? (
+                    {showAdvanced && (
                       <motion.div
-                        initial={{ opacity: 0, height: 0 }}
+                        initial={{ opacity: 1, height: 'auto' }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
@@ -533,7 +523,7 @@ ${analysis}`;
                           />
                         </div>
                       </motion.div>
-                    ) : null}
+                    )}
                   </AnimatePresence>
                 </div>
 
