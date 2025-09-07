@@ -184,9 +184,9 @@ ${analysis}`;
           </div>
 
           {/* Main Content */}
-          <div className="col-span-12 xl:col-span-9 flex flex-col min-h-0">
+          <div className="col-span-12 xl:col-span-9 space-y-6 overflow-y-auto">
             {/* Configuration Form */}
-            <Card className="flex-shrink-0">
+            <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl flex items-center gap-2">
                   <Settings className="w-5 h-5" />
@@ -295,8 +295,8 @@ ${analysis}`;
 
             {/* Results */}
             {output && (
-              <Card className="flex-1 min-h-0 flex flex-col mt-6">
-                <CardHeader className="flex-shrink-0 pb-4">
+              <Card>
+                <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-xl flex items-center gap-2">
                       <Bot className="w-5 h-5" />
@@ -330,13 +330,11 @@ ${analysis}`;
                     Based on {token} analysis using {models.find(m => m.value === model)?.label}
                   </p>
                 </CardHeader>
-                <CardContent className="flex-1 min-h-0">
-                  <div className="h-full min-h-[400px] max-h-[500px] overflow-y-auto border rounded-lg bg-muted/30">
-                    <div className="p-4">
-                      <pre className="text-sm whitespace-pre-wrap leading-relaxed text-foreground font-mono">
-                        {output}
-                      </pre>
-                    </div>
+                <CardContent>
+                  <div className="min-h-[300px] max-h-[600px] overflow-y-auto border rounded-lg bg-muted/30 p-4">
+                    <pre className="text-sm whitespace-pre-wrap leading-relaxed text-foreground font-mono">
+                      {output}
+                    </pre>
                   </div>
                 </CardContent>
               </Card>
