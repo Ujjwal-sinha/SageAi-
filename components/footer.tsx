@@ -41,18 +41,22 @@ export function Footer() {
             
             {/* Social links */}
             <div className="flex space-x-3">
-              <Button variant="ghost" size="icon" className="bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600">
-                <Twitter className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600">
-                <Github className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600">
-                <Linkedin className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600">
-                <Globe className="h-4 w-4" />
-              </Button>
+              <a href="https://x.com/ujjwalsinha2004" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600">
+                  <Twitter className="h-4 w-4" />
+                </Button>
+              </a>
+              <a href="https://github.com/Ujjwal-sinha" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600">
+                  <Github className="h-4 w-4" />
+                </Button>
+              </a>
+              <a href="https://www.linkedin.com/in/sinhaujjwal01/" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-600">
+                  <Linkedin className="h-4 w-4" />
+                </Button>
+              </a>
+              
             </div>
           </div>
           
