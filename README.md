@@ -35,6 +35,19 @@ Sage AI is a comprehensive Web3-powered AI platform that combines artificial int
 - **State Management**: React Hooks
 - **Testing**: Hardhat Test Suite
 
+
+### Blockchain Configuration
+```bash
+# RPC URL for your blockchain network
+NEXT_PUBLIC_RPC_URL="https://dream-rpc.somnia.network/"
+
+# Blockchain explorer URL for transaction viewing
+NEXT_PUBLIC_EXPLORER_URL="https://shannon-explorer.somnia.network/"
+
+# Your deployed UtilityToken contract address
+NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS="0x0921887D1658f93BFB7fF93aB1487eb688248E32"
+```
+
 ## Getting Started
 
 ### Prerequisites
@@ -83,17 +96,6 @@ npm test
 
 Create a `.env.local` file in the root directory with the following variables:
 
-### Blockchain Configuration
-```bash
-# RPC URL for your blockchain network
-NEXT_PUBLIC_RPC_URL="https://dream-rpc.somnia.network/"
-
-# Blockchain explorer URL for transaction viewing
-NEXT_PUBLIC_EXPLORER_URL="https://shannon-explorer.somnia.network/"
-
-# Your deployed UtilityToken contract address
-NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS="0x0921887D1658f93BFB7fF93aB1487eb688248E32"
-```
 
 ### Feature Credit Thresholds (in UTK tokens)
 ```bash
