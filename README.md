@@ -178,55 +178,7 @@ graph TB
     style L fill:#e8f5e8
 ```
 
-## Project Structure
 
-```
-├── app/                  # Next.js application pages
-├── components/           # Reusable UI components
-├── contracts/           # Smart contract source files
-├── hooks/              # Custom React hooks
-├── lib/                # Utility functions and services
-├── public/             # Static assets
-├── scripts/            # Deployment and utility scripts
-├── test/              # Test files
-└── types/             # TypeScript type definitions
-```
-
-## Contributing
-
-We welcome contributions to Sage AI! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Contribution Guidelines
-
-- Write clear, descriptive commit messages
-- Follow the existing code style and conventions
-- Add/update tests for any new features
-- Update documentation as needed
-- Ensure all tests pass before submitting PRs
-
-## Support
-
-For support, please:
-- Open an issue on GitHub
-- Join our Discord community
-- Check the documentation
-- Contact our support team
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Built with ❤️ by the Sage AI Team
-    style S fill:#e8f5e8
-    style R fill:#ffebee
 ```
 
 ### System Flow Steps
@@ -553,6 +505,19 @@ graph LR
     style I fill:#f3e5f5
 ```
 
+## Project Structure
+
+```
+├── app/                  # Next.js application pages
+├── components/           # Reusable UI components
+├── contracts/           # Smart contract source files
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions and services
+├── public/             # Static assets
+├── scripts/            # Deployment and utility scripts
+├── test/              # Test files
+└── types/             # TypeScript type definitions
+```
 ## Usage
 
 ### Deploy Token Contract
@@ -607,5 +572,4 @@ All feature pages now have token-gated access:
 - ✅ Trading Assistant (`/tradeassistant`) - 3 UTK
 - ✅ Ask Crypto People (`/askpeople`) - 2 UTK
 - ✅ Web3 News AI (`/news`) - 1 UTK
-
-Future features will automatically use the same system by wrapping with `FeatureGate`. 
+ 
