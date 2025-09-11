@@ -252,7 +252,7 @@ Built with ❤️ by the Sage AI Team
    - Links to Somnia Explorer for transaction history
    - Real-time balance updates after token transfers
    - Error handling for network issues
-
+``` 
 ## Feature-Specific Architecture Diagrams
 
 ### 1. Web3 AI Chatbot Architecture (1 UTK Required)
