@@ -92,41 +92,6 @@ yarn test
 npm test
 ```
 
-## Environment Variables
-
-Create a `.env.local` file in the root directory with the following variables:
-
-
-### Feature Credit Thresholds (in UTK tokens)
-```bash
-# Basic features
-NEXT_PUBLIC_THRESHOLD_CHATBOT=1
-NEXT_PUBLIC_THRESHOLD_NEWS_INSIGHTS=1
-NEXT_PUBLIC_THRESHOLD_ASK_PEOPLE=2
-
-# Advanced features  
-NEXT_PUBLIC_THRESHOLD_CONTRACT_GENERATOR=5
-NEXT_PUBLIC_THRESHOLD_TRADE_ASSISTANT=3
-NEXT_PUBLIC_THRESHOLD_TOKEN_DESIGNER=8
-
-# Premium features
-NEXT_PUBLIC_THRESHOLD_NFT_GENERATOR=10
-NEXT_PUBLIC_THRESHOLD_BLOCKCHAIN_ARCHITECT=15
-NEXT_PUBLIC_THRESHOLD_DEFI_DESIGNER=20
-NEXT_PUBLIC_THRESHOLD_PREMIUM_ANALYTICS=25
-```
-
-### Existing API Keys
-```bash
-# AI/LLM API keys
-NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key
-NEXT_PUBLIC_GROQTA_API_KEY=your_groqta_api_key
-GROK_API_KEY=your_grok_api_key
-
-# Deployment
-DEPLOYER_PRIVATE_KEY=your_deployer_private_key
-```
-
 ## How It Works
 
 1. **Token Contract**: Deploy the UtilityToken.sol contract to your blockchain
@@ -177,36 +142,6 @@ graph TB
     style K fill:#e1f5fe
     style L fill:#e8f5e8
 ```
-
-
-```
-
-### System Flow Steps
-
-1. **User Authentication**
-   - User connects MetaMask or compatible wallet
-   - System detects wallet address and network
-
-2. **Balance Verification**
-   - Web3Service queries UtilityToken contract
-   - Retrieves current UTK balance for user address
-   - Caches balance for performance
-
-3. **Feature Access Control**
-   - FeatureGate component wraps each premium feature
-   - Compares user balance against feature threshold
-   - Grants or denies access based on token holdings
-
-4. **Real-time Updates**
-   - Balance updates when user performs transactions
-   - UI reflects current access permissions
-   - Automatic refresh on wallet events
-
-5. **Transaction Monitoring**
-   - Links to Somnia Explorer for transaction history
-   - Real-time balance updates after token transfers
-   - Error handling for network issues
-``` 
 ## Feature-Specific Architecture Diagrams
 
 ### 1. Web3 AI Chatbot Architecture (1 UTK Required)
@@ -504,7 +439,34 @@ graph LR
     style H fill:#e3f2fd
     style I fill:#f3e5f5
 ```
+```
 
+### System Flow Steps
+
+1. **User Authentication**
+   - User connects MetaMask or compatible wallet
+   - System detects wallet address and network
+
+2. **Balance Verification**
+   - Web3Service queries UtilityToken contract
+   - Retrieves current UTK balance for user address
+   - Caches balance for performance
+
+3. **Feature Access Control**
+   - FeatureGate component wraps each premium feature
+   - Compares user balance against feature threshold
+   - Grants or denies access based on token holdings
+
+4. **Real-time Updates**
+   - Balance updates when user performs transactions
+   - UI reflects current access permissions
+   - Automatic refresh on wallet events
+
+5. **Transaction Monitoring**
+   - Links to Somnia Explorer for transaction history
+   - Real-time balance updates after token transfers
+   - Error handling for network issues
+``` 
 ## Project Structure
 
 ```
