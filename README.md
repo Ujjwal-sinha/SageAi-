@@ -73,25 +73,6 @@ npm install
 
 3. Set up environment variables by creating a `.env.local` file in the root directory.
 
-### Development
-
-```bash
-# Run development server
-yarn dev
-# or
-npm run dev
-
-# Build for production
-yarn build
-# or
-npm run build
-
-# Run tests
-yarn test
-# or
-npm test
-```
-
 ## How It Works
 
 1. **Token Contract**: Deploy the UtilityToken.sol contract to your blockchain
