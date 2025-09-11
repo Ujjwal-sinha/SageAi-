@@ -1,7 +1,83 @@
-# Sage AI - Credit System Setup
+# Sage AI - Your Intelligent Web3 Assistant Platform
 
 ## Overview
-Sage AI uses an ERC20 utility token (UTK) to gate features based on user token balance. Users must hold a minimum amount of tokens to access premium features.
+Sage AI is a comprehensive Web3-powered AI platform that combines artificial intelligence with blockchain technology to provide a suite of intelligent tools and services. The platform uses an ERC20 utility token (UTK) to gate features based on user token balance, ensuring fair access to premium features while maintaining a sustainable ecosystem.
+
+## Key Features
+
+### 🤖 AI-Powered Tools
+- **Chatbot**: Intelligent conversational AI for general assistance
+- **News Insights**: Real-time analysis of blockchain and crypto news
+- **Ask People**: Community-driven Q&A platform with AI moderation
+- **Trade Assistant**: AI-powered trading insights and analysis
+- **Contract Generator**: Automated smart contract creation and validation
+
+### 💎 Premium Features
+- **Token Designer**: Advanced token creation and tokenomics planning
+- **NFT Generator**: AI-assisted NFT creation and metadata management
+- **Blockchain Architect**: Infrastructure planning and optimization tools
+- **DeFi Designer**: Automated DeFi protocol design and analysis
+- **Premium Analytics**: Advanced market insights and predictions
+
+### 🔐 Security & Access Control
+- Web3 wallet integration for secure authentication
+- Token-based access control system
+- Transparent and immutable feature access rules
+- Fair pricing model based on feature utility
+
+## Technology Stack
+
+- **Frontend**: Next.js 13+, TypeScript, TailwindCSS
+- **Blockchain**: Solidity, Hardhat, Web3.js
+- **AI/ML**: Groq, Grok
+- **UI Components**: Radix UI, Shadcn
+- **Authentication**: Web3 Wallet Integration
+- **State Management**: React Hooks
+- **Testing**: Hardhat Test Suite
+
+## Getting Started
+
+### Prerequisites
+- Node.js 16.x or later
+- Git
+- Web3 wallet (MetaMask recommended)
+- Yarn or npm
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/Ujjwal-sinha/SageAi-.git
+cd sageai
+```
+
+2. Install dependencies
+```bash
+yarn install
+# or
+npm install
+```
+
+3. Set up environment variables by creating a `.env.local` file in the root directory.
+
+### Development
+
+```bash
+# Run development server
+yarn dev
+# or
+npm run dev
+
+# Build for production
+yarn build
+# or
+npm run build
+
+# Run tests
+yarn test
+# or
+npm test
+```
 
 ## Environment Variables
 
@@ -98,6 +174,55 @@ graph TB
     
     style K fill:#e1f5fe
     style L fill:#e8f5e8
+```
+
+## Project Structure
+
+```
+├── app/                  # Next.js application pages
+├── components/           # Reusable UI components
+├── contracts/           # Smart contract source files
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions and services
+├── public/             # Static assets
+├── scripts/            # Deployment and utility scripts
+├── test/              # Test files
+└── types/             # TypeScript type definitions
+```
+
+## Contributing
+
+We welcome contributions to Sage AI! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Contribution Guidelines
+
+- Write clear, descriptive commit messages
+- Follow the existing code style and conventions
+- Add/update tests for any new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PRs
+
+## Support
+
+For support, please:
+- Open an issue on GitHub
+- Join our Discord community
+- Check the documentation
+- Contact our support team
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Built with ❤️ by the Sage AI Team
     style S fill:#e8f5e8
     style R fill:#ffebee
 ```
