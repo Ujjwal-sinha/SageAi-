@@ -53,52 +53,61 @@ const ProfessionalCard = ({
   return (
     <CardComponent
       className={`
-        group relative overflow-hidden rounded-2xl border border-gray-700/50 
-        bg-gradient-to-br from-gray-800 to-gray-900 
-        shadow-2xl transition-all duration-500 hover:scale-105 hover:shadow-3xl
-        ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
-        ${onClick ? 'focus:outline-none focus:ring-2 focus:ring-cyan-500' : ''}
+        group relative overflow-hidden rounded-3xl border border-gray-700/30 
+        bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm
+        shadow-xl transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl
+        ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-gray-600/50'}
+        ${onClick ? 'focus:outline-none focus:ring-2 focus:ring-cyan-500/50' : ''}
       `}
       onClick={disabled ? undefined : onClick}
     >
-      <div className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-500`}></div>
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-5 group-hover:opacity-15 transition-opacity duration-500`}></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      
       <div className="relative p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className={`p-3 rounded-xl bg-gradient-to-r ${gradient} shadow-lg`}>
+        <div className="flex items-start justify-between mb-5">
+          <div className={`p-4 rounded-2xl bg-gradient-to-br ${gradient} shadow-lg group-hover:shadow-xl transition-all duration-300`}>
             {icon}
           </div>
-          <Badge className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-0 shadow-lg text-xs">
+          <Badge className="bg-gradient-to-r from-cyan-500/90 to-purple-500/90 text-white border-0 shadow-md text-xs font-semibold px-3 py-1">
             {cost}
           </Badge>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div>
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300">
+            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors duration-300">
               {title}
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-300 text-sm leading-relaxed">
               {description}
             </p>
           </div>
           
-          <div className="space-y-2">
-            <h4 className="text-xs font-semibold text-gray-300 mb-1">Features:</h4>
-            <ul className="space-y-1">
+          <div className="space-y-3">
+            <h4 className="text-xs font-semibold text-gray-200 mb-2 uppercase tracking-wide">Key Features</h4>
+            <ul className="space-y-2">
               {features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-2 text-xs text-gray-400">
-                  <div className="w-1 h-1 bg-cyan-400 rounded-full"></div>
-                  {feature}
+                <li key={index} className="flex items-center gap-3 text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                  <div className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full flex-shrink-0"></div>
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
         
-        <div className="mt-4 pt-3 border-t border-gray-700/50">
+        <div className="mt-6 pt-4 border-t border-gray-700/40 group-hover:border-gray-600/60 transition-colors duration-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-500">Click to access</span>
-            <ArrowUp className="w-3 h-3 text-cyan-400 group-hover:translate-y-1 transition-transform duration-300" />
+            <span className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
+              {disabled ? 'Connect wallet to access' : 'Click to access'}
+            </span>
+            <div className="flex items-center gap-1">
+              <span className="text-xs text-gray-500 group-hover:text-cyan-400 transition-colors duration-300">
+                {disabled ? 'Locked' : 'Available'}
+              </span>
+              <ArrowUp className={`w-3 h-3 transition-all duration-300 ${disabled ? 'text-gray-500' : 'text-cyan-400 group-hover:translate-y-1'}`} />
+            </div>
           </div>
         </div>
       </div>
@@ -380,42 +389,40 @@ export default function Dashboard() {
               </p>
         </div>
 
-            {/* Balance Card */}
-            <Card className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl rounded-2xl mb-8">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10"></div>
-              <div className="relative p-8">
-                <div className="text-center">
-                  <h2 className="text-2xl lg:text-3xl font-bold text-white mb-2 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                    Your Balance
-                  </h2>
-                  <div className="flex items-center justify-center gap-4 mb-6">
-                    <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-500 shadow-lg">
-                      <Wallet className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
+            {/* Compact Balance Card */}
+            <Card className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-xl rounded-xl mb-6">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5"></div>
+              <div className="relative p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 shadow-md">
+                      <Wallet className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="text-3xl lg:text-4xl font-bold text-white">
+                      <p className="text-2xl font-bold text-white">
                         {creditsLoading ? '...' : credits.toFixed(2)}
                       </p>
-                      <p className="text-gray-400">UTK Credits</p>
+                      <p className="text-sm text-gray-400">UTK Credits</p>
                     </div>
                   </div>
-                  <Button className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-6 lg:px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                    Buy More Credits
+                  <Button className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 text-sm">
+                    Buy Credits
                   </Button>
                 </div>
               </div>
             </Card>
 
             {/* AI Services Grid */}
-            <div className="space-y-8">
-              <div className="text-center">
-                <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <div className="space-y-6">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                   AI Services
                 </h2>
-                <p className="text-gray-400 text-base lg:text-lg">Access powerful AI tools with your UTK credits</p>
+                <p className="text-gray-300 text-lg">Access powerful AI tools with your UTK credits</p>
+                <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {/* Somnia Ecosystem */}
                 {isWalletConnected() ? (
                   <Link href="/somnia">
