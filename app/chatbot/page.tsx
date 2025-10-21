@@ -32,6 +32,7 @@ import {
   Zap,
   Gamepad2,
   Users,
+  Server,
 } from 'lucide-react';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
@@ -202,6 +203,12 @@ const ChatbotContent = () => {
       name: 'Gaming Development Bot', 
       description: 'Build blockchain games with expert guidance',
       href: '/gamingbot',
+    },
+    { 
+      icon: <Server className="w-5 h-5" />, 
+      name: 'Infrastructure Agents', 
+      description: 'Build robust infrastructure for Somnia ecosystem',
+      href: '/infrastructure',
     },
     { 
       icon: <Code2 className="w-5 h-5" />, 

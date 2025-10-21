@@ -24,7 +24,8 @@ import {
   Menu,
   X,
   Home,
-  ArrowLeft
+  ArrowLeft,
+  Server
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCredits } from '@/hooks/useCredits';
@@ -130,8 +131,8 @@ const CryptoSidebar = ({
   lastUpdated: Date;
 }) => {
   return (
-    <div className="space-y-6">
-      {/* Live Crypto Prices */}
+    <div className="space-y-6 max-h-screen overflow-y-auto">
+      {/* Live Crypto Prices - Horizontal */}
       <Card className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl rounded-2xl">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5"></div>
         <div className="relative p-6">
@@ -140,20 +141,20 @@ const CryptoSidebar = ({
             <h2 className="text-xl font-bold text-white">Live Crypto Prices</h2>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             {cryptoLoading ? (
               Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gray-700 rounded-full animate-pulse"></div>
+                <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-gray-800/50">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-gray-700 rounded-full animate-pulse"></div>
                     <div>
-                      <div className="w-16 h-4 bg-gray-700 rounded animate-pulse mb-1"></div>
-                      <div className="w-12 h-3 bg-gray-700 rounded animate-pulse"></div>
+                      <div className="w-12 h-3 bg-gray-700 rounded animate-pulse mb-1"></div>
+                      <div className="w-16 h-2 bg-gray-700 rounded animate-pulse"></div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="w-20 h-4 bg-gray-700 rounded animate-pulse mb-1"></div>
-                    <div className="w-16 h-3 bg-gray-700 rounded animate-pulse"></div>
+                    <div className="w-16 h-3 bg-gray-700 rounded animate-pulse mb-1"></div>
+                    <div className="w-12 h-2 bg-gray-700 rounded animate-pulse"></div>
                   </div>
                 </div>
               ))
@@ -161,14 +162,14 @@ const CryptoSidebar = ({
               cryptoPrices.map((crypto) => {
                 const isPositive = crypto.change_percentage_24h >= 0;
                 return (
-                  <div key={crypto.id} className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-gray-800/50 to-gray-900/50 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-300">
-                    <div className="flex items-center gap-3">
+                  <div key={crypto.id} className="flex items-center justify-between p-2 rounded-lg bg-gradient-to-r from-gray-800/30 to-gray-900/30 hover:from-gray-700/50 hover:to-gray-800/50 transition-all duration-300">
+                    <div className="flex items-center gap-2">
                       <img 
                         src={crypto.logo} 
                         alt={crypto.name}
-                        className="w-8 h-8 rounded-full"
+                        className="w-6 h-6 rounded-full"
                         onError={(e) => {
-                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${crypto.symbol}&background=0D9488&color=fff&size=32`;
+                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${crypto.symbol}&background=0D9488&color=fff&size=24`;
                         }}
                       />
                       <div>
@@ -179,7 +180,7 @@ const CryptoSidebar = ({
                     <div className="text-right">
                       <p className="text-white font-semibold text-sm">{cryptoService.formatPrice(crypto.price)}</p>
                       <div className={`flex items-center gap-1 ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
-                        {isPositive ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
+                        {isPositive ? <ArrowUp className="w-2 h-2" /> : <ArrowDown className="w-2 h-2" />}
                         <span className="text-xs">{isPositive ? '+' : ''}{crypto.change_percentage_24h.toFixed(2)}%</span>
                       </div>
                     </div>
@@ -187,14 +188,14 @@ const CryptoSidebar = ({
                 );
               })
             ) : (
-              <div className="text-center py-6 text-gray-400">
-                <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">Configure API key for live data</p>
+              <div className="text-center py-4 text-gray-400">
+                <Activity className="w-6 h-6 mx-auto mb-2 opacity-50" />
+                <p className="text-xs">Configure API key for live data</p>
               </div>
             )}
           </div>
           
-          <div className="mt-4 pt-4 border-t border-gray-700/50">
+          <div className="mt-4 pt-3 border-t border-gray-700/50">
             <div className="flex items-center justify-between text-xs text-gray-400">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -207,13 +208,13 @@ const CryptoSidebar = ({
       </Card>
 
 
-      {/* AI Coins */}
+      {/* AI Coins - Horizontal */}
       <Card className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl rounded-2xl">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-pink-500/5"></div>
         <div className="relative p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Crown className="w-5 h-5 text-purple-400" />
-            <h2 className="text-lg font-bold text-white">AI Coins</h2>
+          <div className="flex items-center gap-2 mb-6">
+            <Crown className="w-6 h-6 text-purple-400" />
+            <h2 className="text-xl font-bold text-white">AI Coins</h2>
           </div>
           
           <div className="space-y-3">
@@ -239,9 +240,14 @@ const CryptoSidebar = ({
                 return (
                   <div key={coin.id} className="flex items-center justify-between p-2 rounded-lg bg-gradient-to-r from-purple-800/20 to-pink-800/20 hover:from-purple-700/30 hover:to-pink-700/30 transition-all duration-300">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xs">
-                        {index + 1}
-                      </div>
+                      <img 
+                        src={coin.logo} 
+                        alt={coin.name}
+                        className="w-6 h-6 rounded-full"
+                        onError={(e) => {
+                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${coin.symbol}&background=8B5CF6&color=fff&size=24`;
+                        }}
+                      />
                       <div>
                         <h4 className="text-white font-semibold text-sm">{coin.symbol}</h4>
                         <p className="text-xs text-gray-400">{coin.name}</p>
@@ -370,24 +376,28 @@ export default function Dashboard() {
           {sidebarOpen && (
             <div className="lg:hidden fixed inset-0 z-50 bg-black/50" onClick={() => setSidebarOpen(false)}>
               <div className="fixed right-0 top-0 h-full w-80 bg-gray-900 border-l border-gray-700/50 p-6 overflow-y-auto">
-                <CryptoSidebar 
-                  cryptoPrices={cryptoPrices}
-                  aiCoins={aiCoins}
-                  cryptoLoading={cryptoLoading}
-                  lastUpdated={lastUpdated}
-                />
+                <div className="max-h-full">
+                  <CryptoSidebar 
+                    cryptoPrices={cryptoPrices}
+                    aiCoins={aiCoins}
+                    cryptoLoading={cryptoLoading}
+                    lastUpdated={lastUpdated}
+                  />
+                </div>
               </div>
             </div>
           )}
 
           {/* Desktop Sidebar */}
           <div className="hidden lg:block w-80 p-6">
-            <CryptoSidebar 
-              cryptoPrices={cryptoPrices}
-              aiCoins={aiCoins}
-              cryptoLoading={cryptoLoading}
-              lastUpdated={lastUpdated}
-            />
+            <div className="sticky top-6">
+              <CryptoSidebar 
+                cryptoPrices={cryptoPrices}
+                aiCoins={aiCoins}
+                cryptoLoading={cryptoLoading}
+                lastUpdated={lastUpdated}
+              />
+            </div>
           </div>
 
           {/* Main Content */}
@@ -577,6 +587,31 @@ export default function Dashboard() {
                     gradient="from-indigo-500 to-purple-500"
                     cost="5 UTK"
                     features={["Contract Generator", "Security Audit", "Gas Optimization", "Best Practices"]}
+                    disabled={true}
+                    onClick={handleRestrictedClick}
+                  />
+                )}
+
+                {/* Infrastructure Agents */}
+                {isWalletConnected() ? (
+                  <Link href="/infrastructure">
+                    <ProfessionalCard
+                      title="Infrastructure Agents"
+                      description="Build and manage robust infrastructure for Somnia ecosystem applications"
+                      icon={<Server className="w-6 h-6 lg:w-8 lg:h-8" />}
+                      gradient="from-indigo-500 to-cyan-500"
+                      cost="13 UTK"
+                      features={["Node Deployment", "Security Hardening", "Monitoring Setup", "Cloud Infrastructure"]}
+                    />
+                  </Link>
+                ) : (
+                  <ProfessionalCard
+                    title="Infrastructure Agents"
+                    description="Build and manage robust infrastructure for Somnia ecosystem applications"
+                    icon={<Server className="w-6 h-6 lg:w-8 lg:h-8" />}
+                    gradient="from-indigo-500 to-cyan-500"
+                    cost="13 UTK"
+                    features={["Node Deployment", "Security Hardening", "Monitoring Setup", "Cloud Infrastructure"]}
                     disabled={true}
                     onClick={handleRestrictedClick}
                   />

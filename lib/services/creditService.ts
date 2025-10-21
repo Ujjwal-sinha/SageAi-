@@ -12,7 +12,8 @@ export enum FeatureType {
   NEWS_AI_INSIGHTS = 'NEWS_AI_INSIGHTS',
   PREMIUM_ANALYTICS = 'PREMIUM_ANALYTICS',
   SOMNIA_ECOSYSTEM = 'SOMNIA_ECOSYSTEM',
-  GAMING_BOT = 'GAMING_BOT'
+  GAMING_BOT = 'GAMING_BOT',
+  INFRASTRUCTURE_AGENTS = 'INFRASTRUCTURE_AGENTS'
 }
 
 export interface FeatureAccess {
@@ -48,7 +49,8 @@ export class CreditService {
       [FeatureType.NEWS_AI_INSIGHTS]: Number(process.env.NEXT_PUBLIC_THRESHOLD_NEWS_INSIGHTS) || 1,
       [FeatureType.PREMIUM_ANALYTICS]: Number(process.env.NEXT_PUBLIC_THRESHOLD_PREMIUM_ANALYTICS) || 25,
       [FeatureType.SOMNIA_ECOSYSTEM]: Number(process.env.NEXT_PUBLIC_THRESHOLD_SOMNIA_ECOSYSTEM) || 9,
-      [FeatureType.GAMING_BOT]: Number(process.env.NEXT_PUBLIC_THRESHOLD_GAMING_BOT) || 11
+      [FeatureType.GAMING_BOT]: Number(process.env.NEXT_PUBLIC_THRESHOLD_GAMING_BOT) || 11,
+      [FeatureType.INFRASTRUCTURE_AGENTS]: Number(process.env.NEXT_PUBLIC_THRESHOLD_INFRASTRUCTURE_AGENTS) || 13
     };
   }
 

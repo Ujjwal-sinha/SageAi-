@@ -80,6 +80,9 @@ export class FeatureTestService {
       case FeatureType.GAMING_BOT:
         return await this.testGamingBot(testData);
       
+      case FeatureType.INFRASTRUCTURE_AGENTS:
+        return await this.testInfrastructureAgents(testData);
+      
       default:
         throw new Error(`Unknown feature type: ${featureType}`);
     }
@@ -363,6 +366,64 @@ contract TestToken is ERC20 {
         "Gaming Smart Contract Templates",
         "NFT Standards Guide",
         "Community Discord"
+      ],
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  private async testInfrastructureAgents(testData?: any): Promise<any> {
+    // Simulate infrastructure agents guidance
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return {
+      success: true,
+      message: "Infrastructure guidance generated successfully",
+      data: {
+        query: testData?.query || "How to set up Somnia blockchain infrastructure?",
+        guidance: {
+          title: "Somnia Infrastructure Setup Guide",
+          overview: "Complete infrastructure setup for Somnia blockchain applications",
+          steps: [
+            "Deploy Somnia validator nodes",
+            "Configure network security",
+            "Set up monitoring systems",
+            "Implement load balancing",
+            "Configure backup strategies"
+          ],
+          tools: [
+            "Docker & Kubernetes",
+            "Prometheus & Grafana",
+            "Nginx load balancer",
+            "AWS/GCP/Azure services",
+            "Terraform for IaC"
+          ],
+          security: [
+            "SSL/TLS certificates",
+            "Firewall configuration",
+            "Access control policies",
+            "Regular security audits",
+            "Backup encryption"
+          ]
+        },
+        platform: "Somnia Blockchain",
+        features: [
+          "Node deployment automation",
+          "Network monitoring",
+          "Security hardening",
+          "Scalability solutions"
+        ]
+      },
+      recommendations: [
+        "Use container orchestration for node management",
+        "Implement comprehensive monitoring",
+        "Follow security best practices",
+        "Plan for horizontal scaling"
+      ],
+      resources: [
+        "Somnia Infrastructure Documentation",
+        "DevOps Best Practices Guide",
+        "Security Hardening Checklist",
+        "Monitoring Setup Tutorials"
       ],
       timestamp: new Date().toISOString()
     };
