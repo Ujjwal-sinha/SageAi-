@@ -1,100 +1,316 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Bitcoin, Network, DollarSign, ChevronRight, MessageSquare, Bot, Users, FileCode, TrendingUp, Gift, LogOut, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
+import { 
+  Zap, 
+  Gamepad2, 
+  Code2, 
+  TrendingUp, 
+  Users, 
+  FileCode, 
+  Newspaper,
+  Wallet,
+  ArrowUp,
+  ArrowDown,
+  Star,
+  Activity,
+  Globe,
+  Shield,
+  Crown,
+  Menu,
+  X
+} from 'lucide-react';
 import Link from 'next/link';
-import toast from 'react-hot-toast';
 import { useCredits } from '@/hooks/useCredits';
-import { UTILITY_TOKEN_ADDRESS, UTILITY_TOKEN_ABI } from '@/lib/utilityToken';
+import { cryptoService, CryptoPrice, AICoin } from '@/lib/services/cryptoService';
+
+// Professional Card Component
+const ProfessionalCard = ({ 
+  title, 
+  description, 
+  icon, 
+  gradient, 
+  cost, 
+  features, 
+  disabled = false, 
+  onClick 
+}: {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  gradient: string;
+  cost: string;
+  features: string[];
+  disabled?: boolean;
+  onClick?: () => void;
+}) => {
+  const CardComponent = onClick ? 'button' : 'div';
+  
+  return (
+    <CardComponent
+      className={`
+        group relative overflow-hidden rounded-2xl border border-gray-700/50 
+        bg-gradient-to-br from-gray-800 to-gray-900 
+        shadow-2xl transition-all duration-500 hover:scale-105 hover:shadow-3xl
+        ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
+        ${onClick ? 'focus:outline-none focus:ring-2 focus:ring-cyan-500' : ''}
+      `}
+      onClick={disabled ? undefined : onClick}
+    >
+      <div className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-500`}></div>
+      <div className="relative p-6">
+        <div className="flex items-start justify-between mb-4">
+          <div className={`p-3 rounded-xl bg-gradient-to-r ${gradient} shadow-lg`}>
+            {icon}
+          </div>
+          <Badge className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-0 shadow-lg text-xs">
+            {cost}
+          </Badge>
+        </div>
+        
+        <div className="space-y-3">
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300">
+              {title}
+            </h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              {description}
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold text-gray-300 mb-1">Features:</h4>
+            <ul className="space-y-1">
+              {features.map((feature, index) => (
+                <li key={index} className="flex items-center gap-2 text-xs text-gray-400">
+                  <div className="w-1 h-1 bg-cyan-400 rounded-full"></div>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        
+        <div className="mt-4 pt-3 border-t border-gray-700/50">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-gray-500">Click to access</span>
+            <ArrowUp className="w-3 h-3 text-cyan-400 group-hover:translate-y-1 transition-transform duration-300" />
+          </div>
+        </div>
+      </div>
+    </CardComponent>
+  );
+};
+
+// Crypto Sidebar Component
+const CryptoSidebar = ({ 
+  cryptoPrices, 
+  aiCoins, 
+  cryptoLoading, 
+  lastUpdated 
+}: {
+  cryptoPrices: CryptoPrice[];
+  aiCoins: AICoin[];
+  cryptoLoading: boolean;
+  lastUpdated: Date;
+}) => {
+  return (
+    <div className="space-y-6">
+      {/* Live Crypto Prices */}
+      <Card className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5"></div>
+        <div className="relative p-6">
+          <div className="flex items-center gap-2 mb-6">
+            <Activity className="w-6 h-6 text-cyan-400" />
+            <h2 className="text-xl font-bold text-white">Live Crypto Prices</h2>
+          </div>
+          
+          <div className="space-y-4">
+            {cryptoLoading ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gray-700 rounded-full animate-pulse"></div>
+                    <div>
+                      <div className="w-16 h-4 bg-gray-700 rounded animate-pulse mb-1"></div>
+                      <div className="w-12 h-3 bg-gray-700 rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="w-20 h-4 bg-gray-700 rounded animate-pulse mb-1"></div>
+                    <div className="w-16 h-3 bg-gray-700 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              ))
+            ) : cryptoPrices.length > 0 ? (
+              cryptoPrices.map((crypto) => {
+                const isPositive = crypto.change_percentage_24h >= 0;
+                return (
+                  <div key={crypto.id} className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-gray-800/50 to-gray-900/50 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-300">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src={crypto.logo} 
+                        alt={crypto.name}
+                        className="w-8 h-8 rounded-full"
+                        onError={(e) => {
+                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${crypto.symbol}&background=0D9488&color=fff&size=32`;
+                        }}
+                      />
+                      <div>
+                        <h4 className="text-white font-semibold text-sm">{crypto.symbol}</h4>
+                        <p className="text-xs text-gray-400">{crypto.name}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white font-semibold text-sm">{cryptoService.formatPrice(crypto.price)}</p>
+                      <div className={`flex items-center gap-1 ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                        {isPositive ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
+                        <span className="text-xs">{isPositive ? '+' : ''}{crypto.change_percentage_24h.toFixed(2)}%</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-6 text-gray-400">
+                <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                <p className="text-sm">Configure API key for live data</p>
+              </div>
+            )}
+          </div>
+          
+          <div className="mt-4 pt-4 border-t border-gray-700/50">
+            <div className="flex items-center justify-between text-xs text-gray-400">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                Last updated
+              </div>
+              <span>{lastUpdated.toLocaleTimeString()}</span>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+
+      {/* AI Coins */}
+      <Card className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-pink-500/5"></div>
+        <div className="relative p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Crown className="w-5 h-5 text-purple-400" />
+            <h2 className="text-lg font-bold text-white">AI Coins</h2>
+          </div>
+          
+          <div className="space-y-3">
+            {cryptoLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-gray-800/50">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-gray-700 rounded-full animate-pulse"></div>
+                    <div>
+                      <div className="w-12 h-3 bg-gray-700 rounded animate-pulse mb-1"></div>
+                      <div className="w-16 h-2 bg-gray-700 rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="w-16 h-3 bg-gray-700 rounded animate-pulse mb-1"></div>
+                    <div className="w-12 h-2 bg-gray-700 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              ))
+            ) : aiCoins.length > 0 ? (
+              aiCoins.map((coin, index) => {
+                const isPositive = coin.change_percentage_24h >= 0;
+                return (
+                  <div key={coin.id} className="flex items-center justify-between p-2 rounded-lg bg-gradient-to-r from-purple-800/20 to-pink-800/20 hover:from-purple-700/30 hover:to-pink-700/30 transition-all duration-300">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xs">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-sm">{coin.symbol}</h4>
+                        <p className="text-xs text-gray-400">{coin.name}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white font-semibold text-sm">{cryptoService.formatPrice(coin.price)}</p>
+                      <div className={`flex items-center gap-1 ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                        {isPositive ? <ArrowUp className="w-2 h-2" /> : <ArrowDown className="w-2 h-2" />}
+                        <span className="text-xs">{isPositive ? '+' : ''}{coin.change_percentage_24h.toFixed(2)}%</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-4 text-gray-400">
+                <Crown className="w-6 h-6 mx-auto mb-2 opacity-50" />
+                <p className="text-xs">No AI coin data</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
+};
 
 export default function Dashboard() {
+  const { credits, isLoading: creditsLoading } = useCredits();
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [connecting, setConnecting] = useState(false); // Added connecting state
-  const { credits, loading: creditsLoading, refreshCredits } = useCredits();
-  const [tokenBalance, setTokenBalance] = useState<string>('0');
+  const [cryptoPrices, setCryptoPrices] = useState<CryptoPrice[]>([]);
+  const [aiCoins, setAiCoins] = useState<AICoin[]>([]);
+  const [cryptoLoading, setCryptoLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Check wallet connection
   useEffect(() => {
-    const fetchTokenBalance = async () => {
-      if (walletAddress && typeof window.ethereum !== 'undefined' && UTILITY_TOKEN_ADDRESS && UTILITY_TOKEN_ADDRESS !== 'YOUR_DEPLOYED_UTILITY_TOKEN_ADDRESS') {
-        try {
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          const contract = new ethers.Contract(UTILITY_TOKEN_ADDRESS, UTILITY_TOKEN_ABI, provider);
-          const balance = await contract.balanceOf(walletAddress);
-          const decimals = await contract.decimals();
-          setTokenBalance(ethers.formatUnits(balance, decimals));
-        } catch (error) {
-          setTokenBalance('0');
-        }
-      } else {
-        setTokenBalance('0');
-      }
-    };
-    fetchTokenBalance();
-  }, [walletAddress]);
-
-  useEffect(() => {
-    // Check if wallet is already connected on mount
     const checkWalletConnection = async () => {
-      if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
+      if (typeof window !== 'undefined' && window.ethereum) {
         try {
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          const accounts = await provider.send('eth_accounts', []);
-          if (accounts && accounts.length > 0) {
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          if (accounts.length > 0) {
             setWalletAddress(accounts[0]);
           }
         } catch (error) {
-          // Optionally handle error
+          console.error('Error checking wallet connection:', error);
         }
       }
     };
     checkWalletConnection();
   }, []);
 
-  const [cryptoPrices] = useState([
-    {
-      name: 'BTC',
-      fullName: 'BITCOIN',
-      price: '1,05,000.19',
-      change: '+0.27%',
-      currency: 'USDT',
-      icon: <Bitcoin className="w-8 h-8 text-orange-500" />,
-    },
-    {
-      name: 'ETH',
-      fullName: 'ETHEREUM',
-      price: '2,493.38',
-      change: '+7.48%',
-      currency: 'USDT',
-      icon: <Network className="w-8 h-8 text-blue-500" />,
-    },
-    {
-      name: 'USDT',
-      fullName: 'TETHER',
-      price: '1.00',
-      change: '+0.00%',
-      currency: 'USDT',
-      icon: <DollarSign className="w-8 h-8 text-green-500" />,
-    },
-  ]);
+  // Fetch crypto data
+  useEffect(() => {
+    const fetchCryptoData = async () => {
+      setCryptoLoading(true);
+      try {
+        const [topCryptos, ai] = await Promise.all([
+          cryptoService.getTopCryptos(3),
+          cryptoService.getAICoins(5)
+        ]);
+        
+        setCryptoPrices(topCryptos);
+        setAiCoins(ai);
+        setLastUpdated(new Date());
+      } catch (error) {
+        console.error('Error fetching crypto data:', error);
+      } finally {
+        setCryptoLoading(false);
+      }
+    };
 
-  const [trendingCoins] = useState([
-    { name: 'BabyDoge', symbol: 'BABY', change: '+15.65%' },
-    { name: 'WIF', symbol: 'DOGWIFHAT', change: '+28.17%' },
-    { name: 'MUBARAK', symbol: 'MUBA', change: '+7.47%' },
-    { name: 'XAI', symbol: 'XAI', change: '+34.24%' },
-    { name: 'AUCTION', symbol: 'BOUNCE', change: '+14.86%' },
-  ]);
-
-  const [topAICoins] = useState([
-    { name: 'CGPT', symbol: 'CHAINGPT', change: '+2.17%' },
-    { name: 'COOKIE', symbol: 'COOKIE', change: '+4.53%' },
-    { name: 'AITECH', symbol: 'SOLIDUS', change: '+5.86%' },
-    { name: 'DCK', symbol: 'DEXCHECK', change: '+12.83%' },
-    { name: 'GTAI', symbol: 'GT PROTOCOL', change: '+7.71%' },
-  ]);
+    fetchCryptoData();
+    
+    // Refresh data every 30 seconds
+    const interval = setInterval(fetchCryptoData, 30 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const isWalletConnected = () => {
     return walletAddress !== null;
@@ -104,232 +320,247 @@ export default function Dashboard() {
     toast.error('Please connect your wallet to access this feature');
   };
 
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        setConnecting(true); // Set connecting state to true
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const address = await signer.getAddress();
-        setWalletAddress(address);
-        toast.success('Wallet connected successfully!');
-      } catch (error: unknown) {
-        if (error && typeof error === 'object' && 'code' in error && error.code === 4001) {
-          toast.error('Please connect to MetaMask.');
-        } else {
-          toast.error('Error connecting to MetaMask');
-          console.error('Error connecting to MetaMask:', error);
-        }
-      } finally {
-        setConnecting(false); // Reset connecting state
-      }
-    } else {
-      toast.error('MetaMask is not installed. Please install it to use this feature.');
-    }
-  };
-
-  const disconnectWallet = () => {
-    setWalletAddress(null);
-    toast.success('Wallet disconnected successfully');
-  };
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Header */}
-      <header className="border-b border-gray-700 bg-gray-900 sticky top-0 z-50 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-8">
-              <Link href="/" className="flex items-center gap-2">
-                <Bot className="w-8 h-8 text-cyan-400" />
-                <span className="text-xl font-bold text-white">Sage AI</span>
-              </Link>
-              <nav className="hidden md:flex space-x-4">
-                {isWalletConnected() ? (
-                  <Link href="/chatbot">
-                    <Button variant="ghost" className="text-white hover:text-purple-200">AI Tools</Button>
-                  </Link>
-                ) : (
-                  <Button variant="ghost" className="text-white hover:text-purple-200" onClick={handleRestrictedClick}>
-                    AI Tools
-                  </Button>
-                )}
-                <Link href="/pricing">
-                  <Button variant="ghost" className="text-white hover:text-purple-200">Pricing</Button>
-                </Link>
-                {isWalletConnected() ? (
-                  <Link href="/hub">
-                    <Button variant="ghost" className="text-white hover:text-purple-200">Hub</Button>
-                  </Link>
-                ) : (
-                  <Button variant="ghost" className="text-white hover:text-purple-200" onClick={handleRestrictedClick}>
-                    Hub
-                  </Button>
-                )}
-                <Button variant="ghost" className="text-white hover:text-purple-200">Developers</Button>
-              </nav>
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-3xl animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-1/2 w-80 h-80 bg-gradient-to-r from-pink-500/20 to-cyan-500/20 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
             </div>
-            <div className="flex items-center gap-4">
-              {walletAddress ? (
-                <div className="flex items-center gap-3">
-                  <div className="text-sm text-cyan-400 bg-gray-800 px-3 py-1 rounded-full font-mono">
-                    {`${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`}
-                  </div>
+
+      <div className="relative z-10">
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center justify-between p-4 bg-gray-800/50 backdrop-blur-sm border-b border-gray-700/50">
+          <h1 className="text-xl font-bold text-white">Sage AI</h1>
                   <Button
                     variant="ghost"
-                    size="icon"
-                    className="text-cyan-400 hover:text-cyan-200 hover:bg-gray-800"
-                    onClick={disconnectWallet}
-                    aria-label="Disconnect Wallet"
-                  >
-                    <LogOut className="w-5 h-5" />
+            size="sm"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="text-white hover:bg-gray-700/50"
+          >
+            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                   </Button>
                 </div>
-              ) : (
-                <Button
-                  className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg px-6 py-2 font-bold"
-                  onClick={connectWallet}
-                  disabled={connecting}
-                  aria-label="Connect Wallet"
-                >
-                  {connecting ? 'Connecting...' : 'Connect Wallet'}
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Crypto Prices */}
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {cryptoPrices.map((crypto, index) => (
-                <Card key={index} className="bg-gray-800 border border-gray-700 shadow-lg p-4 min-w-[240px] flex items-center gap-3">
-                  {crypto.icon}
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-white text-lg">{crypto.name}</span>
-                      <span className="text-xs text-gray-400">{crypto.fullName}</span>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-bold text-white">{crypto.price}</span>
-                      <span className="text-green-400 text-sm">{crypto.change}</span>
-                    </div>
-                  </div>
-                </Card>
-              ))}
+        <div className="flex">
+          {/* Mobile Sidebar Overlay */}
+          {sidebarOpen && (
+            <div className="lg:hidden fixed inset-0 z-50 bg-black/50" onClick={() => setSidebarOpen(false)}>
+              <div className="fixed right-0 top-0 h-full w-80 bg-gray-900 border-l border-gray-700/50 p-6 overflow-y-auto">
+                <CryptoSidebar 
+                  cryptoPrices={cryptoPrices}
+                  aiCoins={aiCoins}
+                  cryptoLoading={cryptoLoading}
+                  lastUpdated={lastUpdated}
+                />
+              </div>
             </div>
+          )}
+
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block w-80 p-6">
+            <CryptoSidebar 
+              cryptoPrices={cryptoPrices}
+              aiCoins={aiCoins}
+              cryptoLoading={cryptoLoading}
+              lastUpdated={lastUpdated}
+            />
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1 p-6">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Sage AI Dashboard
+              </h1>
+              <p className="text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto">
+                Your intelligent Web3 assistant platform powered by AI and blockchain technology
+              </p>
+        </div>
 
             {/* Balance Card */}
-            <Card className="bg-gray-800 border border-gray-700 shadow-lg rounded-2xl p-10 flex flex-col items-center justify-center">
-              <h2 className="text-3xl font-bold text-white mb-3 tracking-tight text-center drop-shadow-lg">Your Balance</h2>
-              <div className="flex flex-col items-center gap-5 w-full">
-                <div className="flex items-center gap-4 mb-2">
-                  <Gift className="w-8 h-8 text-cyan-400" />
-                  <span className="text-xl text-white font-semibold tracking-wide">CREDITS</span>
-                </div>
-                <div className="flex items-center gap-4 mb-2">
-                  <span className="text-5xl font-extrabold text-white drop-shadow-lg">{creditsLoading ? '...' : credits}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-cyan-300 hover:text-cyan-100 hover:bg-gray-700 ml-1"
-                    onClick={refreshCredits}
-                    aria-label="Refresh Balance"
-                    disabled={creditsLoading}
-                  >
-                    <RefreshCw className={`w-7 h-7 ${creditsLoading ? 'animate-spin' : ''}`} />
-                  </Button>
-                </div>
-                <Link href="/pricing" className="w-full flex justify-center">
-                  <Button className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg px-8 py-3 text-lg font-bold tracking-wide mt-2 w-full max-w-xs">
+            <Card className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl rounded-2xl mb-8">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10"></div>
+              <div className="relative p-8">
+                <div className="text-center">
+                  <h2 className="text-2xl lg:text-3xl font-bold text-white mb-2 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                    Your Balance
+                  </h2>
+                  <div className="flex items-center justify-center gap-4 mb-6">
+                    <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-500 shadow-lg">
+                      <Wallet className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-3xl lg:text-4xl font-bold text-white">
+                        {creditsLoading ? '...' : credits.toFixed(2)}
+                      </p>
+                      <p className="text-gray-400">UTK Credits</p>
+                    </div>
+                  </div>
+                  <Button className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-6 lg:px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                     Buy More Credits
                   </Button>
-                </Link>
+                </div>
               </div>
             </Card>
 
-            {/* Quick Access */}
-            <div className="space-y-6">
-              <h2 className="text-2xl font-semibold text-white mb-2">AI Chat Quick Access</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* AI Services Grid */}
+            <div className="space-y-8">
+              <div className="text-center">
+                <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                  AI Services
+                </h2>
+                <p className="text-gray-400 text-base lg:text-lg">Access powerful AI tools with your UTK credits</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+                {/* Somnia Ecosystem */}
+                {isWalletConnected() ? (
+                  <Link href="/somnia">
+                    <ProfessionalCard
+                      title="Somnia Ecosystem"
+                      description="Explore Somnia blockchain features, recent developments, and ecosystem insights"
+                      icon={<Zap className="w-6 h-6 lg:w-8 lg:h-8" />}
+                      gradient="from-cyan-500 to-blue-500"
+                      cost="9 UTK"
+                      features={["Blockchain Info", "Recent Updates", "Ecosystem News", "Technical Specs"]}
+                    />
+                  </Link>
+                ) : (
+                  <ProfessionalCard
+                    title="Somnia Ecosystem"
+                    description="Explore Somnia blockchain features, recent developments, and ecosystem insights"
+                    icon={<Zap className="w-6 h-6 lg:w-8 lg:h-8" />}
+                    gradient="from-cyan-500 to-blue-500"
+                    cost="9 UTK"
+                    features={["Blockchain Info", "Recent Updates", "Ecosystem News", "Technical Specs"]}
+                    disabled={true}
+                    onClick={handleRestrictedClick}
+                  />
+                )}
+
+                {/* Gaming Development Bot */}
+                {isWalletConnected() ? (
+                  <Link href="/gamingbot">
+                    <ProfessionalCard
+                      title="Gaming Development Bot"
+                      description="Build blockchain games with expert guidance and Somnia ecosystem integration"
+                      icon={<Gamepad2 className="w-6 h-6 lg:w-8 lg:h-8" />}
+                      gradient="from-green-500 to-emerald-500"
+                      cost="11 UTK"
+                      features={["Game Design", "Smart Contracts", "NFT Integration", "P2E Models"]}
+                    />
+                  </Link>
+                ) : (
+                  <ProfessionalCard
+                    title="Gaming Development Bot"
+                    description="Build blockchain games with expert guidance and Somnia ecosystem integration"
+                    icon={<Gamepad2 className="w-6 h-6 lg:w-8 lg:h-8" />}
+                    gradient="from-green-500 to-emerald-500"
+                    cost="11 UTK"
+                    features={["Game Design", "Smart Contracts", "NFT Integration", "P2E Models"]}
+                    disabled={true}
+                    onClick={handleRestrictedClick}
+                  />
+                )}
+
+                {/* Web3 AI Chatbot */}
                 {isWalletConnected() ? (
                   <Link href="/chatbot">
-                    <QuickAccessCard
+                    <ProfessionalCard
                       title="Web3 AI Chatbot"
-                      icon={<Bot className="w-6 h-6" />}
+                      description="Intelligent conversational AI for Web3 assistance and guidance"
+                      icon={<Globe className="w-6 h-6 lg:w-8 lg:h-8" />}
+                      gradient="from-blue-500 to-indigo-500"
+                      cost="1 UTK"
+                      features={["Web3 Support", "Smart Contracts", "DeFi Guidance", "Blockchain Help"]}
                     />
                   </Link>
                 ) : (
-                  <QuickAccessCard
+                  <ProfessionalCard
                     title="Web3 AI Chatbot"
-                    icon={<Bot className="w-6 h-6" />}
+                    description="Intelligent conversational AI for Web3 assistance and guidance"
+                    icon={<Globe className="w-6 h-6 lg:w-8 lg:h-8" />}
+                    gradient="from-blue-500 to-indigo-500"
+                    cost="1 UTK"
+                    features={["Web3 Support", "Smart Contracts", "DeFi Guidance", "Blockchain Help"]}
                     disabled={true}
                     onClick={handleRestrictedClick}
                   />
                 )}
-                {isWalletConnected() ? (
-                  <Link href="/askpeople">
-                    <QuickAccessCard
-                      title="Ask Crypto People"
-                      icon={<Users className="w-6 h-6" />}
-                    />
-                  </Link>
-                ) : (
-                  <QuickAccessCard
-                    title="Ask Crypto People"
-                    icon={<Users className="w-6 h-6" />}
-                    disabled={true}
-                    onClick={handleRestrictedClick}
-                  />
-                )}
-                {isWalletConnected() ? (
-                  <Link href="/contract">
-                    <QuickAccessCard
-                      title="AI Smart Contracts"
-                      icon={<FileCode className="w-6 h-6" />}
-                      buttons={['AUDITOR', 'GENERATOR']}
-                    />
-                  </Link>
-                ) : (
-                  <QuickAccessCard
-                    title="AI Smart Contracts"
-                    icon={<FileCode className="w-6 h-6" />}
-                    buttons={['AUDITOR', 'GENERATOR']}
-                    disabled={true}
-                    onClick={handleRestrictedClick}
-                  />
-                )}
+
+                {/* AI Trading Assistant */}
                 {isWalletConnected() ? (
                   <Link href="/tradeassistant">
-                    <QuickAccessCard
-                      title="AI Trading Assistant (TA)"
-                      icon={<TrendingUp className="w-6 h-6" />}
+                    <ProfessionalCard
+                      title="AI Trading Assistant"
+                      description="Advanced trading insights and market analysis powered by AI"
+                      icon={<TrendingUp className="w-6 h-6 lg:w-8 lg:h-8" />}
+                      gradient="from-orange-500 to-red-500"
+                      cost="3 UTK"
+                      features={["Market Analysis", "Trading Signals", "Risk Assessment", "Portfolio Tips"]}
                     />
                   </Link>
                 ) : (
-                  <QuickAccessCard
-                    title="AI Trading Assistant (TA)"
-                    icon={<TrendingUp className="w-6 h-6" />}
+                  <ProfessionalCard
+                    title="AI Trading Assistant"
+                    description="Advanced trading insights and market analysis powered by AI"
+                    icon={<TrendingUp className="w-6 h-6 lg:w-8 lg:h-8" />}
+                    gradient="from-orange-500 to-red-500"
+                    cost="3 UTK"
+                    features={["Market Analysis", "Trading Signals", "Risk Assessment", "Portfolio Tips"]}
                     disabled={true}
                     onClick={handleRestrictedClick}
                   />
                 )}
+
+                {/* AI Smart Contracts */}
                 {isWalletConnected() ? (
-                  <Link href="/news">
-                    <QuickAccessCard
-                      title="AI Web3 News "
-                      icon={<TrendingUp className="w-6 h-6" />}
+                  <Link href="/contract">
+                    <ProfessionalCard
+                      title="AI Smart Contracts"
+                      description="Generate and audit smart contracts with AI assistance"
+                      icon={<FileCode className="w-6 h-6 lg:w-8 lg:h-8" />}
+                      gradient="from-indigo-500 to-purple-500"
+                      cost="5 UTK"
+                      features={["Contract Generator", "Security Audit", "Gas Optimization", "Best Practices"]}
                     />
                   </Link>
                 ) : (
-                  <QuickAccessCard
+                  <ProfessionalCard
+                    title="AI Smart Contracts"
+                    description="Generate and audit smart contracts with AI assistance"
+                    icon={<FileCode className="w-6 h-6 lg:w-8 lg:h-8" />}
+                    gradient="from-indigo-500 to-purple-500"
+                    cost="5 UTK"
+                    features={["Contract Generator", "Security Audit", "Gas Optimization", "Best Practices"]}
+                    disabled={true}
+                    onClick={handleRestrictedClick}
+                  />
+                )}
+
+                {/* AI Web3 News */}
+                {isWalletConnected() ? (
+                  <Link href="/news">
+                    <ProfessionalCard
+                      title="AI Web3 News"
+                      description="Curated Web3 news with AI-powered insights and analysis"
+                      icon={<Newspaper className="w-6 h-6 lg:w-8 lg:h-8" />}
+                      gradient="from-pink-500 to-rose-500"
+                      cost="1 UTK"
+                      features={["News Curation", "AI Insights", "Market Trends", "Real-time Updates"]}
+                    />
+                  </Link>
+                ) : (
+                  <ProfessionalCard
                     title="AI Web3 News"
-                    icon={<TrendingUp className="w-6 h-6" />}
+                    description="Curated Web3 news with AI-powered insights and analysis"
+                    icon={<Newspaper className="w-6 h-6 lg:w-8 lg:h-8" />}
+                    gradient="from-pink-500 to-rose-500"
+                    cost="1 UTK"
+                    features={["News Curation", "AI Insights", "Market Trends", "Real-time Updates"]}
                     disabled={true}
                     onClick={handleRestrictedClick}
                   />
@@ -337,129 +568,8 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-
-          {/* Right Column */}
-          <div className="space-y-8">
-            {/* Chat Interface */}
-            <Card className="bg-gray-800 border border-gray-700 shadow-lg p-8 flex flex-col items-center">
-              <div className="flex items-center justify-between w-full mb-6">
-                <h2 className="text-xl font-semibold text-white">Chat with AI Web3</h2>
-                <Button variant="ghost" size="icon" className="text-white hover:text-cyan-400">
-                  <MessageSquare className="w-5 h-5" />
-                </Button>
-              </div>
-              <div className="space-y-4 w-full">
-                <div className="flex justify-center">
-                  <Bot className="w-24 h-24 text-cyan-400" />
-                </div>
-                <div className="text-center space-y-2">
-                  <h3 className="font-semibold text-white">Choose the mode</h3>
-                  <p className="text-sm text-white">Select your preferred AI interaction mode</p>
-                </div>
-                {isWalletConnected() ? (
-                  <Link href="/chatbot">
-                    <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white text-lg font-semibold py-3 rounded-xl mt-2">
-                      Go to Chatbot
-                    </Button>
-                  </Link>
-                ) : (
-                  <Button 
-                    className="w-full bg-gray-600 text-white opacity-50 cursor-not-allowed text-lg font-semibold py-3 rounded-xl mt-2"
-                    disabled
-                    onClick={handleRestrictedClick}
-                  >
-                    Connect Wallet to Access
-                  </Button>
-                )}
-              </div>
-            </Card>
-
-            {/* Trending Coins */}
-            <Card className="bg-gray-800 border border-gray-700 shadow-lg p-8">
-              <h2 className="text-xl font-semibold text-white mb-4">Top Trending Coins</h2>
-              <div className="space-y-4">
-                {trendingCoins.map((coin, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-white">{coin.name}</span>
-                      <span className="text-xs text-gray-400">{coin.symbol}</span>
-                    </div>
-                    <span className="text-green-400 font-semibold">{coin.change}</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            {/* Top AI Coins */}
-            <Card className="bg-gray-800 border border-gray-700 shadow-lg p-8">
-              <h2 className="text-xl font-semibold text-white mb-4">Top AI Coins</h2>
-              <div className="space-y-4">
-                {topAICoins.map((coin, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-white">{coin.name}</span>
-                      <span className="text-xs text-gray-400">{coin.symbol}</span>
-                    </div>
-                    <span className="text-green-400 font-semibold">{coin.change}</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
         </div>
-      </main>
-    </div>
-  );
-}
-
-function QuickAccessCard({
-  title,
-  icon,
-  buttons,
-  disabled = false,
-  onClick,
-}: {
-  title: string;
-  icon: React.ReactNode;
-  buttons?: string[];
-  disabled?: boolean;
-  onClick?: () => void;
-}) {
-  return (
-    <Card 
-      className={`bg-gray-800 border-gray-600 p-6 transition-colors group ${
-        disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700 cursor-pointer'
-      }`}
-      onClick={!disabled ? onClick : undefined}
-    >
-      <div className="flex items-center justify-between mb-4">
-        <div className={`flex items-center gap-2 ${
-          disabled ? 'text-gray-500' : 'text-white group-hover:text-cyan-400'
-        }`}>
-          {icon}
-          <span className="font-medium">{title}</span>
-        </div>
-        {!buttons && <ChevronRight className={`w-5 h-5 ${
-          disabled ? 'text-gray-500' : 'text-cyan-400 group-hover:text-cyan-200'
-        }`} />}
       </div>
-      {buttons && (
-        <div className="flex gap-2">
-          {buttons.map((button, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              size="sm"
-              className={`text-xs border-gray-600 ${
-                disabled ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700'
-              }`}
-              disabled={disabled}
-            >
-              {button}
-            </Button>
-          ))}
-        </div>
-      )}
-    </Card>
+    </main>
   );
 }

@@ -3,9 +3,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent, ChangeEvent, memo, useRef, useMemo } from 'react';
-import { ChatGroq } from '@langchain/groq';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { AIMessage } from '@langchain/core/messages';
+import { gamingBotService } from '@/lib/services/gamingBotService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -29,19 +27,39 @@ import {
   X,
   ThumbsUp,
   ThumbsDown,
-  Zap,
   Gamepad2,
+  Zap,
+  Shield,
   Users,
+  Globe,
+  Rocket,
+  Star,
+  Activity,
+  Database,
+  Layers,
+  Target,
+  Lightbulb,
+  BookOpen,
+  ExternalLink,
+  Wrench,
+  Play,
+  Trophy,
+  Coins,
+  Crown,
+  Sword,
+  Shield as ShieldIcon,
+  Sword as SwordIcon,
+  Gem,
+  Award,
 } from 'lucide-react';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
 
-const MODEL_NAME = 'llama-3.3-70b-versatile';
 const DEFAULT_PROMPTS = [
-  "Explain smart contracts like I'm 5",
-  "What are the top DeFi protocols in 2025?",
-  "How do I create an NFT collection?",
-  "Compare Ethereum and Solana"
+  "How do I create an RPG game on Somnia?",
+  "What are the best practices for gaming smart contracts?",
+  "How do I implement NFTs in my game?",
+  "What monetization strategies work for blockchain games?"
 ];
 
 interface Message {
@@ -63,16 +81,17 @@ interface Feature {
   icon: React.ReactNode;
   name: string;
   description: string;
-  href: string;
+  action: () => void;
   comingSoon?: boolean;
 }
 
-const BlockchainNodes = memo(() => {
+const GamingNodes = memo(() => {
   const nodes = useMemo(() => 
-    Array.from({ length: 8 }, () => ({
+    Array.from({ length: 15 }, () => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      size: `${Math.random() * 0.5 + 0.5}px`
+      size: `${Math.random() * 0.5 + 0.5}px`,
+      color: Math.random() > 0.5 ? 'bg-green-400' : Math.random() > 0.5 ? 'bg-blue-400' : 'bg-yellow-400'
     })), 
   []);
 
@@ -81,13 +100,13 @@ const BlockchainNodes = memo(() => {
       {nodes.map((pos, i) => (
         <div
           key={i}
-          className="absolute bg-white/10 rounded-full"
+          className={`absolute ${pos.color} rounded-full opacity-20`}
           style={{
             left: pos.left,
             top: pos.top,
             width: pos.size,
             height: pos.size,
-            boxShadow: '0 0 4px 2px rgba(255, 255, 255, 0.1)',
+            boxShadow: `0 0 4px 2px ${pos.color === 'bg-green-400' ? 'rgba(34, 197, 94, 0.1)' : pos.color === 'bg-blue-400' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(251, 191, 36, 0.1)'}`,
           }}
         />
       ))}
@@ -147,24 +166,24 @@ const LoadingIndicator = () => (
         {[0, 150, 300].map((delay) => (
           <span
             key={delay}
-            className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+            className="w-2 h-2 bg-green-400 rounded-full animate-bounce"
             style={{ animationDelay: `${delay}ms` }}
           />
         ))}
       </div>
-      <span className="text-sm">Analyzing blockchain data...</span>
+      <span className="text-sm">Building your game strategy...</span>
     </div>
   </div>
 );
 
 const EmptyState = ({ onPromptSelect }: { onPromptSelect: (prompt: string) => void }) => (
   <div className="h-full flex flex-col items-center justify-center text-center p-8">
-    <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-800">
-      <Bot className="w-8 h-8 text-blue-400" />
+    <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+      <Gamepad2 className="w-8 h-8 text-white" />
     </div>
-    <h3 className="text-lg font-medium mb-2">Web3 AI Assistant</h3>
+    <h3 className="text-lg font-medium mb-2">Gaming Development Assistant</h3>
     <p className="text-sm text-gray-400 max-w-md mb-6">
-      Ask me about smart contracts, DeFi protocols, NFT strategies, or any blockchain-related topics.
+      Get expert guidance on building blockchain games using Somnia ecosystem. From smart contracts to player experience.
     </p>
     <div className="grid grid-cols-2 gap-2 w-full max-w-md">
       {DEFAULT_PROMPTS.map((prompt) => (
@@ -180,7 +199,7 @@ const EmptyState = ({ onPromptSelect }: { onPromptSelect: (prompt: string) => vo
   </div>
 );
 
-const ChatbotContent = () => {
+const GamingBotContent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -192,63 +211,81 @@ const ChatbotContent = () => {
 
   const features: Feature[] = [
     { 
-      icon: <Zap className="w-5 h-5" />, 
-      name: 'Somnia Ecosystem', 
-      description: 'Explore Somnia blockchain features and news',
-      href: "/somnia"
+      icon: <Sword className="w-5 h-5" />, 
+      name: 'RPG Games', 
+      description: 'Build role-playing games with NFT characters',
+      action: () => setInput("How do I create an RPG game with NFT characters on Somnia?")
     },
     { 
-      icon: <Gamepad2 className="w-5 h-5" />, 
-      name: 'Gaming Development Bot', 
-      description: 'Build blockchain games with expert guidance',
-      href: '/gamingbot',
+      icon: <Trophy className="w-5 h-5" />, 
+      name: 'Strategy Games', 
+      description: 'Design strategy games with token economies',
+      action: () => setInput("How do I build strategy games with token mechanics on Somnia?")
+    },
+    { 
+      icon: <Coins className="w-5 h-5" />, 
+      name: 'Play-to-Earn', 
+      description: 'Implement sustainable P2E mechanics',
+      action: () => setInput("What are the best play-to-earn models for Somnia games?")
+    },
+    { 
+      icon: <Gem className="w-5 h-5" />, 
+      name: 'NFT Integration', 
+      description: 'Create and manage in-game assets',
+      action: () => setInput("How do I implement NFTs and in-game assets using Somnia?")
     },
     { 
       icon: <Code2 className="w-5 h-5" />, 
-      name: 'AI Smart Contracts', 
-      description: 'Generate and audit smart contracts',
-      href: "/contract"
-    },
-    { 
-      icon: <TrendingUp className="w-5 h-5" />,
-      name: 'AI Trading Assistant', 
-      description: 'Advanced trading insights and analysis',
-      href: '/tradeassistant',
-    },
-    { 
-      icon: <TrendingUp className="w-5 h-5" />, 
-      name: 'AI Web3 News', 
-      description: 'Curated Web3 news with AI insights',
-      href: '/news',
+      name: 'Smart Contracts', 
+      description: 'Gaming contract development patterns',
+      action: () => setInput("What are the best practices for gaming smart contracts on Somnia?")
     },
     { 
       icon: <Users className="w-5 h-5" />, 
-      name: 'Ask Crypto People', 
-      description: 'Community Q&A and discussions',
-      href: '/askpeople',
+      name: 'Player Onboarding', 
+      description: 'Smooth Web3 player experience',
+      action: () => setInput("How do I create a smooth player onboarding experience for Web3 games?")
+    },
+    { 
+      icon: <Zap className="w-5 h-5" />, 
+      name: 'Performance', 
+      description: 'Optimize for blockchain integration',
+      action: () => setInput("How do I optimize game performance for blockchain integration?")
+    },
+    { 
+      icon: <Shield className="w-5 h-5" />, 
+      name: 'Security', 
+      description: 'Secure gaming contracts',
+      action: () => setInput("What are the security best practices for gaming smart contracts?")
+    },
+    { 
+      icon: <Target className="w-5 h-5" />, 
+      name: 'Testing', 
+      description: 'Test games and contracts',
+      action: () => setInput("How do I test blockchain games and smart contracts effectively?")
+    },
+    { 
+      icon: <Rocket className="w-5 h-5" />, 
+      name: 'Deployment', 
+      description: 'Launch on Somnia',
+      action: () => setInput("How do I deploy and launch a game on Somnia blockchain?")
+    },
+    { 
+      icon: <Crown className="w-5 h-5" />, 
+      name: 'Governance', 
+      description: 'Player governance features',
+      action: () => setInput("How do I integrate governance and DAO features into games?")
+    },
+    { 
+      icon: <BarChart2 className="w-5 h-5" />, 
+      name: 'Economy Design', 
+      description: 'Sustainable game economics',
+      action: () => setInput("How do I design a sustainable game economy with tokens and NFTs?")
     },
   ];
 
-  const chatModel = useMemo(() => new ChatGroq({
-    apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY,
-    model: MODEL_NAME,
-  }), []);
-
-  const chatPrompt = useMemo(() => ChatPromptTemplate.fromMessages([
-    ['system', `You are a Web3 expert AI assistant. Provide concise, technical answers about blockchain, DeFi, NFTs, and decentralized technologies.
-
-Format responses with:
-- Clear section headings ending with colons
-- Bullet points for lists
-- Numbered steps for processes
-- Short paragraphs for explanations`],
-    ['human', '{input}'],
-  ]), []);
-
-  const chain = useMemo(() => chatPrompt.pipe(chatModel), [chatModel, chatPrompt]);
-
   useEffect(() => {
-    const stored = localStorage.getItem('conversations');
+    const stored = localStorage.getItem('gaming-conversations');
     if (stored) {
       try {
         const parsed = JSON.parse(stored, (key, value) => {
@@ -266,7 +303,7 @@ Format responses with:
 
   useEffect(() => {
     if (conversations.length > 0) {
-      localStorage.setItem('conversations', JSON.stringify(conversations));
+      localStorage.setItem('gaming-conversations', JSON.stringify(conversations));
     }
   }, [conversations]);
 
@@ -302,10 +339,10 @@ Format responses with:
     setCurrentConversationId(conversationId);
 
     try {
-      const aiResponse = await chain.invoke({ input });
+      const aiResponse = await gamingBotService.getGameDevelopmentGuidance(input);
       const aiMessage: Message = {
         type: 'ai',
-        text: aiResponse.content.toString(),
+        text: aiResponse,
         timestamp: new Date(),
       };
 
@@ -383,7 +420,7 @@ Format responses with:
       
       if (paragraph.trim().endsWith(':')) {
         return (
-          <h4 key={i} className="font-semibold text-blue-300 mt-3 mb-1">
+          <h4 key={i} className="font-semibold text-green-300 mt-3 mb-1">
             {paragraph.trim().replace(':', '')}
           </h4>
         );
@@ -402,10 +439,10 @@ Format responses with:
       {/* Fixed Sidebar */}
       <div className="w-80 bg-black border-r border-gray-800 p-6 flex flex-col h-full overflow-y-auto">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {Array.from({ length: 6 }, (_, i) => (
+          {Array.from({ length: 10 }, (_, i) => (
             <div
               key={i}
-              className="absolute w-0.5 h-16 bg-white/10"
+              className="absolute w-0.5 h-16 bg-gradient-to-b from-green-500/20 to-blue-500/20"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -416,7 +453,7 @@ Format responses with:
         </div>
 
         <div className="flex items-center justify-between mb-8 relative z-10">
-          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 text-cyan-400 hover:text-cyan-300 transition-all duration-300">
+          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 text-green-400 hover:text-green-300 transition-all duration-300">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -425,44 +462,35 @@ Format responses with:
         </div>
         <Link href="/">
           <h1 className="text-2xl font-bold mb-8 text-white flex items-center relative z-10">
-            <span className="bg-white w-3 h-3 rounded-full mr-3 animate-pulse bg-gradient-to-r from-blue-400 to-purple-500"></span>
+            <span className="bg-gradient-to-r from-green-400 to-blue-500 w-3 h-3 rounded-full mr-3 animate-pulse"></span>
             Sage AI
           </h1>
         </Link>
 
         <div className="flex-1 relative z-10">
           <h2 className="text-base font-semibold mb-4 text-white flex items-center">
-            <Sparkles className="w-5 h-5 mr-2 text-gray-300" />
-            AI-Powered Tools
+            <Gamepad2 className="w-5 h-5 mr-2 text-green-300" />
+            Gaming Development
           </h2>
           <div className="h-[calc(100vh-180px)] overflow-y-auto pr-4">
             <div className="grid grid-cols-1 gap-3">
               {features.map((feature, index) => (
-                <Link
+                <button
                   key={index}
-                  href={feature.href}
-                  className={`p-4 flex items-start gap-4 rounded-lg border border-gray-800 hover:border-gray-700 transition-colors duration-200 text-left ${
-                    feature.comingSoon ? 'opacity-60' : ''
-                  }`}
+                  onClick={feature.action}
+                  className="p-4 flex items-start gap-4 rounded-lg border border-gray-800 hover:border-green-700 transition-colors duration-200 text-left"
                 >
                   <div className="flex-shrink-0 mt-1">
-                    <div className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-white">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-green-800 to-blue-800 flex items-center justify-center text-white">
                       {feature.icon}
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-sm text-white truncate">{feature.name}</h3>
-                      {feature.comingSoon && (
-                        <span className="text-xs bg-gray-800 text-gray-300 px-2 py-0.5 rounded ml-2">
-                          Coming Soon
-                        </span>
-                      )}
-                    </div>
+                    <h3 className="font-medium text-sm text-white truncate">{feature.name}</h3>
                     <p className="text-xs text-gray-300 mt-1">{feature.description}</p>
                   </div>
                   <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                </Link>
+                </button>
               ))}
             </div>
           </div>
@@ -471,7 +499,7 @@ Format responses with:
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-black relative h-full overflow-hidden">
-        <BlockchainNodes />
+        <GamingNodes />
         
         {/* Top Bar with Integrated History Button */}
         <div className="bg-black/80 border-b border-gray-800 p-4 backdrop-blur-sm z-10 flex justify-between items-center sticky top-0">
@@ -488,8 +516,8 @@ Format responses with:
               <History className="w-5 h-5" />
             </Button>
             <h2 className="text-lg font-semibold text-white flex items-center">
-              <MessageSquare className="w-5 h-5 mr-2 text-gray-300" />
-              Web3 AI Chat
+              <Gamepad2 className="w-5 h-5 mr-2 text-green-300" />
+              Gaming Development Bot
             </h2>
           </div>
           
@@ -501,14 +529,14 @@ Format responses with:
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Web3 topics..."
-              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm focus:ring-2 focus:ring-blue-500"
+              placeholder="Ask about game development..."
+              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm focus:ring-2 focus:ring-green-500"
               aria-label="Search input"
               disabled={loading}
             />
             <Button
               type="submit"
-              className="bg-gray-700 hover:bg-gray-600 text-white disabled:opacity-50 px-4"
+              className="bg-green-700 hover:bg-green-600 text-white disabled:opacity-50 px-4"
               disabled={loading}
               size="sm"
             >
@@ -537,7 +565,7 @@ Format responses with:
                 </div>
                 <Button
                   onClick={startNewConversation}
-                  className="mb-4 bg-blue-600 hover:bg-blue-500 text-white"
+                  className="mb-4 bg-green-600 hover:bg-green-500 text-white"
                 >
                   New Conversation
                 </Button>
@@ -593,8 +621,8 @@ Format responses with:
                             {msg.type === 'ai' ? (
                               <>
                                 <div className="flex items-center">
-                                  <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                                  <span className="text-xs font-medium text-blue-300">Web3 Assistant</span>
+                                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                                  <span className="text-xs font-medium text-green-300">Gaming Expert</span>
                                 </div>
                                 <span className="text-xs text-gray-400">
                                   {formatTimestamp(msg.timestamp)}
@@ -646,13 +674,13 @@ Format responses with:
                   <Input
                     value={input}
                     onChange={handleInputChange}
-                    placeholder="Ask about Web3 topics..."
-                    className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm py-5 focus:ring-2 focus:ring-blue-500 flex-1"
+                    placeholder="Ask about game development on Somnia..."
+                    className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm py-5 focus:ring-2 focus:ring-green-500 flex-1"
                     disabled={loading}
                   />
                   <Button
                     type="submit"
-                    className="bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 px-6"
+                    className="bg-green-600 hover:bg-green-500 text-white disabled:opacity-50 px-6"
                     disabled={loading}
                   >
                     {loading ? (
@@ -671,10 +699,10 @@ Format responses with:
   );
 };
 
-export default function ChatbotPage() {
+export default function GamingBotPage() {
   return (
-    <FeatureGate feature={FeatureType.CHATBOT}>
-      <ChatbotContent />
+    <FeatureGate feature={FeatureType.GAMING_BOT}>
+      <GamingBotContent />
     </FeatureGate>
   );
 }

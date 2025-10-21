@@ -3,9 +3,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent, ChangeEvent, memo, useRef, useMemo } from 'react';
-import { ChatGroq } from '@langchain/groq';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { AIMessage } from '@langchain/core/messages';
+import { somniaEcosystemService } from '@/lib/services/somniaEcosystemService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -29,19 +27,29 @@ import {
   X,
   ThumbsUp,
   ThumbsDown,
-  Zap,
   Gamepad2,
+  Zap,
+  Shield,
   Users,
+  Globe,
+  Rocket,
+  Star,
+  Activity,
+  Database,
+  Layers,
+  Target,
+  Lightbulb,
+  BookOpen,
+  ExternalLink,
 } from 'lucide-react';
 import { FeatureGate } from '@/components/FeatureGate';
 import { FeatureType } from '@/lib/services/creditService';
 
-const MODEL_NAME = 'llama-3.3-70b-versatile';
 const DEFAULT_PROMPTS = [
-  "Explain smart contracts like I'm 5",
-  "What are the top DeFi protocols in 2025?",
-  "How do I create an NFT collection?",
-  "Compare Ethereum and Solana"
+  "What are the latest developments in Somnia ecosystem?",
+  "How does Somnia compare to other gaming blockchains?",
+  "What developer tools are available for Somnia?",
+  "Tell me about Somnia's gaming features"
 ];
 
 interface Message {
@@ -63,16 +71,17 @@ interface Feature {
   icon: React.ReactNode;
   name: string;
   description: string;
-  href: string;
+  action: () => void;
   comingSoon?: boolean;
 }
 
 const BlockchainNodes = memo(() => {
   const nodes = useMemo(() => 
-    Array.from({ length: 8 }, () => ({
+    Array.from({ length: 12 }, () => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      size: `${Math.random() * 0.5 + 0.5}px`
+      size: `${Math.random() * 0.5 + 0.5}px`,
+      color: Math.random() > 0.5 ? 'bg-blue-400' : 'bg-purple-400'
     })), 
   []);
 
@@ -81,13 +90,13 @@ const BlockchainNodes = memo(() => {
       {nodes.map((pos, i) => (
         <div
           key={i}
-          className="absolute bg-white/10 rounded-full"
+          className={`absolute ${pos.color} rounded-full opacity-20`}
           style={{
             left: pos.left,
             top: pos.top,
             width: pos.size,
             height: pos.size,
-            boxShadow: '0 0 4px 2px rgba(255, 255, 255, 0.1)',
+            boxShadow: `0 0 4px 2px ${pos.color === 'bg-blue-400' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(168, 85, 247, 0.1)'}`,
           }}
         />
       ))}
@@ -147,24 +156,24 @@ const LoadingIndicator = () => (
         {[0, 150, 300].map((delay) => (
           <span
             key={delay}
-            className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+            className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"
             style={{ animationDelay: `${delay}ms` }}
           />
         ))}
       </div>
-      <span className="text-sm">Analyzing blockchain data...</span>
+      <span className="text-sm">Analyzing Somnia ecosystem...</span>
     </div>
   </div>
 );
 
 const EmptyState = ({ onPromptSelect }: { onPromptSelect: (prompt: string) => void }) => (
   <div className="h-full flex flex-col items-center justify-center text-center p-8">
-    <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-800">
-      <Bot className="w-8 h-8 text-blue-400" />
+    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+      <Gamepad2 className="w-8 h-8 text-white" />
     </div>
-    <h3 className="text-lg font-medium mb-2">Web3 AI Assistant</h3>
+    <h3 className="text-lg font-medium mb-2">Somnia Ecosystem Explorer</h3>
     <p className="text-sm text-gray-400 max-w-md mb-6">
-      Ask me about smart contracts, DeFi protocols, NFT strategies, or any blockchain-related topics.
+      Discover the latest developments, features, and opportunities in the Somnia blockchain ecosystem.
     </p>
     <div className="grid grid-cols-2 gap-2 w-full max-w-md">
       {DEFAULT_PROMPTS.map((prompt) => (
@@ -180,7 +189,7 @@ const EmptyState = ({ onPromptSelect }: { onPromptSelect: (prompt: string) => vo
   </div>
 );
 
-const ChatbotContent = () => {
+const SomniaContent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -192,63 +201,57 @@ const ChatbotContent = () => {
 
   const features: Feature[] = [
     { 
-      icon: <Zap className="w-5 h-5" />, 
-      name: 'Somnia Ecosystem', 
-      description: 'Explore Somnia blockchain features and news',
-      href: "/somnia"
-    },
-    { 
       icon: <Gamepad2 className="w-5 h-5" />, 
-      name: 'Gaming Development Bot', 
-      description: 'Build blockchain games with expert guidance',
-      href: '/gamingbot',
+      name: 'Gaming Features', 
+      description: 'Explore Somnia\'s gaming capabilities',
+      action: () => setInput("What are the key gaming features of Somnia blockchain?")
     },
     { 
       icon: <Code2 className="w-5 h-5" />, 
-      name: 'AI Smart Contracts', 
-      description: 'Generate and audit smart contracts',
-      href: "/contract"
+      name: 'Developer Tools', 
+      description: 'SDKs, APIs, and development resources',
+      action: () => setInput("What developer tools and resources are available for Somnia?")
     },
     { 
-      icon: <TrendingUp className="w-5 h-5" />,
-      name: 'AI Trading Assistant', 
-      description: 'Advanced trading insights and analysis',
-      href: '/tradeassistant',
+      icon: <Zap className="w-5 h-5" />, 
+      name: 'Technical Specs', 
+      description: 'Consensus, TPS, and performance metrics',
+      action: () => setInput("What are the technical specifications of Somnia blockchain?")
+    },
+    { 
+      icon: <Network className="w-5 h-5" />, 
+      name: 'Ecosystem Projects', 
+      description: 'Active projects and applications',
+      action: () => setInput("What projects are currently built on Somnia?")
     },
     { 
       icon: <TrendingUp className="w-5 h-5" />, 
-      name: 'AI Web3 News', 
-      description: 'Curated Web3 news with AI insights',
-      href: '/news',
+      name: 'Recent News', 
+      description: 'Latest updates and announcements',
+      action: () => setInput("What are the recent news and updates in Somnia ecosystem?")
     },
     { 
       icon: <Users className="w-5 h-5" />, 
-      name: 'Ask Crypto People', 
-      description: 'Community Q&A and discussions',
-      href: '/askpeople',
+      name: 'Community Stats', 
+      description: 'Growth metrics and community data',
+      action: () => setInput("What are the current community statistics for Somnia?")
+    },
+    { 
+      icon: <Rocket className="w-5 h-5" />, 
+      name: 'Roadmap', 
+      description: 'Future plans and milestones',
+      action: () => setInput("What is the current roadmap for Somnia blockchain?")
+    },
+    { 
+      icon: <BarChart2 className="w-5 h-5" />, 
+      name: 'Market Analysis', 
+      description: 'Competitive positioning and outlook',
+      action: () => setInput("How does Somnia compare to other gaming blockchains?")
     },
   ];
 
-  const chatModel = useMemo(() => new ChatGroq({
-    apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY,
-    model: MODEL_NAME,
-  }), []);
-
-  const chatPrompt = useMemo(() => ChatPromptTemplate.fromMessages([
-    ['system', `You are a Web3 expert AI assistant. Provide concise, technical answers about blockchain, DeFi, NFTs, and decentralized technologies.
-
-Format responses with:
-- Clear section headings ending with colons
-- Bullet points for lists
-- Numbered steps for processes
-- Short paragraphs for explanations`],
-    ['human', '{input}'],
-  ]), []);
-
-  const chain = useMemo(() => chatPrompt.pipe(chatModel), [chatModel, chatPrompt]);
-
   useEffect(() => {
-    const stored = localStorage.getItem('conversations');
+    const stored = localStorage.getItem('somnia-conversations');
     if (stored) {
       try {
         const parsed = JSON.parse(stored, (key, value) => {
@@ -266,7 +269,7 @@ Format responses with:
 
   useEffect(() => {
     if (conversations.length > 0) {
-      localStorage.setItem('conversations', JSON.stringify(conversations));
+      localStorage.setItem('somnia-conversations', JSON.stringify(conversations));
     }
   }, [conversations]);
 
@@ -302,10 +305,10 @@ Format responses with:
     setCurrentConversationId(conversationId);
 
     try {
-      const aiResponse = await chain.invoke({ input });
+      const aiResponse = await somniaEcosystemService.getEcosystemInfo(input);
       const aiMessage: Message = {
         type: 'ai',
-        text: aiResponse.content.toString(),
+        text: aiResponse,
         timestamp: new Date(),
       };
 
@@ -383,7 +386,7 @@ Format responses with:
       
       if (paragraph.trim().endsWith(':')) {
         return (
-          <h4 key={i} className="font-semibold text-blue-300 mt-3 mb-1">
+          <h4 key={i} className="font-semibold text-purple-300 mt-3 mb-1">
             {paragraph.trim().replace(':', '')}
           </h4>
         );
@@ -402,10 +405,10 @@ Format responses with:
       {/* Fixed Sidebar */}
       <div className="w-80 bg-black border-r border-gray-800 p-6 flex flex-col h-full overflow-y-auto">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {Array.from({ length: 6 }, (_, i) => (
+          {Array.from({ length: 8 }, (_, i) => (
             <div
               key={i}
-              className="absolute w-0.5 h-16 bg-white/10"
+              className="absolute w-0.5 h-16 bg-gradient-to-b from-purple-500/20 to-blue-500/20"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -416,7 +419,7 @@ Format responses with:
         </div>
 
         <div className="flex items-center justify-between mb-8 relative z-10">
-          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 text-cyan-400 hover:text-cyan-300 transition-all duration-300">
+          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 text-purple-400 hover:text-purple-300 transition-all duration-300">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -425,44 +428,35 @@ Format responses with:
         </div>
         <Link href="/">
           <h1 className="text-2xl font-bold mb-8 text-white flex items-center relative z-10">
-            <span className="bg-white w-3 h-3 rounded-full mr-3 animate-pulse bg-gradient-to-r from-blue-400 to-purple-500"></span>
+            <span className="bg-gradient-to-r from-purple-400 to-blue-500 w-3 h-3 rounded-full mr-3 animate-pulse"></span>
             Sage AI
           </h1>
         </Link>
 
         <div className="flex-1 relative z-10">
           <h2 className="text-base font-semibold mb-4 text-white flex items-center">
-            <Sparkles className="w-5 h-5 mr-2 text-gray-300" />
-            AI-Powered Tools
+            <Gamepad2 className="w-5 h-5 mr-2 text-purple-300" />
+            Somnia Ecosystem
           </h2>
           <div className="h-[calc(100vh-180px)] overflow-y-auto pr-4">
             <div className="grid grid-cols-1 gap-3">
               {features.map((feature, index) => (
-                <Link
+                <button
                   key={index}
-                  href={feature.href}
-                  className={`p-4 flex items-start gap-4 rounded-lg border border-gray-800 hover:border-gray-700 transition-colors duration-200 text-left ${
-                    feature.comingSoon ? 'opacity-60' : ''
-                  }`}
+                  onClick={feature.action}
+                  className="p-4 flex items-start gap-4 rounded-lg border border-gray-800 hover:border-purple-700 transition-colors duration-200 text-left"
                 >
                   <div className="flex-shrink-0 mt-1">
-                    <div className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-white">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-purple-800 to-blue-800 flex items-center justify-center text-white">
                       {feature.icon}
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-sm text-white truncate">{feature.name}</h3>
-                      {feature.comingSoon && (
-                        <span className="text-xs bg-gray-800 text-gray-300 px-2 py-0.5 rounded ml-2">
-                          Coming Soon
-                        </span>
-                      )}
-                    </div>
+                    <h3 className="font-medium text-sm text-white truncate">{feature.name}</h3>
                     <p className="text-xs text-gray-300 mt-1">{feature.description}</p>
                   </div>
                   <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                </Link>
+                </button>
               ))}
             </div>
           </div>
@@ -488,8 +482,8 @@ Format responses with:
               <History className="w-5 h-5" />
             </Button>
             <h2 className="text-lg font-semibold text-white flex items-center">
-              <MessageSquare className="w-5 h-5 mr-2 text-gray-300" />
-              Web3 AI Chat
+              <Gamepad2 className="w-5 h-5 mr-2 text-purple-300" />
+              Somnia Ecosystem Explorer
             </h2>
           </div>
           
@@ -501,14 +495,14 @@ Format responses with:
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Web3 topics..."
-              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm focus:ring-2 focus:ring-blue-500"
+              placeholder="Explore Somnia ecosystem..."
+              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm focus:ring-2 focus:ring-purple-500"
               aria-label="Search input"
               disabled={loading}
             />
             <Button
               type="submit"
-              className="bg-gray-700 hover:bg-gray-600 text-white disabled:opacity-50 px-4"
+              className="bg-purple-700 hover:bg-purple-600 text-white disabled:opacity-50 px-4"
               disabled={loading}
               size="sm"
             >
@@ -537,7 +531,7 @@ Format responses with:
                 </div>
                 <Button
                   onClick={startNewConversation}
-                  className="mb-4 bg-blue-600 hover:bg-blue-500 text-white"
+                  className="mb-4 bg-purple-600 hover:bg-purple-500 text-white"
                 >
                   New Conversation
                 </Button>
@@ -593,8 +587,8 @@ Format responses with:
                             {msg.type === 'ai' ? (
                               <>
                                 <div className="flex items-center">
-                                  <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                                  <span className="text-xs font-medium text-blue-300">Web3 Assistant</span>
+                                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                                  <span className="text-xs font-medium text-purple-300">Somnia Expert</span>
                                 </div>
                                 <span className="text-xs text-gray-400">
                                   {formatTimestamp(msg.timestamp)}
@@ -646,13 +640,13 @@ Format responses with:
                   <Input
                     value={input}
                     onChange={handleInputChange}
-                    placeholder="Ask about Web3 topics..."
-                    className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm py-5 focus:ring-2 focus:ring-blue-500 flex-1"
+                    placeholder="Ask about Somnia ecosystem..."
+                    className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 text-sm py-5 focus:ring-2 focus:ring-purple-500 flex-1"
                     disabled={loading}
                   />
                   <Button
                     type="submit"
-                    className="bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 px-6"
+                    className="bg-purple-600 hover:bg-purple-500 text-white disabled:opacity-50 px-6"
                     disabled={loading}
                   >
                     {loading ? (
@@ -671,10 +665,10 @@ Format responses with:
   );
 };
 
-export default function ChatbotPage() {
+export default function SomniaPage() {
   return (
-    <FeatureGate feature={FeatureType.CHATBOT}>
-      <ChatbotContent />
+    <FeatureGate feature={FeatureType.SOMNIA_ECOSYSTEM}>
+      <SomniaContent />
     </FeatureGate>
   );
 }

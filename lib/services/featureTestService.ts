@@ -74,6 +74,12 @@ export class FeatureTestService {
       case FeatureType.PREMIUM_ANALYTICS:
         return await this.testPremiumAnalytics(testData);
       
+      case FeatureType.SOMNIA_ECOSYSTEM:
+        return await this.testSomniaEcosystem(testData);
+      
+      case FeatureType.GAMING_BOT:
+        return await this.testGamingBot(testData);
+      
       default:
         throw new Error(`Unknown feature type: ${featureType}`);
     }
@@ -297,6 +303,66 @@ contract TestToken is ERC20 {
         "Portfolio Performance",
         "Risk Analysis",
         "Market Correlation"
+      ],
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  private async testSomniaEcosystem(testData?: any): Promise<any> {
+    // Simulate Somnia ecosystem information
+    await new Promise(resolve => setTimeout(resolve, 1200));
+    
+    return {
+      ecosystem: {
+        name: "Somnia Blockchain",
+        type: "Gaming-Focused Blockchain",
+        consensus: "Proof of Stake",
+        tps: "10,000+",
+        finality: "2 seconds"
+      },
+      features: [
+        "Gaming-optimized smart contracts",
+        "Cross-game asset interoperability",
+        "Low-cost transactions",
+        "Developer-friendly SDKs",
+        "NFT marketplace integration"
+      ],
+      recentUpdates: [
+        "Somnia SDK v2.0 released",
+        "New gaming partnerships announced",
+        "Cross-chain bridge launched",
+        "Community governance activated"
+      ],
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  private async testGamingBot(testData?: any): Promise<any> {
+    // Simulate gaming bot interaction
+    await new Promise(resolve => setTimeout(resolve, 1400));
+    
+    return {
+      guidance: {
+        gameType: "RPG with NFT integration",
+        platform: "Somnia Blockchain",
+        features: [
+          "Character NFTs",
+          "In-game token economy",
+          "Cross-game asset trading",
+          "Player governance"
+        ]
+      },
+      recommendations: [
+        "Use Somnia's gaming SDK for asset management",
+        "Implement ERC-1155 for game items",
+        "Design sustainable tokenomics",
+        "Focus on player onboarding UX"
+      ],
+      resources: [
+        "Somnia Developer Documentation",
+        "Gaming Smart Contract Templates",
+        "NFT Standards Guide",
+        "Community Discord"
       ],
       timestamp: new Date().toISOString()
     };

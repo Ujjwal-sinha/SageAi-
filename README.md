@@ -71,7 +71,35 @@ yarn install
 npm install
 ```
 
-3. Set up environment variables by creating a `.env.local` file in the root directory.
+3. Set up environment variables by creating a `.env.local` file in the root directory:
+
+```bash
+# CoinMarketCap API Configuration (Required for real crypto data)
+# Get your API key from: https://coinmarketcap.com/api/
+COINMARKETCAP_API_KEY=your_coinmarketcap_api_key_here
+
+# Groq API Configuration (Required for AI features)
+NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key_here
+
+# Utility Token Configuration
+NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS=your_deployed_token_address_here
+
+# Credit Thresholds (Optional - defaults will be used if not set)
+NEXT_PUBLIC_THRESHOLD_CHATBOT=1
+NEXT_PUBLIC_THRESHOLD_CONTRACT_GENERATOR=5
+NEXT_PUBLIC_THRESHOLD_TRADE_ASSISTANT=3
+NEXT_PUBLIC_THRESHOLD_ASK_PEOPLE=2
+NEXT_PUBLIC_THRESHOLD_NFT_GENERATOR=10
+NEXT_PUBLIC_THRESHOLD_BLOCKCHAIN_ARCHITECT=15
+NEXT_PUBLIC_THRESHOLD_DEFI_DESIGNER=20
+NEXT_PUBLIC_THRESHOLD_TOKEN_DESIGNER=8
+NEXT_PUBLIC_THRESHOLD_NEWS_INSIGHTS=1
+NEXT_PUBLIC_THRESHOLD_PREMIUM_ANALYTICS=25
+NEXT_PUBLIC_THRESHOLD_SOMNIA_ECOSYSTEM=9
+NEXT_PUBLIC_THRESHOLD_GAMING_BOT=11
+```
+
+**Note**: The CoinMarketCap API key is required for real crypto data. Without it, the dashboard will show empty sections with appropriate messages.
 
 ## How It Works
 
