@@ -22,7 +22,9 @@ import {
   Shield,
   Crown,
   Menu,
-  X
+  X,
+  Home,
+  ArrowLeft
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCredits } from '@/hooks/useCredits';
@@ -341,7 +343,18 @@ export default function Dashboard() {
       <div className="relative z-10">
         {/* Mobile Header */}
         <div className="lg:hidden flex items-center justify-between p-4 bg-gray-800/50 backdrop-blur-sm border-b border-gray-700/50">
-          <h1 className="text-xl font-bold text-white">Sage AI</h1>
+                <div className="flex items-center gap-3">
+            <Link href="/">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="text-gray-400 hover:text-white hover:bg-gray-700/50 p-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+            </Link>
+            <h1 className="text-xl font-bold text-white">Sage AI</h1>
+                  </div>
                   <Button
                     variant="ghost"
             size="sm"
@@ -381,6 +394,17 @@ export default function Dashboard() {
           <div className="flex-1 p-6">
             {/* Header */}
             <div className="text-center mb-12">
+              <div className="flex items-center justify-center mb-6">
+                <Link href="/">
+                  <Button 
+                    variant="ghost" 
+                    className="text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all duration-300 group"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+                    Back to Landing
+                  </Button>
+                </Link>
+              </div>
               <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                 Sage AI Dashboard
               </h1>
@@ -413,13 +437,23 @@ export default function Dashboard() {
             </Card>
 
             {/* AI Services Grid */}
-            <div className="space-y-6">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <div className="space-y-8">
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 px-4 py-2 rounded-full border border-cyan-500/20 mb-6">
+                  <Zap className="w-5 h-5 text-cyan-400" />
+                  <span className="text-sm font-semibold text-cyan-300">AI-Powered Services</span>
+                </div>
+                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                   AI Services
                 </h2>
-                <p className="text-gray-300 text-lg">Access powerful AI tools with your UTK credits</p>
-                <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
+                <p className="text-gray-300 text-xl max-w-2xl mx-auto leading-relaxed">
+                  Access powerful AI tools with your UTK credits. Each service is designed to enhance your Web3 experience with cutting-edge artificial intelligence.
+                </p>
+                <div className="flex items-center justify-center gap-4 mt-6">
+                  <div className="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                  <div className="w-16 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
