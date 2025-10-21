@@ -56,17 +56,25 @@ export class Web3Service {
       const contractAddress = tokenAddress || process.env.NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS;
       
       if (!contractAddress) {
-        throw new Error('Token contract address not provided');
+        console.warn('Token contract address not provided, returning 0');
+        return '0';
+      }
+
+      // Check if contract exists
+      const code = await this.provider.getCode(contractAddress);
+      if (code === '0x') {
+        console.warn('Token contract not found at address, returning 0');
+        return '0';
       }
 
       const contract = new ethers.Contract(contractAddress, ERC20_ABI, this.provider);
-      const balance = await contract.balanceOf(userAddress);
-      const decimals = await contract.decimals();
+      const balance = await contract.balanceOf(userAddress).catch(() => 0);
+      const decimals = await contract.decimals().catch(() => 18);
       
       return ethers.formatUnits(balance, decimals);
     } catch (error) {
       console.error('Error fetching token balance:', error);
-      throw error;
+      return '0';
     }
   }
 

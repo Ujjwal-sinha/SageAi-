@@ -140,6 +140,10 @@ export function Navbar() {
                 Learn
               </NavLink>
 
+              <NavLink href="/claim" icon={<Sparkles className="w-4 h-4 mr-2 text-green-400" />}>
+                Claim Tokens
+              </NavLink>
+
               <NavDropdown
                 title="Community"
                 icon={<Users className="w-4 h-4 mr-2 text-pink-400" />}
@@ -211,6 +215,9 @@ export function Navbar() {
               </MobileNavLink>
               <MobileNavLink href="#" icon={<BookOpen className="w-5 h-5 text-yellow-400" />}>
                 Learn
+              </MobileNavLink>
+              <MobileNavLink href="/claim" icon={<Sparkles className="w-5 h-5 text-green-400" />}>
+                Claim Tokens
               </MobileNavLink>
               <MobileNavLink href="/dashboard" icon={<Users className="w-5 h-5 text-pink-400" />}>
                 Community
