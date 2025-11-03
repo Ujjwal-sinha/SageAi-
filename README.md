@@ -1,37 +1,35 @@
 # Sage AI - Your Intelligent Web3 Assistant Platform
 
 ## Overview
-Sage AI is a comprehensive Web3-powered AI platform that combines artificial intelligence with blockchain technology to provide a suite of intelligent tools and services. The platform uses an ERC20 utility token (UTK) to gate features based on user token balance, ensuring fair access to premium features while maintaining a sustainable ecosystem.
+Sage AI is a comprehensive Web3-powered AI platform natively built for the Somnia blockchain ecosystem. The platform combines artificial intelligence with blockchain technology to provide a suite of intelligent tools and services. Using an ERC20 utility token (UTK) to gate features based on user token balance, Sage AI ensures fair access to premium features while maintaining a sustainable ecosystem. Currently live on Somnia Testnet with seamless integration to Somnia's high-performance infrastructure.
 
 ## Key Features
 
-### 🤖 AI-Powered Tools
-- **Chatbot**: Intelligent conversational AI for general assistance
-- **News Insights**: Real-time analysis of blockchain and crypto news
-- **Ask People**: Community-driven Q&A platform with AI moderation
-- **Trade Assistant**: AI-powered trading insights and analysis
-- **Contract Generator**: Automated smart contract creation and validation
+### 🌟 Somnia Native Agents (Priority)
+- **Somnia Ecosystem Explorer**: AI-powered agent specializing in Somnia ecosystem knowledge, network context, and guidance (9 UTK)
+- **Gaming Development Bot**: Expert assistant for game design, NFT/token mechanics, and smart contract patterns on Somnia (11 UTK)
+- **Infrastructure Agents**: Comprehensive runbooks and guidance for node setup, monitoring, security, and scaling on Somnia (13 UTK)
 
-### 💎 Premium Features
-- **Token Designer**: Advanced token creation and tokenomics planning
-- **NFT Generator**: AI-assisted NFT creation and metadata management
-- **Blockchain Architect**: Infrastructure planning and optimization tools
-- **DeFi Designer**: Automated DeFi protocol design and analysis
-- **Premium Analytics**: Advanced market insights and predictions
+### 🤖 AI-Powered Tools
+- **Chatbot**: General-purpose Web3 AI assistant with contextual knowledge (1 UTK)
+- **News Insights**: Real-time aggregation and AI analysis of blockchain and crypto news (1 UTK)
+- **Ask People**: Community-style Q&A platform with AI moderation and expert simulation (2 UTK)
+- **Trade Assistant**: AI-powered trading insights, risk assessment, and market strategies (3 UTK)
+- **Smart Contract Generator**: Automated Solidity code generation with security best practices (5 UTK)
 
 ### 🔐 Security & Access Control
-- Web3 wallet integration for secure authentication
-- Token-based access control system
-- Transparent and immutable feature access rules
-- Fair pricing model based on feature utility
+- Web3 wallet integration for secure authentication via MetaMask and compatible wallets
+- Token-based access control system with transparent on-chain verification
+- ERC20 UTK token gating for fair and transparent feature access
+- Somnia Testnet integration with faucet for easy token claiming
 
 ## Technology Stack
 
 - **Frontend**: Next.js 13+, TypeScript, TailwindCSS
-- **Blockchain**: Solidity, Hardhat, Web3.js
-- **AI/ML**: Groq, Grok
+- **Blockchain**: Solidity, Hardhat, Web3.js, Somnia Network
+- **AI/ML**: Groq LLM API
 - **UI Components**: Radix UI, Shadcn
-- **Authentication**: Web3 Wallet Integration
+- **Authentication**: Web3 Wallet Integration (MetaMask compatible)
 - **State Management**: React Hooks
 - **Testing**: Hardhat Test Suite
 
