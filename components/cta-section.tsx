@@ -40,29 +40,31 @@ export function CTASection() {
               </Button>
             </Link>
             
-            <Button
-              variant="outline"
-              className="w-full sm:w-auto text-lg px-8 py-4 border-gray-600 text-gray-300 hover:bg-gray-800 hover:border-gray-500 font-semibold rounded-lg transition-all duration-200"
-            >
-              View Documentation
-            </Button>
+            <Link href="/about">
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto text-lg px-8 py-4 border-gray-600 text-gray-300 hover:bg-gray-800 hover:border-gray-500 font-semibold rounded-lg transition-all duration-200"
+              >
+                View Documentation
+              </Button>
+            </Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-300">
             <div className="flex flex-col items-center p-6 bg-gray-800/50 rounded-xl border border-gray-700/50">
               <Shield className="w-8 h-8 text-green-400 mb-3" />
-              <h3 className="font-semibold mb-2">Enterprise Security</h3>
-              <p className="text-sm text-gray-400 text-center">Bank-level encryption and security protocols</p>
+              <h3 className="font-semibold mb-2">Token-Gated Access</h3>
+              <p className="text-sm text-gray-400 text-center">Feature access based on UTK balance</p>
             </div>
             <div className="flex flex-col items-center p-6 bg-gray-800/50 rounded-xl border border-gray-700/50">
               <Zap className="w-8 h-8 text-blue-400 mb-3" />
-              <h3 className="font-semibold mb-2">Lightning Fast</h3>
-              <p className="text-sm text-gray-400 text-center">Optimized for speed and performance</p>
+              <h3 className="font-semibold mb-2">Somnia Testnet</h3>
+              <p className="text-sm text-gray-400 text-center">Live integration with Somnia network</p>
             </div>
             <div className="flex flex-col items-center p-6 bg-gray-800/50 rounded-xl border border-gray-700/50">
               <Bot className="w-8 h-8 text-purple-400 mb-3" />
               <h3 className="font-semibold mb-2">AI-Powered</h3>
-              <p className="text-sm text-gray-400 text-center">Advanced machine learning capabilities</p>
+              <p className="text-sm text-gray-400 text-center">Groq-backed LLM for intelligence</p>
             </div>
           </div>
         </div>

@@ -44,8 +44,14 @@ NEXT_PUBLIC_RPC_URL="https://dream-rpc.somnia.network/"
 # Blockchain explorer URL for transaction viewing
 NEXT_PUBLIC_EXPLORER_URL="https://shannon-explorer.somnia.network/"
 
+# Somnia network chain ID (Testnet)
+NEXT_PUBLIC_CHAIN_ID="50312"
+
+# Faucet contract (for UTK claims)
+NEXT_PUBLIC_FAUCET_ADDRESS="0x16061b1ac83ceb587B76Ceb5ad19e67067768C73"
+
 # Your deployed UtilityToken contract address
-NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS="0x0921887D1658f93BFB7fF93aB1487eb688248E32"
+NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS="0x8270bc03a46ADC2b21EAB599cF077Ce16Af9f5cb"
 ```
 
 ## Getting Started
@@ -74,6 +80,13 @@ npm install
 3. Set up environment variables by creating a `.env.local` file in the root directory:
 
 ```bash
+# Somnia Network Configuration
+NEXT_PUBLIC_RPC_URL="https://dream-rpc.somnia.network/"
+NEXT_PUBLIC_EXPLORER_URL="https://shannon-explorer.somnia.network/"
+NEXT_PUBLIC_CHAIN_ID=50312
+NEXT_PUBLIC_FAUCET_ADDRESS=0x16061b1ac83ceb587B76Ceb5ad19e67067768C73
+# Utility Token Configuration
+NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS=0x8270bc03a46ADC2b21EAB599cF077Ce16Af9f5cb
 # CoinMarketCap API Configuration (Required for real crypto data)
 # Get your API key from: https://coinmarketcap.com/api/
 COINMARKETCAP_API_KEY=your_coinmarketcap_api_key_here
@@ -81,8 +94,7 @@ COINMARKETCAP_API_KEY=your_coinmarketcap_api_key_here
 # Groq API Configuration (Required for AI features)
 NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key_here
 
-# Utility Token Configuration
-NEXT_PUBLIC_UTILITY_TOKEN_ADDRESS=your_deployed_token_address_here
+
 
 # Credit Thresholds (Optional - defaults will be used if not set)
 NEXT_PUBLIC_THRESHOLD_CHATBOT=1
@@ -97,6 +109,7 @@ NEXT_PUBLIC_THRESHOLD_NEWS_INSIGHTS=1
 NEXT_PUBLIC_THRESHOLD_PREMIUM_ANALYTICS=25
 NEXT_PUBLIC_THRESHOLD_SOMNIA_ECOSYSTEM=9
 NEXT_PUBLIC_THRESHOLD_GAMING_BOT=11
+NEXT_PUBLIC_THRESHOLD_INFRASTRUCTURE_AGENTS=13
 ```
 
 **Note**: The CoinMarketCap API key is required for real crypto data. Without it, the dashboard will show empty sections with appropriate messages.
@@ -151,7 +164,149 @@ graph TB
     style K fill:#e1f5fe
     style L fill:#e8f5e8
 ```
+
+## Somnia Network Setup
+
+- Network Name: Somnia Testnet
+- RPC URL: https://dream-rpc.somnia.network
+- Chain ID: 50312
+- Currency Symbol: SOM
+- Block Explorer: https://shannon-explorer.somnia.network
+
+Notes:
+- You need a small amount of SOM for gas to claim UTK from the faucet.
+- Ensure your wallet is connected to Somnia Testnet before using `/claim`.
+
 ## Feature-Specific Architecture Diagrams
+
+### Somnia Agents Architecture (Priority)
+
+#### Somnia Ecosystem Agent
+
+```mermaid
+graph TB
+    subgraph "Somnia Ecosystem UI"
+        A[Somnia Page] --> B[Prompt Input]
+        A --> C[Conversation History]
+        B --> D[Submit Query]
+    end
+
+    subgraph "Access Control"
+        D --> E[FeatureGate Check]
+        E --> F{UTK >= Threshold (Somnia)}
+        F -->|No| G[Show Insufficient Credits]
+        F -->|Yes| H[Process Somnia Query]
+    end
+
+    subgraph "AI Processing"
+        H --> I[Context Build: ecosystem, specs, news]
+        I --> J[Groq LLM]
+        J --> K[Structured Answer]
+    end
+
+    subgraph "External Sources"
+        L[Somnia RPC]\n(dream-rpc) 
+        M[Somnia Explorer]\n(shannon-explorer)
+        N[Official Docs]
+    end
+
+    I -.-> L
+    I -.-> M
+    I -.-> N
+
+    style F fill:#e1f5fe
+    style G fill:#ffebee
+    style K fill:#e8f5e8
+```
+
+#### Gaming Development Agent (Somnia)
+
+```mermaid
+graph TB
+    subgraph "Gaming Bot UI"
+        A[Gaming Bot Page] --> B[Topic Shortcuts]
+        A --> C[Prompt Input]
+        C --> D[Submit]
+    end
+
+    subgraph "Access Control"
+        D --> E[FeatureGate Check]
+        E --> F{UTK >= Threshold (Gaming)}
+        F -->|No| G[Show Insufficient Credits]
+        F -->|Yes| H[Build Gaming Context]
+    end
+
+    subgraph "AI Pipelines"
+        H --> I[Design & Architecture]
+        H --> J[Smart Contract Patterns]
+        H --> K[NFT/Token Mechanics]
+        H --> L[Perf & Security]
+        I --> M[Groq LLM]
+        J --> M
+        K --> M
+        L --> M
+        M --> N[Actionable Guidance]
+    end
+
+    subgraph "Somnia Integrations"
+        O[RPC / Explorer]
+        P[Tooling & SDKs]
+        Q[Docs & Examples]
+    end
+
+    H -.-> O
+    H -.-> P
+    H -.-> Q
+
+    style F fill:#e1f5fe
+    style G fill:#ffebee
+    style N fill:#e8f5e8
+```
+
+#### Infrastructure Agents (Somnia)
+
+```mermaid
+graph TB
+    subgraph "Infra UI"
+        A[Infrastructure Page] --> B[Preset Topics]
+        A --> C[Freeform Query]
+        C --> D[Submit]
+    end
+
+    subgraph "Access Control"
+        D --> E[FeatureGate Check]
+        E --> F{UTK >= Threshold (Infra)}
+        F -->|No| G[Show Insufficient Credits]
+        F -->|Yes| H[Process Infra Query]
+    end
+
+    subgraph "Infra Engine"
+        H --> I[Node Setup & Networking]
+        H --> J[Monitoring & Logging]
+        H --> K[Security & Hardening]
+        H --> L[Scaling & Cost]
+        I --> M[Groq LLM]
+        J --> M
+        K --> M
+        L --> M
+        M --> N[Runbooks, Steps, Commands]
+    end
+
+    subgraph "Somnia Ops"
+        O[RPC / Chain Config]
+        P[Explorer API]
+        Q[Cloud/K8s]
+    end
+
+    I -.-> O
+    J -.-> P
+    L -.-> Q
+
+    style F fill:#e1f5fe
+    style G fill:#ffebee
+    style N fill:#e8f5e8
+```
+
 
 ### 1. Web3 AI Chatbot Architecture (1 UTK Required)
 
@@ -543,4 +698,8 @@ All feature pages now have token-gated access:
 - ✅ Trading Assistant (`/tradeassistant`) - 3 UTK
 - ✅ Ask Crypto People (`/askpeople`) - 2 UTK
 - ✅ Web3 News AI (`/news`) - 1 UTK
+ - ✅ Somnia Ecosystem Explorer (`/somnia`) - 9 UTK
+ - ✅ Gaming Development Bot (`/gamingbot`) - 11 UTK
+ - ✅ Infrastructure Agents (`/infrastructure`) - 13 UTK
+ - ✅ Token Faucet Claim (`/claim`) - Claim 100 UTK (requires SOM gas)
  

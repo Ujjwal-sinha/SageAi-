@@ -57,8 +57,21 @@ export class TokenClaimService {
       const canClaim = await faucetContract.canClaim(userAddress).catch(() => false);
       if (!canClaim) {
         const timeUntilNextClaim = await faucetContract.getTimeUntilNextClaim(userAddress).catch(() => 0);
-        const hoursLeft = Math.ceil(Number(timeUntilNextClaim) / 3600);
-        throw new Error(`You can claim again in ${hoursLeft} hours`);
+        const timeInSeconds = Number(timeUntilNextClaim);
+        
+        if (timeInSeconds <= 0) {
+          // If time is 0 or negative, user should be able to claim
+          // This might be a contract state issue, let's proceed
+        } else {
+          const hoursLeft = Math.ceil(timeInSeconds / 3600);
+          const minutesLeft = Math.ceil(timeInSeconds / 60);
+          
+          if (hoursLeft >= 1) {
+            throw new Error(`You can claim again in ${hoursLeft} hours`);
+          } else {
+            throw new Error(`You can claim again in ${minutesLeft} minutes`);
+          }
+        }
       }
 
       // Call claimTokens function

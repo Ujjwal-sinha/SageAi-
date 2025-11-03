@@ -173,14 +173,14 @@ export function HeroSection() {
                 </Button>
               </Link>
               
-              <Link href="/about">
+              <Link href="/claim">
                 <Button 
                   variant="outline" 
                   size="xl"
                   className="text-xl px-10 py-6 btn-cyber hover-lift group"
                 >
                   <span className="flex items-center gap-3">
-                    Explore Features
+                    Claim 100 UTK
                     <Brain className="w-6 h-6 group-hover:animate-pulse" />
                   </span>
                 </Button>

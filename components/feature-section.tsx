@@ -23,76 +23,84 @@ export function FeatureSection() {
 
   const features = [
     {
-      icon: <Brain className="h-8 w-8" />,
-      title: "Neural Smart Contracts",
-      description: "Self-evolving contracts that adapt gas fees, security parameters, and execution paths using advanced machine learning algorithms trained on blockchain data.",
+      icon: <Network className="h-8 w-8" />,
+      title: "Somnia Ecosystem Explorer",
+      description: "Somnia-focused agent with network context and guidance.",
       color: "text-cyan-400",
       gradient: "from-cyan-600/20 to-blue-600/20",
-      stats: "99.9% Efficiency",
-      category: "AI CORE"
+      stats: "9 UTK",
+      category: "SOMNIA",
+      href: "/somnia"
     },
     {
-      icon: <TrendingUp className="h-8 w-8" />,
-      title: "Quantum DeFi Analytics",
-      description: "Real-time multi-dimensional risk modeling, yield optimization strategies, and market predictions powered by quantum-inspired algorithms.",
-      color: "text-purple-400",
-      gradient: "from-purple-600/20 to-pink-600/20",
-      stats: "95% Accuracy",
-      category: "ANALYTICS"
-    },
-    {
-      icon: <Sparkles className="h-8 w-8" />,
-      title: "Generative NFT Engine",
-      description: "Create unique NFT collections based on wallet history, on-chain behavior, and personalized preferences with automated rarity distribution.",
-      color: "text-pink-400",
-      gradient: "from-pink-600/20 to-rose-600/20",
-      stats: "50K+ Created",
-      category: "CREATIVE"
+      icon: <Cpu className="h-8 w-8" />,
+      title: "Gaming Development Bot",
+      description: "Game design, NFT/token mechanics, and smart contract patterns.",
+      color: "text-yellow-400",
+      gradient: "from-yellow-600/20 to-orange-600/20",
+      stats: "11 UTK",
+      category: "SOMNIA",
+      href: "/gamingbot"
     },
     {
       icon: <Shield className="h-8 w-8" />,
-      title: "Adaptive Security Matrix",
-      description: "AI-powered security systems that identify vulnerabilities, monitor threats, and adapt defenses in real-time across all smart contracts.",
-      color: "text-green-400",
-      gradient: "from-green-600/20 to-emerald-600/20",
-      stats: "Zero Exploits",
-      category: "SECURITY"
+      title: "Infrastructure Agents",
+      description: "Runbooks for nodes, monitoring, security, scaling on Somnia.",
+      color: "text-violet-400",
+      gradient: "from-violet-600/20 to-purple-600/20",
+      stats: "13 UTK",
+      category: "SOMNIA",
+      href: "/infrastructure"
     },
     {
-      icon: <Code className="h-8 w-8" />,
-      title: "Autonomous Code Generation",
-      description: "Generate optimized, audited blockchain code from natural language with automated testing, security verification, and deployment.",
-      color: "text-emerald-400",
-      gradient: "from-emerald-600/20 to-teal-600/20",
-      stats: "100K+ Lines",
-      category: "DEVELOPMENT"
+      icon: <Brain className="h-8 w-8" />,
+      title: "AI Chatbot",
+      description: "General-purpose Web3 AI assistant with contextual knowledge.",
+      color: "text-cyan-400",
+      gradient: "from-cyan-600/20 to-blue-600/20",
+      stats: "1 UTK",
+      category: "BASIC",
+      href: "/chatbot"
     },
     {
-      icon: <Zap className="h-8 w-8" />,
-      title: "Parallel AI Processing",
-      description: "Leverage Somnia's high-performance architecture for distributed AI computations with sub-millisecond latency and infinite scalability.",
-      color: "text-yellow-400",
-      gradient: "from-yellow-600/20 to-orange-600/20",
-      stats: "400K TPS",
-      category: "PERFORMANCE"
+      icon: <Sparkles className="h-8 w-8" />,
+      title: "Web3 News AI",
+      description: "Aggregated crypto news with AI summarization and insights.",
+      color: "text-pink-400",
+      gradient: "from-pink-600/20 to-rose-600/20",
+      stats: "1 UTK",
+      category: "BASIC",
+      href: "/news"
     },
     {
       icon: <Workflow className="h-8 w-8" />,
-      title: "Governance Intelligence",
-      description: "AI-assisted proposal evaluation, voting pattern analysis, and governance recommendations based on protocol health metrics.",
-      color: "text-violet-400",
-      gradient: "from-violet-600/20 to-purple-600/20",
-      stats: "98% Participation",
-      category: "GOVERNANCE"
+      title: "Ask Crypto People",
+      description: "Community-style Q&A with AI moderation and expert simulation.",
+      color: "text-green-400",
+      gradient: "from-green-600/20 to-emerald-600/20",
+      stats: "2 UTK",
+      category: "ADVANCED",
+      href: "/askpeople"
     },
     {
-      icon: <Network className="h-8 w-8" />,
-      title: "Omnichain Intelligence",
-      description: "Seamless analysis and operations across 15+ blockchains with unified intelligence layer and automated arbitrage opportunities.",
-      color: "text-cyan-400",
-      gradient: "from-cyan-600/20 to-blue-600/20",
-      stats: "15+ Chains",
-      category: "INTEROP"
+      icon: <LineChart className="h-8 w-8" />,
+      title: "Trade Assistant",
+      description: "AI-powered trading insights, risk assessment, and strategies.",
+      color: "text-purple-400",
+      gradient: "from-purple-600/20 to-pink-600/20",
+      stats: "3 UTK",
+      category: "ADVANCED",
+      href: "/tradeassistant"
+    },
+    {
+      icon: <Code className="h-8 w-8" />,
+      title: "Smart Contract Generator",
+      description: "AI-generated Solidity with security best practices and hints.",
+      color: "text-emerald-400",
+      gradient: "from-emerald-600/20 to-teal-600/20",
+      stats: "5 UTK",
+      category: "ADVANCED",
+      href: "/contract"
     }
   ];
 
@@ -200,9 +208,13 @@ export function FeatureSection() {
                   
                   {/* Hover action */}
                   <div className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button variant="ghost" size="sm" className="text-cyan-400 hover:text-white font-cyber">
-                      EXPLORE <ArrowRight className="w-4 h-4 ml-1" />
-                    </Button>
+                    {feature.href ? (
+                      <Link href={feature.href}>
+                        <Button variant="ghost" size="sm" className="text-cyan-400 hover:text-white font-cyber">
+                          OPEN <ArrowRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </Link>
+                    ) : null}
                   </div>
                 </CardContent>
               </Card>
@@ -247,16 +259,17 @@ export function FeatureSection() {
                 </Button>
               </Link>
               
-              <Button 
-                variant="outline" 
-                size="xl"
-                className="text-xl px-12 py-6 btn-cyber hover-lift"
-              >
-                <span className="flex items-center gap-3">
-                  View Documentation
-                  
-                </span>
-              </Button>
+              <Link href="/claim">
+                <Button 
+                  variant="outline" 
+                  size="xl"
+                  className="text-xl px-12 py-6 btn-cyber hover-lift"
+                >
+                  <span className="flex items-center gap-3">
+                    Claim 100 UTK
+                  </span>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
