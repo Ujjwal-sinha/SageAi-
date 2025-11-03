@@ -123,44 +123,42 @@ NEXT_PUBLIC_THRESHOLD_INFRASTRUCTURE_AGENTS=13
 
 ```mermaid
 graph TB
-    subgraph "Frontend (Next.js)"
-        A[User Interface] --> B[Navbar with Wallet Connection]
-        A --> C[Feature Pages]
-        C --> D[FeatureGate Component]
-        B --> E[WalletConnection Component]
+    subgraph "Frontend"
+        A[User Interface] --> B[Feature Pages]
+        B --> C[FeatureGate]
+        C --> D[useCredits Hook]
     end
     
-    subgraph "Hooks & Services"
-        D --> F[useCredits Hook]
-        E --> F
-        F --> G[CreditService]
-        G --> H[Web3Service]
+    subgraph "Services"
+        D --> E[CreditService]
+        E --> F[Web3Service]
+        B --> G1[CryptoService]
+        B --> G2[NewsService]
+        B --> G3[Groq Service]
+        B --> G4[Somnia Services]
+        B --> G5[TokenClaimService]
+        G4 --> G3
     end
     
-    subgraph "Blockchain Layer"
-        H --> I[Web3 Provider]
-        I --> J[Somnia Network RPC]
-        J --> K[UtilityToken Contract]
-        K --> L[ERC20 Token Balance]
+    subgraph "Blockchain"
+        F --> H[Somnia RPC]
+        H --> I[UtilityToken Contract]
+        H --> J[Token Faucet Contract]
+        G5 --> F
+        H -.-> K[Somnia Explorer]
     end
     
-    subgraph "Feature Access Flow"
-        M[User Visits Feature] --> N{Wallet Connected?}
-        N -->|No| O[Show Connect Wallet]
-        N -->|Yes| P[Check UTK Balance]
-        P --> Q{Balance >= Threshold?}
-        Q -->|No| R[Show Insufficient Credits]
-        Q -->|Yes| S[Grant Feature Access]
+    subgraph "External APIs"
+        G1 --> L1[CoinMarketCap API]
+        G2 --> L2[News Aggregation]
+        G3 --> L3[Groq LLM API]
+        G4 --> L3
     end
     
-    subgraph "Token Thresholds"
-        T[Basic Features: 1-2 UTK]
-        U[Advanced Features: 3-5 UTK]
-        V[Somnia Agents: 9-13 UTK]
-    end
-    
-    style K fill:#e1f5fe
-    style L fill:#e8f5e8
+    style I fill:#e1f5fe
+    style L1 fill:#fff3e0
+    style L3 fill:#f3e5f5
+    style H fill:#e3f2fd
 ```
 
 ## Somnia Network Setup
