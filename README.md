@@ -205,8 +205,8 @@ graph TB
     end
 
     subgraph "External Sources"
-        L[Somnia RPC]\n(dream-rpc) 
-        M[Somnia Explorer]\n(shannon-explorer)
+        L[Somnia RPC - dream-rpc] 
+        M[Somnia Explorer - shannon-explorer]
         N[Official Docs]
     end
 
