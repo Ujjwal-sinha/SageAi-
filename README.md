@@ -193,7 +193,7 @@ graph TB
 
     subgraph "Access Control"
         D --> E[FeatureGate Check]
-        E --> F{UTK >= Threshold (Somnia)}
+        E --> F{"UTK >= Threshold (Somnia)"}
         F -->|No| G[Show Insufficient Credits]
         F -->|Yes| H[Process Somnia Query]
     end
@@ -231,7 +231,7 @@ graph TB
 
     subgraph "Access Control"
         D --> E[FeatureGate Check]
-        E --> F{UTK >= Threshold (Gaming)}
+        E --> F{"UTK >= Threshold (Gaming)"}
         F -->|No| G[Show Insufficient Credits]
         F -->|Yes| H[Build Gaming Context]
     end
@@ -275,7 +275,7 @@ graph TB
 
     subgraph "Access Control"
         D --> E[FeatureGate Check]
-        E --> F{UTK >= Threshold (Infra)}
+        E --> F{"UTK >= Threshold (Infra)"}
         F -->|No| G[Show Insufficient Credits]
         F -->|Yes| H[Process Infra Query]
     end
