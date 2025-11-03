@@ -155,8 +155,8 @@ graph TB
     
     subgraph "Token Thresholds"
         T[Basic Features: 1-2 UTK]
-        U[Advanced Features: 3-8 UTK]
-        V[Premium Features: 10-25 UTK]
+        U[Advanced Features: 3-5 UTK]
+        V[Somnia Agents: 9-13 UTK]
     end
     
     style K fill:#e1f5fe
